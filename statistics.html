@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Statistics - AutoOffer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <button onclick="location.href='dashboard.html'" style="position: absolute; top: 10px; left: 10px;">Back to Dashboard</button>
+        <h2>Product Statistics</h2>
+
+        <div class="statistics">
+            <h3>General Statistics</h3>
+            <p id="totalProducts">Total Products: </p>
+            <p id="averagePrice">Average Price: </p>
+            <p id="offersSent">Offers Sent: </p>
+            <button id="refreshButton">Refresh Statistics</button>
+        </div>
+
+        <div class="product-list">
+            <h3>Product List</h3>
+            <!-- This section will be populated with products -->
+        </div>
+    </div>
+
+    <script>
+        function calculateStatistics() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const offersSent = localStorage.getItem('offersSent') || 0;
+            const totalProducts = products.length;
+
+            let totalCost = 0;
+            products.forEach(product => {
+                totalCost += parseFloat(product.price);
+            });
+
+            const averagePrice = (totalCost / totalProducts) || 0;
+
+            document.getElementById('totalProducts').textContent = `Total Products: ${totalProducts}`;
+            document.getElementById('averagePrice').textContent = `Average Price: $${averagePrice.toFixed(2)}`;
+            document.getElementById('offersSent').textContent = `Offers Sent: ${offersSent}`;
+        }
+
+        function displayProducts() {
+            // ... (rest of the code remains unchanged)
+        }
+
+        document.getElementById('refreshButton').addEventListener('click', () => {
+            calculateStatistics();
+            displayProducts();
+        });
+
+        // Calculate and display statistics when the page loads
+        window.onload = () => {
+            calculateStatistics();
+            displayProducts();
+        };
+    </script>
+</body>
+</html>

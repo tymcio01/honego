@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - AutoOffer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="loadSettings()">
+    <div class="container">
+        <h2>Account Settings</h2>
+        
+        <div class="account-settings">
+            <h3>Personal Information</h3>
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter username">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter email">
+            
+            <label for="signature">Signature for Offers:</label>
+            <input type="text" id="signature" placeholder="Enter your signature">
+
+            <h3>Company Information</h3>
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" placeholder="Enter company name">
+            
+            <label for="companyPhone">Company Phone:</label>
+            <input type="text" id="companyPhone" placeholder="Enter company phone">
+            
+            <label for="companyWebsite">Company Website:</label>
+            <input type="url" id="companyWebsite" placeholder="Enter company website">
+            
+            <label for="companyAddress">Company Address:</label>
+            <textarea id="companyAddress" rows="3" placeholder="Enter company address"></textarea>
+            
+            <h3>Change Password</h3>
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" id="currentPassword" placeholder="Enter current password">
+            
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            
+            <label for="confirmPassword">Confirm New Password:</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+            
+            <button onclick="updateSettings()">Update Settings</button>
+        </div>
+
+        <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
+    </div>
+
+    <script>
+        function loadSettings() {
+            document.getElementById('username').value = localStorage.getItem('username') || "";
+            document.getElementById('email').value = localStorage.getItem('email') || "";
+            document.getElementById('signature').value = localStorage.getItem('signature') || "";
+            document.getElementById('companyName').value = localStorage.getItem('companyName') || "";
+            document.getElementById('companyPhone').value = localStorage.getItem('companyPhone') || "";
+            document.getElementById('companyWebsite').value = localStorage.getItem('companyWebsite') || "";
+            document.getElementById('companyAddress').value = localStorage.getItem('companyAddress') || "";
+        }
+
+        function updateSettings() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const signature = document.getElementById('signature').value;
+            const companyName = document.getElementById('companyName').value;
+            const companyPhone = document.getElementById('companyPhone').value;
+            const companyWebsite = document.getElementById('companyWebsite').value;
+            const companyAddress = document.getElementById('companyAddress').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                alert("New password and confirmation do not match!");
+                return;
+            }
+
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            localStorage.setItem('signature', signature);
+            localStorage.setItem('companyName', companyName);
+            localStorage.setItem('companyPhone', companyPhone);
+            localStorage.setItem('companyWebsite', companyWebsite);
+            localStorage.setItem('companyAddress', companyAddress);
+
+            alert("Settings updated successfully!");
+        }
+    </script>
+</body>
+</html>

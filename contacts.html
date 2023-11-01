@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts - AutoOffer CRM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
+        <h2>Contacts</h2>
+
+        <div class="contact-add">
+            <h3>Add/Edit Contact</h3>
+            <label for="contactName">Full Name:</label>
+            <input type="text" id="contactName" placeholder="Enter full name">
+            <label for="contactEmail">Email:</label>
+            <input type="email" id="contactEmail" placeholder="Enter email">
+            <label for="contactPhone">Phone:</label>
+            <input type="text" id="contactPhone" placeholder="Enter phone number">
+            <label for="contactCompany">Company:</label>
+            <input type="text" id="contactCompany" placeholder="Enter company name">
+            <label for="contactIndustry">Industry:</label>
+            <input type="text" id="contactIndustry" placeholder="Enter industry">
+            <button id="saveContactButton" onclick="saveContact()">Save Contact</button>
+        </div>
+
+        <input type="text" id="searchBox" placeholder="Search contacts" onkeyup="searchContacts()">
+        <div class="contact-list" id="contactList">
+            <h3>Existing Contacts</h3>
+            <!-- Contacts will be populated here -->
+        </div>
+    </div>
+
+    <script>
+        let editingContactIndex = null;
+
+        function saveContact() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const company = document.getElementById('contactCompany').value;
+            const industry = document.getElementById('contactIndustry').value;
+
+            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+
+            const contact = { name, email, phone, company, industry };
+
+            if (editingContactIndex !== null) {
+                contacts[editingContactIndex] = contact;
+                editingContactIndex = null;
+            } else {
+                contacts.push(contact);
+            }
+
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+
+            displayContacts();
+            clearForm();
+        }
+
+        function deleteContact(index) {
+            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            contacts.splice(index, 1);
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+            displayContacts();
+        }
+
+        function editContact(index) {
+            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            const contact = contacts[index];
+
+            document.getElementById('contactName').value = contact.name;
+            document.getElementById('contactEmail').value = contact.email;
+            document.getElementById('contactPhone').value = contact.phone;
+            document.getElementById('contactCompany').value = contact.company;
+            document.getElementById('contactIndustry').value = contact.industry;
+
+            editingContactIndex = index;
+        }
+
+        function clearForm() {
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactCompany').value = '';
+            document.getElementById('contactIndustry').value = '';
+        }
+
+        function searchContacts() {
+            const searchBox = document.getElementById('searchBox');
+            const searchTerm = searchBox.value.toLowerCase();
+            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            const filteredContacts = contacts.filter(contact => 
+                Object.values(contact).some(value => 
+                    value.toLowerCase().includes(searchTerm)
+                )
+            );
+            displayContacts(filteredContacts);
+        }
+
+        function displayContacts(filteredContacts = null) {
+            const contacts = filteredContacts || JSON.parse(localStorage.getItem('contacts')) || [];
+            const contactListDiv = document.getElementById('contactList');
+            contactListDiv.innerHTML = '<h3>Existing Contacts</h3>';
+
+            contacts.forEach((contact, index) => {
+                const contactDiv = document.createElement('div');
+                contactDiv.classList.add('contact-item');
+                contactDiv.innerHTML = `
+                    <div>Name: ${contact.name}</div>
+                    <div>Email: ${contact.email}</div>
+                    <div>Phone: ${contact.phone}</div>
+                    <div>Company: ${contact.company}</div>
+                    <div>Industry: ${contact.industry}</div>
+                    <button onclick="editContact(${index})">Edit</button>
+                    <button onclick="deleteContact(${index})">Delete</button>
+                `;
+                contactListDiv.appendChild(contactDiv);
+            });
+        }
+
+        window.onload = displayContacts;
+    </script>
+</body>
+
+</html>
