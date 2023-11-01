@@ -110,17 +110,21 @@
         firebase.initializeApp(firebaseConfig);
 
         function register() {
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
 
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    alert('Account created successfully!');
-                    showLogin();
-                })
-                .catch((error) => {
-                    alert('Error: ' + error.message);
-                });
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in 
+            var user = userCredential.user;
+            alert('Account created successfully!');
+            showLogin();
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert('Error: ' + errorMessage);
+        });
         }
 
         function login() {
