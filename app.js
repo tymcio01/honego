@@ -1,38 +1,37 @@
-// app.js
-function register() {
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-
+// Rejestracja użytkownika
+function register(email, password) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            alert('User registered successfully!');
-            showLogin();
+            // Użytkownik zarejestrowany, przekierowanie do dashboard.html
+            window.location.href = 'dashboard.html';
         })
         .catch((error) => {
-            alert('Error: ' + error.message);
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert('Error: ' + errorMessage);
         });
 }
 
-function login() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-
+// Logowanie użytkownika
+function login(email, password) {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            alert('User logged in successfully!');
-            // Tutaj możesz przekierować użytkownika do innej strony lub wykonać inne akcje po zalogowaniu
+            // Użytkownik zalogowany, przekierowanie do dashboard.html
+            window.location.href = 'dashboard.html';
         })
         .catch((error) => {
-            alert('Error: ' + error.message);
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert('Error: ' + errorMessage);
         });
 }
 
-function showSignup() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('signupForm').style.display = 'block';
-}
-
-function showLogin() {
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
+// Wylogowywanie użytkownika
+function logout() {
+    firebase.auth().signOut().then(() => {
+        // Użytkownik wylogowany, przekierowanie do strony głównej
+        window.location.href = 'index.html';
+    }).catch((error) => {
+        alert('Error: ' + error.message);
+    });
 }
