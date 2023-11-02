@@ -55,8 +55,12 @@
             cursor: pointer;
             text-decoration: underline;
         }
-        .error-message {
+        .error-message, .success-message {
             color: red;
+            margin-bottom: 10px;
+        }
+        .success-message {
+            color: green;
         }
     </style>
 </head>
@@ -71,7 +75,7 @@
                 <label for="loginPassword">Password:</label>
                 <input type="password" id="loginPassword" required>
                 <button type="submit">Login</button>
-<div id="loginSuccess" class="success-message" style="display: none;"></div>
+                <div id="loginSuccess" class="success-message" style="display: none;"></div>
                 <div id="loginError" class="error-message"></div>
             </form>
             <span class="toggle-form" onclick="toggleForms()">Create an account</span>
@@ -110,10 +114,17 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
 
+      // Success message function
+      function showSuccessMessage(successElement, message, redirectUrl) {
+        successElement.textContent = message;
+        successElement.style.display = 'block'; // Show the success message
+        setTimeout(() => {
+            window.location.href = redirectUrl; // Redirect after 3 seconds
+        }, 3000);
+      }
+
       const loginForm = document.getElementById('formLogin');
       const signupForm = document.getElementById('formSignup');
-      const loginError = document.getElementById('loginError');
-      const signupError = document.getElementById('signupError');
 
       loginForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -124,9 +135,11 @@
           .then((userCredential) => {
             // Signed in 
             console.log('User logged in:', userCredential.user);
-            // Redirect to your desired page here
+            const loginSuccess = document.getElementById('loginSuccess');
+            showSuccessMessage(loginSuccess, 'Login successful! Redirecting...', 'dashboard.html');
           })
           .catch((error) => {
+            const loginError = document.getElementById('loginError');
             loginError.textContent = error.message;
           });
       });
@@ -140,9 +153,11 @@
           .then((userCredential) => {
             // Signed in 
             console.log('User created:', userCredential.user);
-            // You can redirect or show a success message
+            const signupSuccess = document.getElementById('signupSuccess');
+            showSuccessMessage(signupSuccess, 'Signup successful! Redirecting...', 'dashboard.html');
           })
           .catch((error) => {
+            const signupError = document.getElementById('signupError');
             signupError.textContent = error.message;
           });
       });
@@ -151,8 +166,8 @@
         const loginForm = document.getElementById('loginForm');
         const signupForm = document.getElementById('signupForm');
         if (loginForm.style.display === 'none') {
-          signupForm.style.display = 'none';
           loginForm.style.display = 'block';
+          signupForm.style.display = 'none';
         } else {
           loginForm.style.display = 'none';
           signupForm.style.display = 'block';
