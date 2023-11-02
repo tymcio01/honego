@@ -7,7 +7,6 @@ function register() {
         .then((userCredential) => {
             alert('User registered successfully!');
             showLogin();
-            window.location.href = 'dashboard.html';
         })
         .catch((error) => {
             alert('Error: ' + error.message);
@@ -22,7 +21,6 @@ function login() {
         .then((userCredential) => {
             alert('User logged in successfully!');
             // Tutaj możesz przekierować użytkownika do innej strony lub wykonać inne akcje po zalogowaniu
-            window.location.href = 'dashboard.html';
         })
         .catch((error) => {
             alert('Error: ' + error.message);
