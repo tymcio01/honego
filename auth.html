@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup/Login - AutoOffer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-   <style>
+    <style>
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f4f4f4;
@@ -62,19 +62,33 @@
 </head>
 <body>
     <div class="auth-container">
-        <form id="loginForm">
-            <input type="email" id="loginEmail" placeholder="Adres e-mail" required>
-            <input type="password" id="loginPassword" placeholder="Hasło" required>
-            <button type="submit">Zaloguj się</button>
-            <p class="form-toggle">Nie masz konta? <a href="#" onclick="toggleForms()">Zarejestruj się</a></p>
-        </form>
+        <!-- Login form -->
+        <div id="loginForm">
+            <h1>Login</h1>
+            <form id="formLogin">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" required>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" required>
+                <button type="submit">Login</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+            <span class="toggle-form" onclick="toggleForms()">Create an account</span>
+        </div>
 
-        <form id="signupForm" style="display:none;">
-            <input type="email" id="signupEmail" placeholder="Adres e-mail" required>
-            <input type="password" id="signupPassword" placeholder="Hasło" required>
-            <button type="submit">Zarejestruj się</button>
-            <p class="form-toggle">Masz już konto? <a href="#" onclick="toggleForms()">Zaloguj się</a></p>
-        </form>
+        <!-- Signup form -->
+        <div id="signupForm" style="display: none;">
+            <h1>Signup</h1>
+            <form id="formSignup">
+                <label for="signupEmail">Email:</label>
+                <input type="email" id="signupEmail" required>
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" required>
+                <button type="submit">Signup</button>
+                <div id="signupError" class="error-message"></div>
+            </form>
+            <span class="toggle-form" onclick="toggleForms()">Already have an account?</span>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -82,86 +96,66 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script>
-        // Firebase configuration
-        var firebaseConfig = {
-             apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+      // Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-        };
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+      const loginForm = document.getElementById('formLogin');
+      const signupForm = document.getElementById('formSignup');
+      const loginError = document.getElementById('loginError');
+      const signupError = document.getElementById('signupError');
 
-        var loginForm = document.getElementById('loginForm');
-        var signupForm = document.getElementById('signupForm');
-        var loginEmail = document.getElementById('loginEmail');
-        var loginPassword = document.getElementById('loginPassword');
-        var signupEmail = document.getElementById('signupEmail');
-        var signupPassword = document.getElementById('signupPassword');
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in 
+            console.log('User logged in:', userCredential.user);
+            // Redirect to your desired page here
+          })
+          .catch((error) => {
+            loginError.textContent = error.message;
+          });
+      });
 
-        function toggleForms() {
-            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
-            signupForm.style.display = signupForm.style.display === 'none' ? 'block' : 'none';
+      signupForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in 
+            console.log('User created:', userCredential.user);
+            // You can redirect or show a success message
+          })
+          .catch((error) => {
+            signupError.textContent = error.message;
+          });
+      });
+
+      function toggleForms() {
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        if (loginForm.style.display === 'none') {
+          signupForm.style.display = 'none';
+          loginForm.style.display = 'block';
+        } else {
+          loginForm.style.display = 'none';
+          signupForm.style.display = 'block';
         }
-
-        function showSuccessMessage(form, message) {
-    // Clear any existing messages
-    const existingSuccess = form.querySelector('.success-message');
-    if (existingSuccess) {
-        form.removeChild(existingSuccess);
-    }
-
-    // Create success message element
-    const successDiv = document.createElement('div');
-    successDiv.textContent = message;
-    successDiv.classList.add('success-message');
-
-    // Append the success message to the form
-    form.appendChild(successDiv);
-    
-    // Remove the message after 3 seconds and redirect
-    setTimeout(() => {
-      form.removeChild(successDiv);
-      // Replace 'your-desired-page.html' with the URL where you want to redirect
-      window.location.href = 'welcome.html';
-    }, 3000);
-}
-
-
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            firebase.auth().signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
-                .then((userCredential) => {
-                    // User logged in
-                    showSuccessMessage('Login successful, redirecting...');
-                    // Redirect or further action
-                })
-                .catch((error) => {
-                    // Handle Errors here.
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    alert('Error: ' + errorMessage);
-                });
-        });
-
-        signupForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            firebase.auth().createUserWithEmailAndPassword(signupEmail.value, signupPassword.value)
-                .then((userCredential) => {
-                    // User created
-                    showSuccessMessage('Signup successful, redirecting...');
-                    // Redirect or further action
-                })
-                .catch((error) => {
-                    // Handle Errors here.
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    alert('Error: ' + errorMessage);
-                });
-        });
+      }
     </script>
 </body>
 </html>
