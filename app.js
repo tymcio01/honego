@@ -3,7 +3,10 @@ function register(email, password) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             // Użytkownik zarejestrowany, przekierowanie do dashboard.html
-            window.location.assign('dashboard.html');
+            setTimeout(function() {
+    window.location.href = 'dashboard.html';
+}, 1000); // Przekierowanie po 1 sekundzie
+
         })
         .catch((error) => {
             var errorCode = error.code;
@@ -17,7 +20,9 @@ function login(email, password) {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             // Użytkownik zalogowany, przekierowanie do dashboard.html
-            window.location.assign('dashboard.html');
+                 setTimeout(function() {
+    window.location.href = 'dashboard.html';
+}, 1000); // Przekierowanie po 1 sekundzie
         })
         .catch((error) => {
             var errorCode = error.code;
