@@ -1,123 +1,108 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Signup/Login - AutoOffer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* Your existing CSS */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup/Login - AutoOffer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .auth-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="email"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: black;
+        }
+        .toggle-form {
+            color: #3498db;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <div class="auth-container">
-    <div id="loginForm">
-      <h1>Login</h1>
-      <form id="login-form">
-        <label for="loginEmail">Email:</label>
-        <input type="email" id="loginEmail" required>
-        <label for="loginPassword">Password:</label>
-        <input type="password" id="loginPassword" required>
-        <button type="submit">Login</button>
-      </form>
-      <span class="toggle-form" onclick="showSignup()">Create an account</span>
+    <div class="auth-container">
+        <div id="loginForm">
+            <h1>Login</h1>
+            <form onsubmit="event.preventDefault(); login();">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" required>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" required>
+                <button type="submit">Login</button>
+            </form>
+            <span class="toggle-form" onclick="showSignup()">Create an account</span>
+        </div>
+
+        <div id="signupForm" style="display: none;">
+            <h1>Signup</h1>
+            <form onsubmit="event.preventDefault(); register();">
+                <label for="signupEmail">Email:</label>
+                <input type="email" id="signupEmail" required>
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" required>
+                <button type="submit">Signup</button>
+            </form>
+            <span class="toggle-form" onclick="showLogin()">Already have an account?</span>
+        </div>
     </div>
 
-    <div id="signupForm" style="display: none;">
-      <h1>Signup</h1>
-      <form id="signup-form">
-        <label for="signupEmail">Email:</label>
-        <input type="email" id="signupEmail" required>
-        <label for="signupPassword">Password:</label>
-        <input type="password" id="signupPassword" required>
-        <button type="submit">Signup</button>
-      </form>
-      <span class="toggle-form" onclick="showLogin()">Already have an account?</span>
-    </div>
-  </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { 
-      initializeApp 
-    } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     authDomain: "honego-52c31.firebaseapp.com",
     projectId: "honego-52c31",
     storageBucket: "honego-52c31.appspot.com",
     messagingSenderId: "897927654843",
     appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-    };
+      };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
 
-    // Auth state changed listener
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, redirect to dashboard
-        window.location.href = 'dashboard.html';
-      }
-    });
-
-    // Login
-    document.getElementById('login-form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          // Redirect to dashboard
-          window.location.href = 'dashboard.html';
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          alert('Error logging in: ' + errorMessage);
-        });
-    });
-
-    // Signup
-    document.getElementById('signup-form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          // Redirect to dashboard
-          window.location.href = 'YOUR_DASHBOARD_PATH';
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          alert('Error signing up: ' + errorMessage);
-        });
-    });
-
-    // Toggle Forms
-    function showSignup() {
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('signupForm').style.display = 'block';
-    }
-
-    function showLogin() {
-      document.getElementById('loginForm').style.display = 'block';
-      document.getElementById('signupForm').style.display = 'none';
-    }
-  </script>
+    <script src="app.js"></script>
 </body>
 </html>
