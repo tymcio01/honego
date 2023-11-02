@@ -93,14 +93,6 @@
     </div>
 
     <script>
-        function register() {
-            alert('Registration function is not implemented.');
-        }
-
-        function login() {
-            alert('Login function is not implemented.');
-        }
-
         function showSignup() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('signupForm').style.display = 'block';
@@ -111,14 +103,12 @@
             document.getElementById('loginForm').style.display = 'block';
         }
     </script>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     
-<script type="module">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
   // TODO: Add SDKs for Firebase products that you want to use
