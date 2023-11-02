@@ -7,9 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Zmieniono czcionkę */
-            background: #f4f4f4;
-            color: #000; /* Dodano kolor czcionki */
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -25,7 +24,7 @@
             width: 100%;
         }
         h1 {
-            font-size: 2.5em; /* Zmieniono rozmiar czcionki */
+            font-size: 24px;
             margin-bottom: 20px;
         }
         label {
@@ -33,7 +32,8 @@
             margin: 10px 0 5px;
         }
         input[type="email"],
-        input[type="password"] {
+        input[type="password"],
+        button {
             width: 100%;
             padding: 10px;
             box-sizing: border-box;
@@ -42,18 +42,13 @@
             border-radius: 5px;
         }
         button {
-            color: #000; /* Zaktualizowano kolor czcionki na czarny */
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            width: 100%;
-            box-sizing: border-box;
-            border: 2px solid #000; /* Zaktualizowano kolor obramowania na czarny */
-            background-color: transparent; /* Tło przezroczyste */
+            background-color: #3498db;
+            color: white;
             cursor: pointer;
+            border: none;
         }
         button:hover {
-            background-color: rgba(0, 0, 0, 0.1); /* Zaktualizowany kolor tła przy najechaniu */
+            background-color: #2980b9;
         }
         .toggle-form {
             color: #3498db;
