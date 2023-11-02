@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Honego</title>
+    <title>Dashboard - AutoOffer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
@@ -18,27 +18,18 @@
             flex-direction: column;
         }
 
-        header {
-            background-color: #343a40;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
         .container {
             display: flex;
         }
 
-        aside {
-            width: 250px;
-            background-color: #fff;
-            min-height: 100vh;
-            padding: 20px;
-            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+         aside {
+        width: 250px;
+        background-color: #1c2121; /* Updated background color */
+        min-height: 100vh;
+        padding: 20px;
+        box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+        color: #f6f6f6; /* You may want to change the text color for better contrast */
+    }
 
         aside ul {
             list-style-type: none;
@@ -51,7 +42,7 @@
 
         aside ul li a {
             text-decoration: none;
-            color: #333;
+            color: #f6f6f6;
             padding: 10px 20px;
             display: block;
             border-radius: 5px;
@@ -59,8 +50,9 @@
         }
 
         aside ul li a:hover {
-            background-color: #f8f9fa;
-        }
+        background-color: #f8f9fa;
+        color: #333; /* Ensure the hover state is also visible against the lighter background */
+    }
 
         .main-content {
             flex-grow: 1;
@@ -82,34 +74,29 @@
         }
 
         footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 10px 20px;
-            text-align: center;
-            border-top: 1px solid #e1e1e1;
-        }
+        background-color: #1c2121; /* Updated background color */
+        color: #f6f6f6;
+        padding: 10px 20px;
+        text-align: center;
+        border-top: 1px solid #e1e1e1;
+        height: 1400px; /* Updated height */
+    }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Honego - Dashboard</h1>
-        <div>
-            <span>Welcome, User!</span>
-            <a href="logout.html" style="color: white; margin-left: 20px;">Log out</a>
-        </div>
-    </header>
-
     <div class="container">
         <aside>
-            <h2>Menu</h2>
-            <ul>
-                <li><a href="my-offers.html">My Offers</a></li>
-                <li><a href="new-offer.html">Create New Offer</a></li>
-                <li><a href="product-library.html">Product/Service Library</a></li>
-                <li><a href="my-templates.html">My Templates</a></li>
-                <li><a href="account-settings.html">Account Settings</a></li>
-            </ul>
-        </aside>
+        <h1>Honego</h1> <!-- This is the new H1 tag added -->
+    <ul>
+<li>
+        <li><a href="my-offers.html">My Offers</a></li>
+        <li><a href="new-offer.html">Create New Offer</a></li>
+        <li><a href="product-library.html">Product/Service Library</a></li>
+        <li><a href="my-templates.html">My Templates</a></li>
+        <li><a href="account-settings.html">Account Settings</a></li>
+        <li><a href="logout.html">Log out</a></li> <!-- Moved logout here -->
+    </ul>
+</aside>
 
         <div class="main-content">
             <div class="card">
