@@ -1,7 +1,9 @@
 // Rejestracja użytkownika
 function register(email, password) {
+    console.log("Login function called");
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
+            console.log("Redirecting to dashboard");
             // Użytkownik zarejestrowany, bezpośrednie przekierowanie do dashboard.html
             window.location.href = 'dashboard.html';
         })
@@ -14,8 +16,10 @@ function register(email, password) {
 
 // Logowanie użytkownika
 function login(email, password) {
+    console.log("Login function called");
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
+            console.log("Redirecting to dashboard");
             // Użytkownik zalogowany, bezpośrednie przekierowanie do dashboard.html
             window.location.href = 'dashboard.html';
         })
