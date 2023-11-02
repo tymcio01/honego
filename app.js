@@ -60,4 +60,3 @@ function logout() {
 document.addEventListener('DOMContentLoaded', function() {
     // Tutaj można dodać dodatkowe inicjalizacje, jeśli są potrzebne
 });
-
