@@ -15,7 +15,6 @@
             height: 100vh;
             margin: 0;
         }
-
         .auth-container {
             background-color: white;
             padding: 40px;
@@ -24,20 +23,16 @@
             max-width: 400px;
             width: 100%;
         }
-
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
         }
-
         label {
             display: block;
             margin: 10px 0 5px;
         }
-
-        input[type="text"],
-        input[type="password"],
         input[type="email"],
+        input[type="password"],
         button {
             width: 100%;
             padding: 10px;
@@ -46,18 +41,15 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         button {
             background-color: #3498db;
             color: white;
             cursor: pointer;
             border: none;
         }
-
         button:hover {
             background-color: #2980b9;
         }
-
         .toggle-form {
             color: #3498db;
             cursor: pointer;
@@ -92,41 +84,24 @@
         </div>
     </div>
 
-    <script>
-        function showSignup() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('signupForm').style.display = 'block';
-        }
-
-        function showLogin() {
-            document.getElementById('signupForm').style.display = 'none';
-            document.getElementById('loginForm').style.display = 'block';
-        }
-    </script>
-    
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     authDomain: "honego-52c31.firebaseapp.com",
     projectId: "honego-52c31",
     storageBucket: "honego-52c31.appspot.com",
     messagingSenderId: "897927654843",
     appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-  };
+      };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
 
     <script src="app.js"></script>
 </body>
