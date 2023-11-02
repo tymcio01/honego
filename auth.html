@@ -5,50 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup/Login - AutoOffer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
+   <style>
         body {
             font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
-
         .auth-container {
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        input[type="email"], input[type="password"] {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
             width: 100%;
-            padding: 15px;
-            margin: 5px 0 20px 0;
-            border: none;
-            background: #f1f1f1;
         }
-
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="email"],
+        input[type="password"],
         button {
             width: 100%;
-            padding: 15px;
-            background: #333;
-            color: #ffffff;
-            border: none;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
             cursor: pointer;
+            border: none;
         }
-
         button:hover {
-            opacity: 0.9;
+            background-color: #2980b9;
         }
-
-        .form-toggle {
-            text-align: center;
-            margin-top: 15px;
+        .toggle-form {
+            color: #3498db;
+            cursor: pointer;
+            text-decoration: underline;
         }
-
-        .form-toggle a {
-            text-decoration: none;
-            color: #333;
-        }
-
-        .success-message {
-            color: green;
-            margin-top: 20px;
+        .error-message {
+            color: red;
         }
     </style>
 </head>
