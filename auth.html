@@ -107,21 +107,29 @@
             signupForm.style.display = signupForm.style.display === 'none' ? 'block' : 'none';
         }
 
-        function showSuccessMessage(message) {
-            const successDiv = document.createElement('div');
-            successDiv.textContent = message;
-            successDiv.classList.add('success-message');
-            
-            const currentForm = document.querySelector('.auth-container > div:not([style*="display: none"])');
-            currentForm.appendChild(successDiv);
-            
-            // Remove the message after 3 seconds and perform further actions
-            setTimeout(() => {
-              currentForm.removeChild(successDiv);
-              // Redirect or further action goes here
-              // window.location.href = 'your-desired-page.html';
-            }, 3000);
-        }
+        function showSuccessMessage(form, message) {
+    // Clear any existing messages
+    const existingSuccess = form.querySelector('.success-message');
+    if (existingSuccess) {
+        form.removeChild(existingSuccess);
+    }
+
+    // Create success message element
+    const successDiv = document.createElement('div');
+    successDiv.textContent = message;
+    successDiv.classList.add('success-message');
+
+    // Append the success message to the form
+    form.appendChild(successDiv);
+    
+    // Remove the message after 3 seconds and redirect
+    setTimeout(() => {
+      form.removeChild(successDiv);
+      // Replace 'your-desired-page.html' with the URL where you want to redirect
+      window.location.href = 'welcome.html';
+    }, 3000);
+}
+
 
         loginForm.addEventListener('submit', function(event) {
             event.preventDefault();
