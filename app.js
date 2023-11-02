@@ -5,7 +5,8 @@ function register(email, password) {
         .then((userCredential) => {
             console.log("Redirecting to dashboard");
             // Użytkownik zarejestrowany, bezpośrednie przekierowanie do dashboard.html
-            window.location.href = 'dashboard.html';
+            <button onclick="window.location.href='dashboard.html';">Go to Dashboard</button>
+
         })
         .catch((error) => {
             var errorCode = error.code;
@@ -21,7 +22,8 @@ function login(email, password) {
         .then((userCredential) => {
             console.log("Redirecting to dashboard");
             // Użytkownik zalogowany, bezpośrednie przekierowanie do dashboard.html
-            window.location.href = 'dashboard.html';
+            <button onclick="window.location.href='dashboard.html';">Go to Dashboard</button>
+
         })
         .catch((error) => {
             var errorCode = error.code;
