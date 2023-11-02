@@ -48,61 +48,114 @@
             border: none;
         }
         button:hover {
-            background-color: black;
+            background-color: #2980b9;
         }
         .toggle-form {
             color: #3498db;
             cursor: pointer;
             text-decoration: underline;
         }
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="auth-container">
+        <!-- Login form -->
         <div id="loginForm">
             <h1>Login</h1>
-            <form onsubmit="event.preventDefault(); login();">
+            <form id="formLogin">
                 <label for="loginEmail">Email:</label>
                 <input type="email" id="loginEmail" required>
                 <label for="loginPassword">Password:</label>
                 <input type="password" id="loginPassword" required>
                 <button type="submit">Login</button>
+                <div id="loginError" class="error-message"></div>
             </form>
-            <span class="toggle-form" onclick="showSignup()">Create an account</span>
+            <span class="toggle-form" onclick="toggleForms()">Create an account</span>
         </div>
 
+        <!-- Signup form -->
         <div id="signupForm" style="display: none;">
             <h1>Signup</h1>
-            <form onsubmit="event.preventDefault(); register();">
+            <form id="formSignup">
                 <label for="signupEmail">Email:</label>
                 <input type="email" id="signupEmail" required>
                 <label for="signupPassword">Password:</label>
                 <input type="password" id="signupPassword" required>
                 <button type="submit">Signup</button>
+                <div id="signupError" class="error-message"></div>
             </form>
-            <span class="toggle-form" onclick="showLogin()">Already have an account?</span>
+            <span class="toggle-form" onclick="toggleForms()">Already have an account?</span>
         </div>
     </div>
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script>
-      // Your web app's Firebase configuration
+      // Firebase configuration
       var firebaseConfig = {
-        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+             apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     authDomain: "honego-52c31.firebaseapp.com",
     projectId: "honego-52c31",
     storageBucket: "honego-52c31.appspot.com",
     messagingSenderId: "897927654843",
     appId: "1:897927654843:web:54bf5b398542dfd076a89e"
       };
-
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-    </script>
 
-    <script src="app.js"></script>
+      const loginForm = document.getElementById('formLogin');
+      const signupForm = document.getElementById('formSignup');
+      const loginError = document.getElementById('loginError');
+      const signupError = document.getElementById('signupError');
+
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in 
+            console.log('User logged in:', userCredential.user);
+            // Redirect to your desired page here
+          })
+          .catch((error) => {
+            loginError.textContent = error.message;
+          });
+      });
+
+      signupForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in 
+            console.log('User created:', userCredential.user);
+            // You can redirect or show a success message
+          })
+          .catch((error) => {
+            signupError.textContent = error.message;
+          });
+      });
+
+      function toggleForms() {
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        if (loginForm.style.display === 'none') {
+          signupForm.style.display = 'none';
+          loginForm.style.display = 'block';
+        } else {
+          loginForm.style.display = 'none';
+          signupForm.style.display = 'block';
+        }
+      }
+    </script>
 </body>
 </html>
