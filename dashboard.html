@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - AutoOffer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,23 +69,16 @@
             box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .combined-stats {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 300px;
-            height: 300px;
-            border: 1px solid #e1e1e1;
+        .card {
+            background: #f1f1f1;
             padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            margin-left: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .chart-container {
-            width: 60%;
-            height: 300px;
+            position: relative;
+            height: 200px;
         }
 
         footer {
@@ -98,13 +90,12 @@
         }
     </style>
 </head>
-
 <body>
     <header>
         <h1>AutoOffer - Dashboard</h1>
         <div>
             <span>Welcome, User!</span>
-            <a href="index.html" style="color: white; margin-left: 20px;">Log out</a>
+            <a href="logout.html" style="color: white; margin-left: 20px;">Log out</a>
         </div>
     </header>
 
@@ -114,8 +105,6 @@
             <ul>
                 <li><a href="my-offers.html">My Offers</a></li>
                 <li><a href="new-offer.html">Create New Offer</a></li>
-			<li><a href="contacts.html">Contacts</a></li>
-
                 <li><a href="product-library.html">Product/Service Library</a></li>
                 <li><a href="my-templates.html">My Templates</a></li>
                 <li><a href="statistics.html">Statistics</a></li>
@@ -124,19 +113,20 @@
         </aside>
 
         <div class="main-content">
-            <h2>Your Stats</h2>
-            <div class="combined-stats">
-                <h3>Total Offers</h3>
-                <p id="totalOffers">123</p>
-                <h3>Accepted Offers</h3>
-                <p id="acceptedOffers">89</p>
-                <h3>Declined Offers</h3>
-                <p id="declinedOffers">34</p>
-                <button onclick="updateStats()">Update Stats</button>
+            <div class="card">
+                <h2>Summary</h2>
+                <p>Here you can see a quick overview of your mentions.</p>
+                <div class="chart-container">
+                    <canvas id="offersChart"></canvas>
+                </div>
             </div>
-
-            <div class="chart-container">
-                <canvas id="myChart"></canvas>
+            <div class="card">
+                <h2>Alerts</h2>
+                <p>Check the latest alerts for your brand.</p>
+            </div>
+            <div class="card">
+                <h2>Statistics</h2>
+                <p>View detailed statistics and reports.</p>
             </div>
         </div>
     </div>
@@ -147,47 +137,30 @@
         <a href="#" style="color: white;">Contact</a>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script>
-        function updateStats() {
-            var totalOffers = prompt("Enter Total Offers:");
-            var acceptedOffers = prompt("Enter Accepted Offers:");
-            var declinedOffers = prompt("Enter Declined Offers:");
-
-            document.getElementById('totalOffers').innerText = totalOffers;
-            document.getElementById('acceptedOffers').innerText = acceptedOffers;
-            document.getElementById('declinedOffers').innerText = declinedOffers;
-
-            updateChart(totalOffers, acceptedOffers, declinedOffers);
-        }
-
-        function updateChart(total, accepted, declined) {
-            myChart.data.datasets[0].data = [total, accepted, declined];
-            myChart.update();
-        }
-
-        var ctx = document.getElementById('myChart');
-        var myChart = new Chart(ctx, {
+        var ctx = document.getElementById('offersChart').getContext('2d');
+        var offersChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Total Offers', 'Accepted Offers', 'Declined Offers'],
+                labels: ['Today', 'This Week', 'This Month'],
                 datasets: [{
-                    label: '# of Offers',
-                    data: [12, 19, 3],
+                    label: 'Number of Offers',
+                    data: [5, 20, 50], // Przykładowe dane
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
                     ],
                     borderWidth: 1
                 }]
             },
             options: {
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true
@@ -196,7 +169,5 @@
             }
         });
     </script>
-
 </body>
-
 </html>
