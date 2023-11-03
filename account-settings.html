@@ -3,90 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Settings - AutoOffer</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body onload="loadSettings()">
-    <div class="container">
-        <h2>Account Settings</h2>
-        
-        <div class="account-settings">
-            <h3>Personal Information</h3>
-            <label for="username">Username:</label>
-            <input type="text" id="username" placeholder="Enter username">
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" placeholder="Enter email">
-            
-            <label for="signature">Signature for Offers:</label>
-            <input type="text" id="signature" placeholder="Enter your signature">
+    <title>Honego</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
 
-            <h3>Company Information</h3>
-            <label for="companyName">Company Name:</label>
-            <input type="text" id="companyName" placeholder="Enter company name">
-            
-            <label for="companyPhone">Company Phone:</label>
-            <input type="text" id="companyPhone" placeholder="Enter company phone">
-            
-            <label for="companyWebsite">Company Website:</label>
-            <input type="url" id="companyWebsite" placeholder="Enter company website">
-            
-            <label for="companyAddress">Company Address:</label>
-            <textarea id="companyAddress" rows="3" placeholder="Enter company address"></textarea>
-            
-            <h3>Change Password</h3>
-            <label for="currentPassword">Current Password:</label>
-            <input type="password" id="currentPassword" placeholder="Enter current password">
-            
-            <label for="newPassword">New Password:</label>
-            <input type="password" id="newPassword" placeholder="Enter new password">
-            
-            <label for="confirmPassword">Confirm New Password:</label>
-            <input type="password" id="confirmPassword" placeholder="Confirm new password">
-            
-            <button onclick="updateSettings()">Update Settings</button>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin-bottom: 15px;
+        }
+
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+               
+ <li><a href="my-offers.html">My Offers</a></li>
+                <li><a href="new-offer.html">Create New Offer</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="product-library.html">Product/Service Library</a></li>
+                <li><a href="my-templates.html">My Templates</a></li>
+                <li><a href="account-settings.html">Account Settings</a></li>
+                <li><a href="logout.html">Log out</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Profile Details</h2>
+                <form>
+                      <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+
+                    <label for="signature">Signature for Offers:</label>
+                    <input type="text" id="signature" name="signature">
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+         <label for="company-name">Company Name:</label>
+         <input type="text" id="company-name" name="company-name">
+
+<label for="company-phone">Company Phone:</label>
+         <input type="text" id="company-phone" name="company-phone">
+
+<label for="company-website">Company Website:</label>
+         <input type="text" id="company-Website" name="company-Website">
+
+<label for="company-address">Company Address:</label>
+         <input type="text" id="company-Address" name="company-Address">
+                    <hr> <!-- Separator -->
+
+                    <h3>Change Password</h3>
+
+                    <label for="current-password">Current Password:</label>
+                    <input type="password" id="current-password" name="current-password" required>
+
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password" name="new-password" required>
+
+                    <label for="confirm-password">Confirm New Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
         </div>
 
-        <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
     </div>
 
-    <script>
-        function loadSettings() {
-            document.getElementById('username').value = localStorage.getItem('username') || "";
-            document.getElementById('email').value = localStorage.getItem('email') || "";
-            document.getElementById('signature').value = localStorage.getItem('signature') || "";
-            document.getElementById('companyName').value = localStorage.getItem('companyName') || "";
-            document.getElementById('companyPhone').value = localStorage.getItem('companyPhone') || "";
-            document.getElementById('companyWebsite').value = localStorage.getItem('companyWebsite') || "";
-            document.getElementById('companyAddress').value = localStorage.getItem('companyAddress') || "";
-        }
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
 
-        function updateSettings() {
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const signature = document.getElementById('signature').value;
-            const companyName = document.getElementById('companyName').value;
-            const companyPhone = document.getElementById('companyPhone').value;
-            const companyWebsite = document.getElementById('companyWebsite').value;
-            const companyAddress = document.getElementById('companyAddress').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (newPassword !== confirmPassword) {
-                alert("New password and confirmation do not match!");
-                return;
-            }
-
-            localStorage.setItem('username', username);
-            localStorage.setItem('email', email);
-            localStorage.setItem('signature', signature);
-            localStorage.setItem('companyName', companyName);
-            localStorage.setItem('companyPhone', companyPhone);
-            localStorage.setItem('companyWebsite', companyWebsite);
-            localStorage.setItem('companyAddress', companyAddress);
-
-            alert("Settings updated successfully!");
-        }
-    </script>
 </body>
 </html>

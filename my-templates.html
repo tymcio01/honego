@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honego</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin-bottom: 15px;
+        }
+
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+                
+<li><a href="my-offers.html">My Offers</a></li>
+                <li><a href="new-offer.html">Create New Offer</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="product-library.html">Product/Service Library</a></li>
+                <li><a href="my-templates.html">My Templates</a></li>
+                <li><a href="account-settings.html">Account Settings</a></li>
+                <li><a href="logout.html">Log out</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Profile Details</h2>
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
+
+</body>
+</html>

@@ -1,130 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacts - AutoOffer CRM</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Honego</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin-bottom: 15px;
+        }
+
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
+
+        /* Table Styles */
+        .customer-table {
+            width: calc(100% - 40px);
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .customer-table th, .customer-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .customer-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
 </head>
-
 <body>
+
     <div class="container">
-        <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
-        <h2>Contacts</h2>
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+            
+<li><a href="my-offers.html">My Offers</a></li>
+            <li><a href="new-offer.html">Create New Offer</a></li>
+            <li><a href="contacts.html">Contacts</a></li>
+            <li><a href="product-library.html">Product/Service Library</a></li>
+<li><a href="my-templates.html">My Templates</a></li>
+        <li><a href="account-settings.html">Account Settings</a></li>
 
-        <div class="contact-add">
-            <h3>Add/Edit Contact</h3>
-            <label for="contactName">Full Name:</label>
-            <input type="text" id="contactName" placeholder="Enter full name">
-            <label for="contactEmail">Email:</label>
-            <input type="email" id="contactEmail" placeholder="Enter email">
-            <label for="contactPhone">Phone:</label>
-            <input type="text" id="contactPhone" placeholder="Enter phone number">
-            <label for="contactCompany">Company:</label>
-            <input type="text" id="contactCompany" placeholder="Enter company name">
-            <label for="contactIndustry">Industry:</label>
-            <input type="text" id="contactIndustry" placeholder="Enter industry">
-            <button id="saveContactButton" onclick="saveContact()">Save Contact</button>
-        </div>
+            <li><a href="index.html">Log out</a></li>
+        </ul>
+    </aside>
+    <div class="main-content">
+        <div class="profile-form">
+            <h2>Add New Client</h2>
+            <form id="addClientForm">
+                <label for="company">Company</label>
+                <input type="text" id="company" name="company" required>
 
-        <input type="text" id="searchBox" placeholder="Search contacts" onkeyup="searchContacts()">
-        <div class="contact-list" id="contactList">
-            <h3>Existing Contacts</h3>
-            <!-- Contacts will be populated here -->
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="surname">Surname</label>
+                <input type="text" id="surname" name="surname" required>
+
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required>
+
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Add Client</button>
+            </form>
         </div>
+        <table class="customer-table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Wiersze z klientami zostan¹ tutaj dodane -->
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <script>
-        let editingContactIndex = null;
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
 
-        function saveContact() {
-            const name = document.getElementById('contactName').value;
-            const email = document.getElementById('contactEmail').value;
-            const phone = document.getElementById('contactPhone').value;
-            const company = document.getElementById('contactCompany').value;
-            const industry = document.getElementById('contactIndustry').value;
+<script>
+// Dodanie s³uchacza zdarzeñ do formularza
+document.getElementById('addClientForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
 
-            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+    // Pobranie danych z formularza
+    var company = document.getElementById('company').value;
+    var name = document.getElementById('name').value;
+    var surname = document.getElementById('surname').value;
+    var address = document.getElementById('address').value;
+    var phone = document.getElementById('phone').value;
+    var email = document.getElementById('email').value;
 
-            const contact = { name, email, phone, company, industry };
+    // Tworzenie nowego wiersza w tabeli
+    var newRow = `<tr>
+        <td>${company}</td>
+        <td>${name}</td>
+        <td>${surname}</td>
+        <td>${address}</td>
+        <td>${phone}</td>
+        <td>${email}</td>
+        <td><button class="send-offer-btn" type="button">Send Offer</button></td>
+    </tr>`;
 
-            if (editingContactIndex !== null) {
-                contacts[editingContactIndex] = contact;
-                editingContactIndex = null;
-            } else {
-                contacts.push(contact);
-            }
+    // Dodanie nowego wiersza do cia³a tabeli
+    document.getElementById('tableBody').innerHTML += newRow;
 
-            localStorage.setItem('contacts', JSON.stringify(contacts));
+    // Czyszczenie formularza
+    document.getElementById('addClientForm').reset();
+});
+</script>
 
-            displayContacts();
-            clearForm();
-        }
 
-        function deleteContact(index) {
-            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-            contacts.splice(index, 1);
-            localStorage.setItem('contacts', JSON.stringify(contacts));
-            displayContacts();
-        }
-
-        function editContact(index) {
-            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-            const contact = contacts[index];
-
-            document.getElementById('contactName').value = contact.name;
-            document.getElementById('contactEmail').value = contact.email;
-            document.getElementById('contactPhone').value = contact.phone;
-            document.getElementById('contactCompany').value = contact.company;
-            document.getElementById('contactIndustry').value = contact.industry;
-
-            editingContactIndex = index;
-        }
-
-        function clearForm() {
-            document.getElementById('contactName').value = '';
-            document.getElementById('contactEmail').value = '';
-            document.getElementById('contactPhone').value = '';
-            document.getElementById('contactCompany').value = '';
-            document.getElementById('contactIndustry').value = '';
-        }
-
-        function searchContacts() {
-            const searchBox = document.getElementById('searchBox');
-            const searchTerm = searchBox.value.toLowerCase();
-            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-            const filteredContacts = contacts.filter(contact => 
-                Object.values(contact).some(value => 
-                    value.toLowerCase().includes(searchTerm)
-                )
-            );
-            displayContacts(filteredContacts);
-        }
-
-        function displayContacts(filteredContacts = null) {
-            const contacts = filteredContacts || JSON.parse(localStorage.getItem('contacts')) || [];
-            const contactListDiv = document.getElementById('contactList');
-            contactListDiv.innerHTML = '<h3>Existing Contacts</h3>';
-
-            contacts.forEach((contact, index) => {
-                const contactDiv = document.createElement('div');
-                contactDiv.classList.add('contact-item');
-                contactDiv.innerHTML = `
-                    <div>Name: ${contact.name}</div>
-                    <div>Email: ${contact.email}</div>
-                    <div>Phone: ${contact.phone}</div>
-                    <div>Company: ${contact.company}</div>
-                    <div>Industry: ${contact.industry}</div>
-                    <button onclick="editContact(${index})">Edit</button>
-                    <button onclick="deleteContact(${index})">Delete</button>
-                `;
-                contactListDiv.appendChild(contactDiv);
-            });
-        }
-
-        window.onload = displayContacts;
-    </script>
 </body>
-
 </html>

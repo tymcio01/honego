@@ -1,136 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Offer - AutoOffer</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.17/jspdf.plugin.autotable.min.js"></script>
+    <title>Honego</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin-bottom: 15px;
+        }
+
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
+    </style>
 </head>
-
 <body>
+
     <div class="container">
-        <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
-        <h2>Create New Offer</h2>        
-        <h3>Client Data</h3>
-        <label for="clientName">Client Name/Company:</label>
-        <input type="text" id="clientName" placeholder="Enter client name or company">
-        <label for="clientAddress">Address:</label>
-        <input type="text" id="clientAddress" placeholder="Enter address">
-        <label for="clientEmail">Client Email:</label>
-        <input type="email" id="clientEmail" placeholder="Enter client email">
-        <label for="receiverName">Receiver's Name:</label>
-        <input type="text" id="receiverName" placeholder="Enter receiver's name">
 
-<h3>Reservation Dates</h3>
-<div class="date-reservation">
-  <div class="date-field">
-    <label for="roomStartDate">Room Start Date:</label>
-    <input type="date" id="roomStartDate" name="roomStartDate">
-  </div>
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+                
+<li><a href="my-offers.html">My Offers</a></li>
+                <li><a href="new-offer.html">Create New Offer</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="product-library.html">Product/Service Library</a></li>
+                <li><a href="my-templates.html">My Templates</a></li>
+                <li><a href="account-settings.html">Account Settings</a></li>
+                <li><a href="logout.html">Log out</a></li>
+            </ul>
+        </aside>
 
-  <div class="date-field">
-    <label for="roomEndDate">Room End Date:</label>
-    <input type="date" id="roomEndDate" name="roomEndDate">
-  </div>
-</div>
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Profile Details</h2>
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
 
-<h3>Meeting Room Reservation Dates</h3>
-<div class="date-reservation">
-  <div class="date-field">
-    <label for="meetingRoomStartDate">Meeting Room Start Date:</label>
-    <input type="date" id="meetingRoomStartDate" name="meetingRoomStartDate">
-  </div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
 
-  <div class="date-field">
-    <label for="meetingRoomEndDate">Meeting Room End Date:</label>
-    <input type="date" id="meetingRoomEndDate" name="meetingRoomEndDate">
-  </div>
-</div>
-        <h3>Products/Services</h3>
-        <div class="products-container">
-            <div id="availableProducts" class="product-list" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h4>Available Products</h4>
-                <!-- Products will appear here -->
-            </div>
-            <div id="selectedProducts" class="product-list" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h4>Selected Products</h4>
-                <!-- Selected products will appear here -->
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">Update Profile</button>
+                </form>
             </div>
         </div>
 
-        <h3>Additional Notes & Conditions</h3>
-        <textarea id="additionalNotes" rows="4" placeholder="Enter any additional notes and conditions"></textarea>
-
-        <h3>Signature</h3>
-        <input type="text" id="signature" value="Your Signature from Profile" readonly>
-
-        <button onclick="saveDraft()">Save as Draft</button>
-        <button>Preview</button>
-        <button onclick="generatePDF()">Generate PDF</button>
-        <button>Send by Email</button>
     </div>
 
-    <script>
-        function allowDrop(event) {
-            event.preventDefault();
-        }
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
 
-        function drag(event) {
-            event.dataTransfer.setData("text", event.target.id);
-        }
-
-        function doubleClickMove(event) {
-            const productDiv = event.target.closest('.product');
-            const targetList = productDiv.closest('#availableProducts') ? 'selectedProducts' : 'availableProducts';
-            document.getElementById(targetList).appendChild(productDiv);
-        }
-
-        function drop(event) {
-            event.preventDefault();
-            var data = event.dataTransfer.getData("text");
-            var droppedElement = document.getElementById(data);
-            event.target.closest('.product-list').appendChild(droppedElement);
-        }
-
-        window.onload = function() {
-            const availableProductsDiv = document.getElementById('availableProducts');
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-
-            products.forEach((product, index) => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.draggable = true;
-                productDiv.ondragstart = drag;
-                productDiv.id = 'product' + (index + 1);
-                productDiv.innerHTML = `
-                    <span>${product.name} - $${product.price}</span>
-                    <div style="float:right;">
-                        <button onclick="decreaseQuantity(this.parentElement.parentElement)">-</button>
-                        <span class="quantity">1</span>
-                        <button onclick="increaseQuantity(this.parentElement.parentElement)">+</button>
-                    </div>
-                `;
-                availableProductsDiv.appendChild(productDiv);
-            });
-        };
-
-        function increaseQuantity(productDiv) {
-            let quantityDiv = productDiv.querySelector('.quantity');
-            let quantity = parseInt(quantityDiv.innerText);
-            quantityDiv.innerText = quantity + 1;
-        }
-
-        function decreaseQuantity(productDiv) {
-            let quantityDiv = productDiv.querySelector('.quantity');
-            let quantity = parseInt(quantityDiv.innerText);
-            if (quantity > 1) {
-                quantityDiv.innerText = quantity - 1;
-            }
-        }
-    </script>
 </body>
-
 </html>

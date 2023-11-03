@@ -3,102 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Library - AutoOffer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Honego</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin-bottom: 15px;
+        }
+
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
-        <button onclick="location.href='dashboard.html'" style="position: absolute; top: 10px; left: 10px;">Back to Dashboard</button>
-        <h2>Product Library</h2>
-        
-        <div class="product-add">
-            <h3>Add/Edit Product</h3>
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName" placeholder="Enter product name">
-            <label for="productDescription">Description:</label>
-            <textarea id="productDescription" rows="3" placeholder="Enter product description"></textarea>
-            <label for="productPrice">Price:</label>
-            <input type="number" id="productPrice" placeholder="Enter product price">
-            <button id="saveProductButton">Save Product</button>
+
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+               
+ <li><a href="my-offers.html">My Offers</a></li>
+                <li><a href="new-offer.html">Create New Offer</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="product-library.html">Product/Service Library</a></li>
+                <li><a href="my-templates.html">My Templates</a></li>
+                <li><a href="account-settings.html">Account Settings</a></li>
+                <li><a href="logout.html">Log out</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Profile Details</h2>
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
         </div>
-        
-        <div class="product-list">
-            <h3>Existing Products</h3>
-            <!-- This section will be populated with products -->
-        </div>
+
     </div>
 
-    <script>
-        let selectedProductIndex = null;
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
 
-        function saveProduct() {
-            const productName = document.getElementById('productName').value;
-            const productDescription = document.getElementById('productDescription').value;
-            const productPrice = document.getElementById('productPrice').value;
-
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-
-            const product = {
-                name: productName,
-                description: productDescription,
-                price: productPrice
-            };
-
-            if (selectedProductIndex !== null) {
-                products[selectedProductIndex] = product;
-                selectedProductIndex = null;
-            } else {
-                products.push(product);
-            }
-
-            localStorage.setItem('products', JSON.stringify(products));
-
-            document.getElementById('productName').value = "";
-            document.getElementById('productDescription').value = "";
-            document.getElementById('productPrice').value = "";
-            displayProducts();
-        }
-
-        function deleteProduct(index) {
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            products.splice(index, 1);
-            localStorage.setItem('products', JSON.stringify(products));
-            displayProducts();
-        }
-
-        function editProduct(index) {
-            let products = JSON.parse(localStorage.getItem('products')) || [];
-            const product = products[index];
-            selectedProductIndex = index;
-
-            document.getElementById('productName').value = product.name;
-            document.getElementById('productDescription').value = product.description;
-            document.getElementById('productPrice').value = product.price;
-        }
-
-        function displayProducts() {
-            const products = JSON.parse(localStorage.getItem('products')) || [];
-            const productListDiv = document.querySelector('.product-list');
-            productListDiv.innerHTML = '';
-
-            products.forEach((product, index) => {
-                const productDiv = document.createElement('div');
-                productDiv.classList.add('product-item');
-
-                productDiv.innerHTML = `
-                    <span class="product-name">${product.name}</span>
-                    <span class="product-description">${product.description}</span>
-                    <span class="product-price">$${product.price}</span>
-                    <button onclick="editProduct(${index})">Edit</button>
-                    <button onclick="deleteProduct(${index})">Delete</button>
-                `;
-
-                productListDiv.appendChild(productDiv);
-            });
-        }
-
-        document.getElementById('saveProductButton').addEventListener('click', saveProduct);
-        window.onload = displayProducts;
-    </script>
 </body>
 </html>

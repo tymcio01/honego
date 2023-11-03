@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - AutoOffer</title>
+    <title>Honego</title>
+<link rel="stylesheet" href="style.css"> <!-- Link to your external style.css file -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
@@ -74,12 +75,13 @@
         }
 
         footer {
+
         background-color: #1c2121; /* Updated background color */
         color: #f6f6f6;
         padding: 10px 20px;
         text-align: center;
-        border-top: 1px solid #e1e1e1;
-        height: 1400px; /* Updated height */
+        border-top: 0px solid #e1e1e1;
+        height: 400px; /* Updated height */
     }
     </style>
 </head>
@@ -89,9 +91,11 @@
         <h1>Honego</h1> <!-- This is the new H1 tag added -->
     <ul>
 <li>
-        <li><a href="my-offers.html">My Offers</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+        
+<li><a href="my-offers.html">My Offers</a></li>
         <li><a href="new-offer.html">Create New Offer</a></li>
-        <li><a href="contacts.html">Contacts</a></li>
+		<li><a href="contacts.html">Contacts</a></li>
         <li><a href="product-library.html">Product/Service Library</a></li>
         <li><a href="my-templates.html">My Templates</a></li>
         <li><a href="account-settings.html">Account Settings</a></li>
@@ -132,7 +136,7 @@
                 labels: ['Today', 'This Week', 'This Month'],
                 datasets: [{
                     label: 'Number of Offers',
-                    data: [5, 20, 50], // Przyk≈Çadowe dane
+                    data: [5, 20, 50], // Przyk≥adowe dane
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
