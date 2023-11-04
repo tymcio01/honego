@@ -97,35 +97,36 @@
         }
 
         .profile-form button {
-            background: #5cb85c;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+    background: #fff; /* Bia³y t³o */
+    color: #000; /* Czarny tekst */
+    padding: 10px 15px;
+    border: 2px solid #000; /* Czarna obwódka */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* P³ynna zmiana koloru przy hoverze */
+}
 
-        .profile-form button:hover {
-            background: #4cae4c;
-        }
+.profile-form button:hover {
+    background: #000; /* Czarne t³o przy hoverze */
+    color: #fff; /* Bia³y tekst przy hoverze */
+}
 
         /* Table Styles */
         .customer-table {
             width: calc(100% - 40px);
             margin-top: 20px;
             border-collapse: collapse;
-        }
+        }.customer-table th,
+.customer-table td {
+    border: 1px solid #000; /* Czarna obwódka */
+    padding: 8px;
+    text-align: left;
+}
 
-        .customer-table th, .customer-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .customer-table th {
-            background-color: #4CAF50;
-            color: white;
-        }
+.customer-table th {
+    background-color: #fff; /* Bia³e t³o */
+    color: #000; /* Czarny tekst */
+}
     </style>
 </head>
 <body>
@@ -168,9 +169,19 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
 
+			<label for="industry">Industry</label>
+			<input type="text" id="industry" name="industry" required>
+
                 <button type="submit">Add Client</button>
             </form>
         </div>
+
+ <div style="padding: 20px 0; text-align: center;">
+                <button type="button">Search</button>
+                <button type="button" id="exportBtn">Export</button>
+
+            </div>
+
         <table class="customer-table">
             <thead>
                 <tr>
@@ -180,6 +191,7 @@
                     <th>Address</th>
                     <th>Phone</th>
                     <th>Email</th>
+				<th>Industry</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -195,6 +207,55 @@
     </footer>
 
 <script>
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+    
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        
+        for (var j = 0; j < cols.length; j++) 
+            row.push('"' + cols[j].innerText + '"');
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+document.getElementById('exportBtn').addEventListener('click', function () {
+    var now = new Date();
+    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
+    exportTableToCSV(filename);
+});
+
 // Dodanie s³uchacza zdarzeñ do formularza
 document.getElementById('addClientForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
@@ -206,6 +267,7 @@ document.getElementById('addClientForm').addEventListener('submit', function(eve
     var address = document.getElementById('address').value;
     var phone = document.getElementById('phone').value;
     var email = document.getElementById('email').value;
+	var industry = document.getElementById('industry').value;
 
     // Tworzenie nowego wiersza w tabeli
     var newRow = `<tr>
@@ -215,6 +277,7 @@ document.getElementById('addClientForm').addEventListener('submit', function(eve
         <td>${address}</td>
         <td>${phone}</td>
         <td>${email}</td>
+ 	<td>${industry}</td>
         <td><button class="send-offer-btn" type="button">Send Offer</button></td>
     </tr>`;
 
@@ -224,6 +287,8 @@ document.getElementById('addClientForm').addEventListener('submit', function(eve
     // Czyszczenie formularza
     document.getElementById('addClientForm').reset();
 });
+
+
 </script>
 
 

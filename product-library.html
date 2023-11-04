@@ -97,16 +97,18 @@
         }
 
         .profile-form button {
-            background: #5cb85c;
-            color: white;
+            background: #fff; /* White background */
+            color: #333; /* Black text */
             padding: 10px 15px;
-            border: none;
+            border: 2px solid #000; /* Black border */
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
         }
 
         .profile-form button:hover {
-            background: #4cae4c;
+            background: #333; /* Black background on hover */
+            color: #fff; /* White text on hover */
         }
     </style>
 </head>
@@ -131,23 +133,50 @@
 
         <div class="main-content">
             <div class="profile-form">
-                <h2>Profile Details</h2>
-                <form>
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
+    <h2>Add/Edit Product</h2>
+    <form>
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+<label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
 
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
+                <label for="unitPrice">Unit Price (PLN):</label>
+        <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
 
-                    <button type="submit">Update Profile</button>
-                </form>
+        <button type="submit">Save Product</button>
+    </form>
+
+</div>
+<div class="product-table">
+                <h2>Product List</h2>
+                 <table border="1" width="100%" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Unit Price (PLN)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example row with edit and delete buttons -->
+            <tr>
+                <td>Example Product</td>
+                <td>This is a description of the example product.</td>
+                <td>100 PLN</td>
+                <td>
+                    <button type="button" onclick="editProduct(this)">Edit</button>
+                    <button type="button" onclick="deleteProduct(this)">Delete</button>
+                </td>
+            </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
     </div>
+
 
     <footer>
         &copy; 2023 Honego - All Rights Reserved

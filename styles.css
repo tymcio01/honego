@@ -131,8 +131,54 @@ button {
     margin-left: 10px;
 }
 
-.success-message {
-    color: green;
-    margin-bottom: 20px;
-    display: none; /* Hide it by default */
+
+/* Style dla footera */
+footer {
+    background-color: #1c2121;
+    color: #f6f6f6;
+    padding: 10px 20px;
+    text-align: center;
+    border-top: 1px solid #e1e1e1;
+    height: 400px; /* Zauważ, że wartość height jest bardzo duża, być może chciałeś ustawić min-height */
 }
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333; /* Dowolny kolor tła */
+  color: white; /* Dowolny kolor tekstu */
+  text-align: center;
+}
+
+.reservations-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reservation-dates {
+  flex-basis: 48%; /* Adjusts to use about half the container width */
+}
+
+.reservation-dates h3 {
+  margin-bottom: 0.5em; /* Adds a little space below the heading */
+}
+
+.reservation-dates label,
+.reservation-dates input {
+  display: block;
+  margin-bottom: 0.5em; /* Adds a little space below each input */
+}
+
+
+
