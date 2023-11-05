@@ -38,20 +38,20 @@ function register() {
 
 // Funkcja logowania użytkownika
 function login() {
-    var email = document.getElementById('loginEmail').value;
-    var password = document.getElementById('loginPassword').value;
+  var email = document.getElementById('loginEmail').value;
+  var password = document.getElementById('loginPassword').value;
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // Użytkownik zalogowany, przekierowanie do dashboard.html
-            window.location.assign('dashboard.html');
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // Wyświetlanie błędu
-            alert('Error: ' + errorMessage);
-        });
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Użytkownik zalogowany, przekierowanie do dashboard.html
+      window.location.assign('dashboard.html');
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // Wyświetlanie błędu
+      alert('Error: ' + errorMessage);
+    });
 }
 
 // Funkcja wylogowywania użytkownika
