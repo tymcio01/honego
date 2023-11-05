@@ -60,3 +60,32 @@ function logout() {
 document.addEventListener('DOMContentLoaded', function() {
     // Tutaj można dodać dodatkowe inicjalizacje, jeśli są potrzebne
 });
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // Użytkownik jest zalogowany
+    // Możesz tutaj pobrać i wyświetlić dane użytkownika lub przekierować do innej strony
+  } else {
+    // Użytkownik jest wylogowany
+    // Możesz wyświetlić formularz logowania lub przekierować do strony logowania
+  }
+});
+
+firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Tutaj dodaj użytkownika do Firestore
+    var user = userCredential.user;
+    db.collection("users").doc(user.uid).set({
+      email: user.email,
+      // inne dane użytkownika
+    });
+    // Kontynuacja po pomyślnej rejestracji
+  })
+  .catch((error) => {
+    // Obsługa błędów rejestracji
+  });
+
+// Przykładowe przekierowanie po zalogowaniu
+if (user) {
+  window.location.href = 'index.html'; // Przekieruj na stronę główną
+}
