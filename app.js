@@ -43,16 +43,20 @@ function login() {
 
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      // Użytkownik zalogowany, przekierowanie do dashboard.html
-      window.location.assign('dashboard.html');
+      console.log('User logged in:', userCredential.user);
+
+      // Opóźnienie przekierowania jako test
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1000);  // Opóźnienie o 1 sekundę
     })
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      // Wyświetlanie błędu
       alert('Error: ' + errorMessage);
     });
 }
+
 
 // Funkcja wylogowywania użytkownika
 function logout() {
