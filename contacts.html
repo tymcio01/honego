@@ -6,8 +6,6 @@
     <title>Honego</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-
-    <!-- Twoje style CSS -->
     <style>
         html {
             height: 100%;
@@ -134,8 +132,7 @@
 <body>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 <script>
 
@@ -150,7 +147,6 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
  };
   firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
   firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
@@ -169,42 +165,7 @@ const db = firebase.firestore();
       console.error('Logout Failed', error);
     });
   }
-<script>
-        document.getElementById('addClientForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var company = document.getElementById('company').value;
-            var name = document.getElementById('name').value;
-            var surname = document.getElementById('surname').value;
-            var address = document.getElementById('address').value;
-            var phone = document.getElementById('phone').value;
-            var email = document.getElementById('email').value;
-            var industry = document.getElementById('industry').value;
-
-            var user = firebase.auth().currentUser;
-            if (user) {
-                db.collection("clients").add({
-                    uid: user.uid,
-                    company: company,
-                    name: name,
-                    surname: surname,
-                    address: address,
-                    phone: phone,
-                    email: email,
-                    industry: industry
-                })
-                .then(function(docRef) {
-                    console.log("Document written with ID: ", docRef.id);
-                    // Tutaj mo¿esz np. wyczyœciæ formularz lub wyœwietliæ komunikat
-                })
-                .catch(function(error) {
-                    console.error("Error adding document: ", error);
-                });
-            } else {
-                window.location.href = 'index.html';
-            }
-        });
-
+</script>
     <div class="container">
     <aside>
         <h1>Honego</h1>
@@ -215,7 +176,6 @@ const db = firebase.firestore();
             <li><a href="new-offer.html">Create New Offer</a></li>
             <li><a href="contacts.html">Contacts</a></li>
             <li><a href="product-library.html">Product/Service Library</a></li>
-<li><a href="reports.html">Reports</a></li>
         <li><a href="account-settings.html">Account Settings</a></li>
 
             <li><a href="#" onclick="logout();">Log out</a></li>
