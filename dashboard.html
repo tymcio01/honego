@@ -86,6 +86,32 @@
     </style>
 </head>
 <body>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<script>
+
+// Konfiguracja Firebase
+  var firebaseConfig = {
+apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+        authDomain: "honego-52c31.firebaseapp.com",
+        projectId: "honego-52c31",
+        storageBucket: "honego-52c31.appspot.com",
+        messagingSenderId: "897927654843",
+        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+
+ };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+    }
+    // U¿ytkownik jest zalogowany
+  });
+</script>
+
     <div class="container">
         <aside>
         <h1>Honego</h1> <!-- This is the new H1 tag added -->
@@ -99,7 +125,7 @@
         <li><a href="product-library.html">Product/Service Library</a></li>
         <li><a href="my-templates.html">My Templates</a></li>
         <li><a href="account-settings.html">Account Settings</a></li>
-        <li><a href="logout.html">Log out</a></li> <!-- Moved logout here -->
+        <li><a href="#" onclick="logout();">Log out</a></li>
     </ul>
 </aside>
 
