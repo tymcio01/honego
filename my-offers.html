@@ -25,7 +25,6 @@
         .container {
             flex: 1;
             display: flex;
-flex-direction: column;
         }
 
         aside {
@@ -70,8 +69,7 @@ flex-direction: column;
             background-color: #1c2121;
             color: #f6f6f6;
             padding: 10px 20px;
-            text-align: left;
-margin-top: auto;
+            text-align: center;
         }
 
         .profile-form {
@@ -110,21 +108,6 @@ margin-top: auto;
         .profile-form button:hover {
             background: #4cae4c;
         }
-
-.section {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.section h2 {
-    margin-bottom: 15px;
-}
-
-/* Dodaj dodatkowe style, jeœli to konieczne */
-
     </style>
 </head>
 <body>
@@ -186,20 +169,24 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         </aside>
 
         <div class="main-content">
-    <div class="section">
-        <h2>Recently Sent</h2>
-        <div id="recently-sent">
-            <!-- Tutaj dynamicznie za³adujesz ostatnio wys³ane oferty -->
-        </div>
-    </div>
+            <div class="profile-form">
+                <h2>Profile Details</h2>
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
 
-    <div class="section">
-        <h2>My Templates</h2>
-        <div id="my-templates">
-            <!-- Tutaj dynamicznie za³adujesz szablony ofert -->
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
         </div>
+
     </div>
-</div>
 
     <footer>
         &copy; 2023 Honego - All Rights Reserved
