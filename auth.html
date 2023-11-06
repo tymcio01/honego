@@ -131,18 +131,25 @@ function register() {
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      // Wyœwietlenie komunikatu po pomyœlnej rejestracji
-      console.log("Registration succeeded:", userCredential.user);
-      alert("Registration succeeded");
-      window.location.href = 'dashboard.html'; // Przekierowanie do dashboard
+      // U¿ytkownik zarejestrowany w Firebase Authentication, teraz dodaj go do Firestore
+      var user = userCredential.user;
+      // Zwróæ obietnicê dodania dokumentu u¿ytkownika do Firestore
+      return db.collection("users").doc(user.uid).set({
+        email: user.email, // Przechowuj adres email u¿ytkownika
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(), // Zapisz timestamp utworzenia
+        // mo¿esz dodaæ wiêcej pól, na przyk³ad displayName, jeœli jest dostêpne
+      });
+    })
+    .then(() => {
+      // Po pomyœlnym dodaniu u¿ytkownika do Firestore, przekieruj na stronê 'dashboard.html'
+      window.location.href = 'dashboard.html';
     })
     .catch((error) => {
-      // Wyœwietlenie komunikatu o b³êdzie
+      // Wyœwietl b³¹d, jeœli rejestracja w Firebase Authentication lub Firestore siê nie powiedzie
       console.error("Registration failed:", error);
       alert("Registration failed: " + error.message);
     });
 }
-
 // Funkcja logowania u¿ytkownika
 function login() {
   var email = document.getElementById('loginEmail').value;
