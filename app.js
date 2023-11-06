@@ -1,12 +1,12 @@
 // Zdefiniuj konfigurację Firebase tutaj
 var firebaseConfig = {
-  apiKey: "twoje-api-key",
-  authDomain: "twoje-auth-domain",
-  projectId: "twoje-project-id",
-  storageBucket: "twoje-storage-bucket",
-  messagingSenderId: "twoje-messaging-sender-id",
-  appId: "twoje-app-id",
-  measurementId: "twoje-measurement-id"
+  apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+        authDomain: "honego-52c31.firebaseapp.com",
+        projectId: "honego-52c31",
+        storageBucket: "honego-52c31.appspot.com",
+        messagingSenderId: "897927654843",
+        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+
 };
 
 // Inicjalizacja Firebase
