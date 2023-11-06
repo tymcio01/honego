@@ -6,9 +6,6 @@
     <title>Honego</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <style>
         html {
             height: 100%;
@@ -25,143 +22,201 @@
             min-height: 100vh;
         }
 
-        /* Pozosta³a czêœæ stylu CSS, któr¹ masz w swoim kodzie */
+        .container {
+            flex: 1;
+            display: flex;
+        }
 
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        aside ul li {
+            margin-bottom: 15px;
+        }
+
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #fff; /* White background */
+            color: #333; /* Black text */
+            padding: 10px 15px;
+            border: 2px solid #000; /* Black border */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .profile-form button:hover {
+            background: #333; /* Black background on hover */
+            color: #fff; /* White text on hover */
+        }
     </style>
 </head>
 <body>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
 <script>
-    // Konfiguracja Firebase i funkcje z Twojego kodu
-    var firebaseConfig = {
-        apiKey: "Twój-API-Key",
-        authDomain: "Twój-authDomain",
-        projectId: "Twój-projectId",
-        storageBucket: "Twój-storageBucket",
-        messagingSenderId: "Twój-messagingSenderId",
-        appId: "Twój-appId"
-    };
-    firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-            window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-        }
-        // U¿ytkownik jest zalogowany
-    });
+// Konfiguracja Firebase
+  var firebaseConfig = {
+apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+        authDomain: "honego-52c31.firebaseapp.com",
+        projectId: "honego-52c31",
+        storageBucket: "honego-52c31.appspot.com",
+        messagingSenderId: "897927654843",
+        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
 
-    function logout() {
-        firebase.auth().signOut().then(() => {
-            window.location.href = 'index.html';
-        }).catch((error) => {
-            console.error('Logout Failed', error);
-        });
+ };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
     }
+    // U¿ytkownik jest zalogowany
+  });
+
+// Funkcja wylogowywania
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      // Wylogowanie udane, przekierowanie na index.html
+      window.location.href = 'index.html';
+    }).catch((error) => {
+      // Obs³uga b³êdów
+      console.error('Logout Failed', error);
+    });
+  }
 </script>
 
-<div class="container">
+    <div class="container">
 
-    <aside>
-        <h1>Honego</h1>
-        <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="my-offers.html">My Offers</a></li>
-            <li><a href="new-offer.html">Create New Offer</a></li>
-            <li><a href="contacts.html">Contacts</a></li>
-            <li><a href="product-library.html">Product/Service Library</a></li>
-            <li><a href="reports.html">Reports</a></li>
-            <li><a href="account-settings.html">Account Settings</a></li>
-            <li><a href="#" onclick="logout();">Log out</a></li>
-        </ul>
-    </aside>
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+               
+ <li><a href="my-offers.html">My Offers</a></li>
+                <li><a href="new-offer.html">Create New Offer</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="product-library.html">Product/Service Library</a></li>
+<li><a href="reports.html">Reports</a></li>
+                <li><a href="account-settings.html">Account Settings</a></li>
+                <li><a href="#" onclick="logout();">Log out</a></li>
+            </ul>
+        </aside>
 
-    <div class="main-content">
-        <div class="profile-form">
-            <h2>Add/Edit Product</h2>
-            <form id="productForm">
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" required>
+        <div class="main-content">
+            <div class="profile-form">
+    <h2>Add/Edit Product</h2>
+    <form>
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
 
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
+<label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
 
                 <label for="unitPrice">Unit Price (PLN):</label>
-                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+        <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
 
-                <button type="submit">Save Product</button>
-            </form>
-        </div>
+        <button type="submit">Save Product</button>
+    </form>
 
-        <div class="product-table">
-            <h2>Product List</h2>
-            <table border="1" width="100%" cellpadding="5" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Description</th>
-                    <th>Unit Price (PLN)</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Example row with edit and delete buttons -->
-                <tr>
-                    <td>Example Product</td>
-                    <td>This is a description of the example product.</td>
-                    <td>100 PLN</td>
-                    <td>
-                        <button type="button" onclick="editProduct(this)">Edit</button>
-                        <button type="button" onclick="deleteProduct(this)">Delete</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
+<div class="product-table">
+                <h2>Product List</h2>
+                 <table border="1" width="100%" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Unit Price (PLN)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example row with edit and delete buttons -->
+            <tr>
+                <td>Example Product</td>
+                <td>This is a description of the example product.</td>
+                <td>100 PLN</td>
+                <td>
+                    <button type="button" onclick="editProduct(this)">Edit</button>
+                    <button type="button" onclick="deleteProduct(this)">Delete</button>
+                </td>
+            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<footer>
-    &copy; 2023 Honego - All Rights Reserved
-</footer>
+    </div>
 
-<script>
-    // JavaScript z Twojego kodu
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('productForm').addEventListener('submit', function(event) {
-            event.preventDefault();
 
-            var productName = document.getElementById('productName').value;
-            var description = document.getElementById('description').value;
-            var unitPrice = document.getElementById('unitPrice').value;
-
-            var table = document.querySelector('.product-table tbody');
-            var newRow = table.insertRow();
-            var cell1 = newRow.insertCell(0);
-            var cell2 = newRow.insertCell(1);
-            var cell3 = newRow.insertCell(2);
-            var cell4 = newRow.insertCell(3);
-
-            cell1.innerHTML = productName;
-            cell2.innerHTML = description;
-            cell3.innerHTML = unitPrice + " PLN";
-            cell4.innerHTML = `
-                <button type="button" onclick="editProduct(this)">Edit</button>
-                <button type="button" onclick="deleteProduct(this)">Delete</button>
-            `;
-
-            document.getElementById('productForm').reset();
-        });
-    });
-
-    function editProduct(btn) {
-        console.log('Editing product', btn);
-    }
-
-    function deleteProduct(btn) {
-        var row = btn.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-    }
-</script>
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
 
 </body>
 </html>
