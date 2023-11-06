@@ -47,8 +47,8 @@ function login() {
 
       // Opóźnienie przekierowania jako test
       setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 1000);  // Opóźnienie o 1 sekundę
+        window.location.href = 'https://honego.pl/dashboard.html';
+      }, 500);  // Opóźnienie o 0.5 sekundę
     })
     .catch((error) => {
       var errorCode = error.code;
