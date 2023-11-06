@@ -1,12 +1,29 @@
+// Zdefiniuj konfigurację Firebase tutaj
+var firebaseConfig = {
+  apiKey: "twoje-api-key",
+  authDomain: "twoje-auth-domain",
+  projectId: "twoje-project-id",
+  storageBucket: "twoje-storage-bucket",
+  messagingSenderId: "twoje-messaging-sender-id",
+  appId: "twoje-app-id",
+  measurementId: "twoje-measurement-id"
+};
+
+// Inicjalizacja Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Inicjalizacja Firestore
+const db = firebase.firestore();
+
 // Funkcje zarządzania widocznością formularzy
 function showSignup() {
-    document.getElementById('signupForm').style.display = 'block';
-    document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('signupForm').style.display = 'block';
+  document.getElementById('loginForm').style.display = 'none';
 }
 
 function showLogin() {
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('signupForm').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
 }
 
 // Funkcja rejestracji użytkownika
@@ -35,7 +52,6 @@ function register() {
     });
 }
 
-
 // Funkcja logowania użytkownika
 function login() {
   var email = document.getElementById('loginEmail').value;
@@ -43,12 +59,8 @@ function login() {
 
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      console.log('User logged in:', userCredential.user);
-
-      // Opóźnienie przekierowania jako test
-      setTimeout(() => {
-        window.location.href = 'https://honego.pl/dashboard.html';
-      }, 500);  // Opóźnienie o 0.5 sekundę
+      // Użytkownik zalogowany, przekierowanie do dashboard.html
+      window.location.assign('dashboard.html');
     })
     .catch((error) => {
       var errorCode = error.code;
@@ -57,48 +69,38 @@ function login() {
     });
 }
 
-
 // Funkcja wylogowywania użytkownika
 function logout() {
-    firebase.auth().signOut().then(() => {
-        // Użytkownik wylogowany, przekierowanie do index.html
-        window.location.assign('index.html');
-    }).catch((error) => {
-        // Wyświetlanie błędu
-        alert('Error: ' + error.message);
-    });
+  firebase.auth().signOut().then(() => {
+    // Użytkownik wylogowany, przekierowanie do index.html
+    window.location.assign('index.html');
+  }).catch((error) => {
+    // Wyświetlanie błędu
+    alert('Error: ' + error.message);
+  });
 }
 
-// Zabezpieczenie przed uruchomieniem skryptu przed załadowaniem strony
-document.addEventListener('DOMContentLoaded', function() {
-    // Tutaj można dodać dodatkowe inicjalizacje, jeśli są potrzebne
-});
-
+// Słuchacz stanu autentykacji
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // Użytkownik jest zalogowany
-    // Możesz tutaj pobrać i wyświetlić dane użytkownika lub przekierować do innej strony
+    console.log("Użytkownik jest zalogowany:", user);
   } else {
     // Użytkownik jest wylogowany
-    // Możesz wyświetlić formularz logowania lub przekierować do strony logowania
+    console.log("Użytkownik jest wylogowany");
   }
 });
 
-firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Tutaj dodaj użytkownika do Firestore
-    var user = userCredential.user;
-    db.collection("users").doc(user.uid).set({
-      email: user.email,
-      // inne dane użytkownika
-    });
-    // Kontynuacja po pomyślnej rejestracji
-  })
-  .catch((error) => {
-    // Obsługa błędów rejestracji
+// Zabezpieczenie przed uruchomieniem skryptu przed załadowaniem strony
+document.addEventListener('DOMContentLoaded', function() {
+  // Przypisanie obsługi zdarzeń do formularzy
+  document.getElementById('formSignup').addEventListener('submit', function(event) {
+    event.preventDefault();
+    register();
   });
 
-// Przykładowe przekierowanie po zalogowaniu
-if (user) {
-  window.location.href = 'index.html'; // Przekieruj na stronę główną
-}
+  document.getElementById('formLogin').addEventListener('submit', function(event) {
+    event.preventDefault();
+    login();
+  });
+});
