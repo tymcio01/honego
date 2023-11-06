@@ -116,7 +116,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script>
 
 // Konfiguracja Firebase
@@ -168,22 +168,22 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         </aside>
 
         <div class="main-content">
-            <div class="profile-form">
-    <h2>Add/Edit Product</h2>
-    <form>
-        <label for="productName">Product Name:</label>
-        <input type="text" id="productName" name="productName" required>
+        <div class="profile-form">
+            <h2>Add/Edit Product</h2>
+            <form id="productForm">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
 
-<label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
 
                 <label for="unitPrice">Unit Price (PLN):</label>
-        <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
 
-        <button type="submit">Save Product</button>
-    </form>
+                <button type="submit">Save Product</button>
+            </form>
+        </div>
 
-</div>
 <div class="product-table">
                 <h2>Product List</h2>
                  <table border="1" width="100%" cellpadding="5" cellspacing="0">
@@ -217,6 +217,42 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     <footer>
         &copy; 2023 Honego - All Rights Reserved
     </footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('productForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var productName = document.getElementById('productName').value;
+        var description = document.getElementById('description').value;
+        var unitPrice = document.getElementById('unitPrice').value;
+
+        var table = document.querySelector('.product-table tbody');
+        var newRow = table.insertRow();
+        newRow.innerHTML = `
+            <tr>
+                <td>${productName}</td>
+                <td>${description}</td>
+                <td>${unitPrice} PLN</td>
+                <td>
+                    <button type="button" onclick="editProduct(this)">Edit</button>
+                    <button type="button" onclick="deleteProduct(this)">Delete</button>
+                </td>
+            </tr>
+        `;
+
+        document.getElementById('productForm').reset();
+    });
+});
+
+function editProduct(btn) {
+    console.log('Editing product', btn);
+}
+
+function deleteProduct(btn) {
+    var row = btn.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+</script>
 
 </body>
 </html>
