@@ -131,6 +131,19 @@ function register() {
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
+
+
+// U¿ytkownik zarejestrowany, dodaj go do Firestore
+      var user = userCredential.user;
+      // Dodawanie dokumentu do kolekcji 'users' w Firestore
+      return db.collection("users").doc(user.uid).set({
+        email: user.email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        // Mo¿esz dodaæ wiêcej pól, jak displayName, photoURL itp.
+      });
+    })
+
+
       // Wyœwietlenie komunikatu po pomyœlnej rejestracji
       console.log("Registration succeeded:", userCredential.user);
       alert("Registration succeeded");
