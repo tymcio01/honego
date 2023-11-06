@@ -170,21 +170,20 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     <aside>
         <h1>Honego</h1>
         <ul>
-<li><a href="dashboard.html">Dashboard</a></li>
-            
-<li><a href="my-offers.html">My Offers</a></li>
-            <li><a href="new-offer.html">Create New Offer</a></li>
-            <li><a href="contacts.html">Contacts</a></li>
-            <li><a href="product-library.html">Product/Service Library</a></li>
-        <li><a href="account-settings.html">Account Settings</a></li>
-
-            <li><a href="#" onclick="logout();">Log out</a></li>
-        </ul>
-    </aside>
+<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
+            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
+            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
+            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+        </ul>    
+</aside>
     <div class="main-content">
         <div class="profile-form">
             <h2>Add New Client</h2>
             <form id="addClientForm">
+
                 <label for="company">Company</label>
                 <input type="text" id="company" name="company" required>
 
@@ -219,15 +218,15 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         <table class="customer-table">
             <thead>
                 <tr>
-                    <th>Company</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-				<th>Industry</th>
-                    <th>Action</th>
-                </tr>
+                <th onclick="sortTable(0)"><i class="fas fa-sort"></i> Company</th>
+                <th onclick="sortTable(1)"><i class="fas fa-sort"></i> Name</th>
+                <th onclick="sortTable(2)"><i class="fas fa-sort"></i> Surname</th>
+                <th onclick="sortTable(3)"><i class="fas fa-sort"></i> Address</th>
+                <th onclick="sortTable(4)"><i class="fas fa-sort"></i> Phone</th>
+                <th onclick="sortTable(5)"><i class="fas fa-sort"></i> Email</th>
+                <th onclick="sortTable(6)"><i class="fas fa-sort"></i> Industry</th>
+                <th>Action</th>
+            </tr>
             </thead>
             <tbody id="tableBody">
                 <!-- Wiersze z klientami zostan¹ tutaj dodane -->
