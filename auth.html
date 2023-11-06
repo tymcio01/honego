@@ -161,9 +161,19 @@ function login() {
     });
 }
 
-// Przypisanie obs³ugi zdarzeñ do formularzy
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('formSignup').addEventListener('submit', function(event) {
+    event.preventDefault();
+    register();
+  });
+
+  document.getElementById('formLogin').addEventListener('submit', function(event) {
+    event.preventDefault();
+    login();
+  });
+});
+
+
     </script>
 </body>
 </html>
