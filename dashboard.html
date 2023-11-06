@@ -110,7 +110,19 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     }
     // U¿ytkownik jest zalogowany
   });
+
+// Funkcja wylogowywania
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      // Wylogowanie udane, przekierowanie na index.html
+      window.location.href = 'index.html';
+    }).catch((error) => {
+      // Obs³uga b³êdów
+      console.error('Logout Failed', error);
+    });
+  }
 </script>
+
 
     <div class="container">
         <aside>
