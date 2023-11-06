@@ -36,10 +36,25 @@ function register() {
 }
 
 
+// Funkcja logowania użytkownika
 function login() {
-  window.location.href = 'dashboard.html'; // Powinno od razu przekierować
-  // Możesz zakomentować resztę kodu dla testu
-  // ... reszta oryginalnej logiki logowania ...
+  var email = document.getElementById('loginEmail').value;
+  var password = document.getElementById('loginPassword').value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      console.log('User logged in:', userCredential.user);
+
+      // Opóźnienie przekierowania jako test
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1000);  // Opóźnienie o 1 sekundę
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert('Error: ' + errorMessage);
+    });
 }
 
 
