@@ -42,14 +42,19 @@
             border-radius: 5px;
         }
         button {
-            background-color: #3498db;
-            color: white;
-            cursor: pointer;
-            border: none;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
+        font-size: 1em; /* Odpowiednia wielkoœæ czcionki dla przycisku */
+        color: #000; /* Czarny tekst */
+        background: transparent; /* Przezroczyste t³o */
+        border: 2px solid #000; /* Czarna obwódka */
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: rgba(0, 0, 0, 0.1); /* Subtelne t³o przy najechaniu */
+    }
         .toggle-form {
             color: #3498db;
             cursor: pointer;
