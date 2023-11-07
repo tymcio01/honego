@@ -119,7 +119,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-// Firebase configuration (tu wklej swój config)
+// Konfiguracja Firebase
 var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
@@ -130,15 +130,79 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+// Sprawdzenie stanu uwierzytelnienia u¿ytkownika
 firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.html'; // Przekierowanie na stronê logowania
     }
+    // U¿ytkownik jest zalogowany
 });
 
-const db = firebase.firestore();
-const productsCollection = db.collection('products');
+// Funkcja wylogowywania
+function logout() {
+    firebase.auth().signOut().then(() => {
+        // Wylogowanie udane, przekierowanie na index.html
+        window.location.href = 'index.html';
+    }).catch((error) => {
+        // Obs³uga b³êdów
+        console.error('Logout Failed', error);
+    });
+}
+</script>
 
+<div class="container">
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
+            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
+            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
+            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <div class="profile-form">
+            <h2>Add/Edit Product</h2>
+            <form id="productForm">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+
+                <label for="unitPrice">Unit Price (PLN):</label>
+                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+
+                <button type="submit">Save Product</button>
+            </form>
+        </div>
+
+        <div class="product-table">
+            <h2>Product List</h2>
+            <table border="1" width="100%" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Unit Price (PLN)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody"><!-- The populated product rows will go here --></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2023 Honego - All Rights Reserved
+</footer>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const productForm = document.querySelector('#productForm');
     const productNameInput = document.getElementById('productName');
@@ -146,15 +210,62 @@ document.addEventListener('DOMContentLoaded', function() {
     const unitPriceInput = document.getElementById('unitPrice');
     const productTableBody = document.getElementById('productTableBody');
 
-    function updateProductTable() {
+    function saveProductToFirestore(event) {
+        event.preventDefault();
+
+        const productName = productNameInput.value;
+        const description = descriptionInput.value;
+        const unitPrice = parseFloat(unitPriceInput.value);
+
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+
+        // Sprawdzenie, czy u¿ytkownik jest zalogowany
         const user = firebase.auth().currentUser;
         if (!user) {
             console.error('User is not logged in.');
             return;
         }
 
+        // Pobranie identyfikatora zalogowanego u¿ytkownika
         const userId = user.uid;
 
+        productsCollection.add({
+            productName: productName,
+            description: description,
+            unitPrice: unitPrice,
+            userId: userId
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            // Po dodaniu produktu, odœwie¿amy tabelê
+            populateProductTable();
+            productNameInput.value = '';
+            descriptionInput.value = '';
+            unitPriceInput.value = '';
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    productForm.addEventListener('submit', saveProductToFirestore);
+
+    function populateProductTable() {
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+
+        // Sprawdzenie, czy u¿ytkownik jest zalogowany
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            console.error('User is not logged in.');
+            return;
+        }
+
+        // Pobranie identyfikatora zalogowanego u¿ytkownika
+        const userId = user.uid;
+
+        // Czyszczenie istniej¹cych wierszy tabeli
         productTableBody.innerHTML = '';
 
         productsCollection.where('userId', '==', userId).get()
@@ -179,78 +290,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    updateProductTable();
-
-    function saveProductToFirestore(event) {
-        event.preventDefault();
-
-        const productName = productNameInput.value;
-        const description = descriptionInput.value;
-        const unitPrice = parseFloat(unitPriceInput.value);
-
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-
-        const userId = user.uid;
-
-        productsCollection.add({
-            productName: productName,
-            description: description,
-            unitPrice: unitPrice,
-            userId: userId
-        })
-        .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-            updateProductTable();
-            productNameInput.value = '';
-            descriptionInput.value = '';
-            unitPriceInput.value = '';
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-        });
-    }
-
-    productForm.addEventListener('submit', saveProductToFirestore);
+    // Wywo³anie funkcji populateProductTable przy starcie strony
+    populateProductTable();
 });
 </script>
-
-<div class="container">
-    <aside>
-        <!-- Zawartoœæ aside (jak w poprzednich przyk³adach) -->
-    </aside>
-
-    <div class="main-content">
-        <div class="profile-form">
-            <h2>Add/Edit Product</h2>
-            <form id="productForm">
-                <!-- Formularz dodawania produktu (jak w poprzednich przyk³adach) -->
-            </form>
-        </div>
-
-        <div class="product-table">
-            <h2>Product List</h2>
-            <table border="1" width="100%" cellpadding="5" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Description</th>
-                        <th>Unit Price (PLN)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="productTableBody"><!-- Wiersze tabeli zostan¹ wygenerowane dynamicznie --></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<footer>
-    &copy; 2023 Honego - All Rights Reserved
-</footer>
-
 </body>
 </html>
