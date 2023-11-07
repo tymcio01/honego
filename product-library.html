@@ -116,105 +116,122 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-
-// Konfiguracja Firebase
-  var firebaseConfig = {
-apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+// Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
 
- };
-  firebase.initializeApp(firebaseConfig);
+};
 
-  firebase.auth().onAuthStateChanged((user) => {
+firebase.initializeApp(firebaseConfig);
+
+firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+        window.location.href = 'index.html'; // Redirect to login page
     }
-    // U¿ytkownik jest zalogowany
-  });
+    // User is logged in
+});
 
-// Funkcja wylogowywania
-  function logout() {
+function logout() {
     firebase.auth().signOut().then(() => {
-      // Wylogowanie udane, przekierowanie na index.html
-      window.location.href = 'index.html';
+        window.location.href = 'index.html'; // Successful logout, redirect to index.html
     }).catch((error) => {
-      // Obs³uga b³êdów
-      console.error('Logout Failed', error);
+        console.error('Logout Failed', error);
     });
-  }
+}
+
+function populateProductTable() {
+    var db = firebase.firestore();
+    var productsCollection = db.collection('products'); // Replace 'products' with the actual collection name
+
+    var tableBody = document.querySelector('.product-table tbody');
+    tableBody.innerHTML = '';
+
+    productsCollection.get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                var productData = doc.data();
+                var newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${productData.productName}</td>
+                    <td>${productData.description}</td>
+                    <td>${productData.unitPrice} PLN</td>
+                    <td>
+                        <button type="button" onclick="editProduct('${doc.id}')">Edit</button>
+                        <button type="button" onclick="deleteProduct('${doc.id}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(newRow);
+            });
+        })
+        .catch((error) => {
+            console.error('Error fetching products:', error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    populateProductTable();
+});
 </script>
 
-    <div class="container">
-
-        <aside>
-            <h1>Honego</h1>
-            <ul>
-<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+<div class="container">
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
             <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>    
-        </aside>
+        </ul>
+    </aside>
 
-        <div class="main-content">
-            <div class="profile-form">
-    <h2>Add/Edit Product</h2>
-    <form>
-        <label for="productName">Product Name:</label>
-        <input type="text" id="productName" name="productName" required>
+    <div class="main-content">
+        <div class="profile-form">
+            <h2>Add/Edit Product</h2>
+            <form>
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
 
-<label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
 
                 <label for="unitPrice">Unit Price (PLN):</label>
-        <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
 
-        <button type="submit">Save Product</button>
-    </form>
-
-</div>
-<div class="product-table">
-                <h2>Product List</h2>
-                 <table border="1" width="100%" cellpadding="5" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Description</th>
-                <th>Unit Price (PLN)</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Example row with edit and delete buttons -->
-            <tr>
-                <td>Example Product</td>
-                <td>This is a description of the example product.</td>
-                <td>100 PLN</td>
-                <td>
-                    <button type="button" onclick="editProduct(this)">Edit</button>
-                    <button type="button" onclick="deleteProduct(this)">Delete</button>
-                </td>
-            </tr>
-                    </tbody>
-                </table>
-            </div>
+                <button type="submit">Save Product</button>
+            </form>
         </div>
 
+        <div class="product-table">
+            <h2>Product List</h2>
+            <table border="1" width="100%" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Unit Price (PLN)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody><!-- The populated product rows will go here --></tbody>
+            </table>
+        </div>
     </div>
+</div>
 
-
-    <footer>
-        &copy; 2023 Honego - All Rights Reserved
-    </footer>
+<footer>
+    &copy; 2023 Honego - All Rights Reserved
+</footer>
 
 </body>
 </html>
