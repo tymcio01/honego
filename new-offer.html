@@ -313,7 +313,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
  <!-- File attachment input for multiple files -->
 <label for="fileAttachment">Attach Files:</label>
 <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
-<div id="fileNames"></div>
+<div id="fileList"></div>
 </div>
 
         </div>
@@ -395,16 +395,46 @@ calculateTotal();
             });
         };
 
-// Function to handle file selection and display file names
-    document.getElementById('fileAttachment').addEventListener('change', function() {
-        var fileNamesDiv = document.getElementById('fileNames');
-        fileNamesDiv.innerHTML = ''; // Clear the current file names
-        for (var i = 0; i < this.files.length; i++) {
-            fileNamesDiv.innerHTML += this.files[i].name + '<br>'; // Display each file name on a new line
+// Function to update the file list display
+    function updateFileList() {
+        var input = document.getElementById('fileAttachment');
+        var fileListContainer = document.getElementById('fileList');
+        fileListContainer.innerHTML = ''; // Clear the list
+
+        // Display each file in the list with a remove button
+        for (let i = 0; i < input.files.length; i++) {
+            let file = input.files[i];
+            let fileDiv = document.createElement('div');
+            fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(' + i + ');">&times;</a>';
+            fileListContainer.appendChild(fileDiv);
         }
-    });
+    }
 
-    </script>
+    // Function to remove a file from the list
+    function removeFile(index) {
+        var dt = new DataTransfer(); // Use DataTransfer to manipulate file input
+        var input = document.getElementById('fileAttachment');
+        var { files } = input;
 
+        // Add all files from the file input to the DataTransfer object except the one to be removed
+        for (let i = 0; i < files.length; i++) {
+            if (index !== i) {
+                dt.items.add(files[i]);
+            }
+        }
+
+        // Update the file input with the new set of files
+        input.files = dt.files;
+        updateFileList(); // Update the list display
+
+        // Prevent the default link action
+        return false;
+    }
+
+    // Event listener to update the file list whenever files are selected
+    document.getElementById('fileAttachment').addEventListener('change', updateFileList);
+
+    // ...existing script elements...
+</script>
 </body>
 </html>
