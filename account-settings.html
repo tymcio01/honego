@@ -94,20 +94,21 @@
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
-        }.profile-form button {
-    background: #fff; /* Bia造 t這 */
-    color: #000; /* Czarny tekst */
-    padding: 10px 15px;
-    border: 2px solid #000; /* Czarna obw鏚ka */
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* P造nna zmiana koloru przy hoverze */
-}
+        }
 
-.profile-form button:hover {
-    background: #000; /* Czarne t這 przy hoverze */
-    color: #fff; /* Bia造 tekst przy hoverze */
-}
+        .profile-form button {
+            background: #fff;
+            color: #000;
+            padding: 10px 15px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .profile-form button:hover {
+            background: #000;
+            color: #fff;
         }
     </style>
 </head>
@@ -118,7 +119,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-    // Konfiguracja Firebase
+    // Firebase configuration
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
@@ -126,20 +127,20 @@
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+
     };
+
     firebase.initializeApp(firebaseConfig);
 
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
-            window.location.href = 'index.html'; // Redirect to login page
+            window.location.href = 'index.html'; // Redirect to login page if not logged in
         }
-        // User is logged in
     });
 
     function saveProfileToFirestore(event) {
         event.preventDefault(); // Prevent the default form submit action
 
-        // Get values from form
         var username = document.getElementById('username').value;
         var signature = document.getElementById('signature').value;
         var email = document.getElementById('email').value;
@@ -148,11 +149,9 @@
         var companyWebsite = document.getElementById('company-Website').value;
         var companyAddress = document.getElementById('company-Address').value;
 
-        // Reference to your Firestore collection
         var db = firebase.firestore();
         var profilesCollection = db.collection('profiles');
 
-        // Add a new document with a generated id
         profilesCollection.add({
             username: username,
             signature: signature,
@@ -160,7 +159,8 @@
             companyName: companyName,
             companyPhone: companyPhone,
             companyWebsite: companyWebsite,
-            companyAddress: companyAddress
+            companyAddress: companyAddress,
+            uid: firebase.auth().currentUser.uid // Add the user's UID for reference
         })
         .then(function(docRef) {
             console.log("Document written with ID: ", docRef.id);
@@ -172,7 +172,6 @@
         });
     }
 
-    // Function for logging out
     function logout() {
         firebase.auth().signOut().then(() => {
             window.location.href = 'index.html'; // Successful logout, redirect to index.html
@@ -181,74 +180,104 @@
         });
     }
 
-    // Attach event listeners once the DOM is fully loaded
+    function populateProfileForm(userData) {
+        document.getElementById('username').value = userData.username || '';
+        document.getElementById('signature').value = userData.signature || '';
+        document.getElementById('email').value = userData.email || '';
+        document.getElementById('company-name').value = userData.companyName || '';
+        document.getElementById('company-phone').value = userData.companyPhone || '';
+        document.getElementById('company-Website').value = userData.companyWebsite || '';
+        document.getElementById('company-Address').value = userData.companyAddress || '';
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         var profileForm = document.querySelector('.profile-form form');
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                var db = firebase.firestore();
+                var profilesCollection = db.collection('profiles');
+                profilesCollection.where('uid', '==', user.uid).get()
+                    .then((querySnapshot) => {
+                        if (!querySnapshot.empty) {
+                            var userData = querySnapshot.docs[0].data();
+                            populateProfileForm(userData);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user data:', error);
+                    });
+            } else {
+                window.location.href = 'index.html'; // Redirect to login page if not logged in
+            }
+        });
+
         profileForm.addEventListener('submit', saveProfileToFirestore);
     });
-</script>
-    <div class="container">
 
-        <aside>
-            <h1>Honego</h1>
-            <ul>
-<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+</script>
+
+<div class="container">
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
             <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>    
-        </aside>
+        </ul>
+    </aside>
 
-        <div class="main-content">
-            <div class="profile-form">
-                <h2>Profile Details</h2>
-                <form>
-                      <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+    <div class="main-content">
+        <div class="profile-form">
+            <h2>Profile Details</h2>
+            <form>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
 
-                    <label for="signature">Signature for Offers:</label>
-                    <input type="text" id="signature" name="signature">
+                <label for="signature">Signature for Offers:</label>
+                <input type="text" id="signature" name="signature">
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-         <label for="company-name">Company Name:</label>
-         <input type="text" id="company-name" name="company-name">
+                <label for="company-name">Company Name:</label>
+                <input type="text" id="company-name" name="company-name">
 
-<label for="company-phone">Company Phone:</label>
-         <input type="text" id="company-phone" name="company-phone">
+                <label for="company-phone">Company Phone:</label>
+                <input type="text" id="company-phone" name="company-phone">
 
-<label for="company-website">Company Website:</label>
-         <input type="text" id="company-Website" name="company-Website">
+                <label for="company-Website">Company Website:</label>
+                <input type="text" id="company-Website" name="company-Website">
 
-<label for="company-address">Company Address:</label>
-         <input type="text" id="company-Address" name="company-Address">
-                    <hr> <!-- Separator -->
+                <label for="company-Address">Company Address:</label>
+                <input type="text" id="company-Address" name="company-Address">
 
-                    <h3>Change Password</h3>
+                <hr>
 
-                    <label for="current-password">Current Password:</label>
-                    <input type="password" id="current-password" name="current-password" required>
+                <h3>Change Password</h3>
 
-                    <label for="new-password">New Password:</label>
-                    <input type="password" id="new-password" name="new-password" required>
+                <label for="current-password">Current Password:</label>
+                <input type="password" id="current-password" name="current-password" required>
 
-                    <label for="confirm-password">Confirm New Password:</label>
-                    <input type="password" id="confirm-password" name="confirm-password" required>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password">
 
-                    <button type="submit">Update Profile</button>
-                </form>
-            </div>
+                <label for="confirm-password">Confirm New Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password">
+
+                <button type="submit">Update Profile</button>
+            </form>
         </div>
-
     </div>
+</div>
 
-    <footer>
-        &copy; 2023 Honego - All Rights Reserved
-    </footer>
+<footer>
+    &copy; 2023 Honego - All Rights Reserved
+</footer>
 
 </body>
 </html>
