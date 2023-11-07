@@ -83,6 +83,49 @@
         border-top: 0px solid #e1e1e1;
         height: 400px; /* Updated height */
     }
+
+.metric {
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.metric-label {
+    font-size: 1em;
+    color: #777;
+}
+
+.metric-change {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.metric-increase {
+    color: #2ecc71;
+}
+
+.metric-decrease {
+    color: #e74c3c;
+}
+
+.outreach-metrics {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chart-container {
+    position: relative;
+    height: 200px;
+}
     </style>
 </head>
 <body>
@@ -123,6 +166,32 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   }
 </script>
 
+<div class="card">
+    <h2>Outreach (past 28 days)</h2>
+    <div class="outreach-metrics">
+        <div class="metric">
+            <div class="metric-value" id="callsBooked">5,026</div>
+            <div class="metric-label">Calls booked</div>
+            <div class="metric-change metric-increase">+ 27%</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value" id="emailsSent">127.4k</div>
+            <div class="metric-label">Emails sent</div>
+            <div class="metric-change metric-decrease">- 2.3%</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value" id="socialImpressions">180.5k</div>
+            <div class="metric-label">Social impressions</div>
+            <div class="metric-change metric-increase">+ 4.3%</div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h2>Emails sent per day</h2>
+    <div class="chart-container">
+        <canvas id="emailsChart"></canvas>
+    </div>
+</div>
 
     <div class="container">
         <aside>
@@ -194,6 +263,32 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
                 }
             }
         });
+
+var emailsCtx = document.getElementById('emailsChart').getContext('2d');
+var emailsChart = new Chart(emailsCtx, {
+    type: 'bar',
+    data: {
+        labels: ['24 Oct', '31 Oct', '7 Nov', '14 Nov'], // replace with actual dates
+        datasets: [{
+            label: 'Emails Sent',
+            data: [5000, 7500, 4000, 6500], // replace with actual data
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
     </script>
+
+
 </body>
 </html>
