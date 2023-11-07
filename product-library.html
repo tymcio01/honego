@@ -145,15 +145,68 @@ function logout() {
         console.error('Logout Failed', error);
     });
 }
+</script>
 
+<div class="container">
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
+            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
+            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
+            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <div class="profile-form">
+            <h2>Add/Edit Product</h2>
+            <form id="productForm">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+
+                <label for="unitPrice">Unit Price (PLN):</label>
+                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+
+                <button type="submit">Save Product</button>
+            </form>
+        </div>
+
+        <div class="product-table">
+            <h2>Product List</h2>
+            <table border="1" width="100%" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Unit Price (PLN)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody"><!-- The populated product rows will go here --></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2023 Honego - All Rights Reserved
+</footer>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    const productForm = document.querySelector('.profile-form form');
+    const productForm = document.querySelector('#productForm');
     const productNameInput = document.getElementById('productName');
     const descriptionInput = document.getElementById('description');
     const unitPriceInput = document.getElementById('unitPrice');
-    const productTableBody = document.querySelector('.product-table tbody');
+    const productTableBody = document.getElementById('productTableBody');
 
-    // Function to save product to Firestore
     function saveProductToFirestore(event) {
         event.preventDefault(); // Prevent the default form submit action
 
@@ -183,12 +236,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     productForm.addEventListener('submit', saveProductToFirestore);
 
-    // Function to populate the product table
     function populateProductTable() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
 
-        productsCollection.get().then((querySnapshot) => {
+        productsCollection.onSnapshot((querySnapshot) => {
+            // Clear the existing table rows
+            productTableBody.innerHTML = '';
+
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const tr = document.createElement('tr');
@@ -203,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 productTableBody.appendChild(tr);
             });
-        }).catch((error) => {
+        }, (error) => {
             console.error("Error getting documents: ", error);
         });
     }
@@ -212,58 +267,6 @@ document.addEventListener('DOMContentLoaded', function() {
     populateProductTable();
 });
 </script>
-
-<div class="container">
-    <aside>
-        <h1>Honego</h1>
-        <ul>
-            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
-            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
-            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
-            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
-            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
-            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>
-    </aside>
-
-    <div class="main-content">
-        <div class="profile-form">
-            <h2>Add/Edit Product</h2>
-            <form>
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" required>
-
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
-
-                <label for="unitPrice">Unit Price (PLN):</label>
-                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
-
-                <button type="submit">Save Product</button>
-            </form>
-        </div>
-
-        <div class="product-table">
-            <h2>Product List</h2>
-            <table border="1" width="100%" cellpadding="5" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Description</th>
-                        <th>Unit Price (PLN)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody><!-- The populated product rows will go here --></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<footer>
-    &copy; 2023 Honego - All Rights Reserved
-</footer>
 
 </body>
 </html>
