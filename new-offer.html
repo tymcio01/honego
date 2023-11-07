@@ -361,31 +361,32 @@ function calculateTotal() {
         }
 
         function drop(event) {
-            event.preventDefault();
-            const data = event.dataTransfer.getData("text/plain");
-            const draggableElement = document.getElementById(data);
-            let dropzone = event.target;
- calculateTotal(); // Call calculateTotal after a product is dropped
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text/plain");
+    const draggableElement = document.getElementById(data);
+    let dropzone = event.target;
 
-            while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-                dropzone = dropzone.parentNode;
-            }
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
+    }
 
-            if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
-                dropzone.appendChild(draggableElement);
-            }
-        }
+    if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
+        dropzone.appendChild(draggableElement);
+        // Moved calculateTotal() inside the if block to ensure it's called after appending the child
+        calculateTotal();
+    }
+}
 
-        // Nowa funkcja do obs³ugi przenoszenia produktów przez podwójne klikniêcie
-        function moveProduct(event) {
-            const product = event.target;
-            const currentArea = product.parentNode;
-            const isProductAvailable = currentArea.classList.contains('products-area');
-            const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
+function moveProduct(event) {
+    const product = event.target;
+    const currentArea = product.parentNode;
+    const isProductAvailable = currentArea.classList.contains('products-area');
+    const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
 
-            destinationArea.appendChild(product);
-calculateTotal();
-        }
+    destinationArea.appendChild(product);
+    // Call calculateTotal() after the product has been moved
+    calculateTotal();
+}
 
         // Dodajemy obs³ugê podwójnego klikniêcia do wszystkich produktów
         window.onload = function() {
