@@ -119,7 +119,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-// Firebase configuration
+// Konfiguracja Firebase
 var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
@@ -130,6 +130,7 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+// Sprawdzenie stanu uwierzytelnienia u¿ytkownika
 firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
         window.location.href = 'index.html'; // Przekierowanie na stronê logowania
@@ -219,24 +220,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
 
-        // SprawdŸ, czy u¿ytkownik jest zalogowany
+        // Sprawdzenie, czy u¿ytkownik jest zalogowany
         const user = firebase.auth().currentUser;
         if (!user) {
             console.error('User is not logged in.');
             return;
         }
-    
-        // Pobierz identyfikator zalogowanego u¿ytkownika
+
+        // Pobranie identyfikatora zalogowanego u¿ytkownika
         const userId = user.uid;
 
         productsCollection.add({
             productName: productName,
             description: description,
             unitPrice: unitPrice,
-            userId: userId // Przypisz produkt do u¿ytkownika
+            userId: userId
         })
         .then(function(docRef) {
             console.log("Document written with ID: ", docRef.id);
+            // Po dodaniu produktu, odœwie¿amy tabelê
+            populateProductTable();
             productNameInput.value = '';
             descriptionInput.value = '';
             unitPriceInput.value = '';
@@ -252,20 +255,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
 
-        // SprawdŸ, czy u¿ytkownik jest zalogowany
+        // Sprawdzenie, czy u¿ytkownik jest zalogowany
         const user = firebase.auth().currentUser;
         if (!user) {
             console.error('User is not logged in.');
             return;
         }
-    
-        // Pobierz identyfikator zalogowanego u¿ytkownika
+
+        // Pobranie identyfikatora zalogowanego u¿ytkownika
         const userId = user.uid;
 
-        productsCollection.where('userId', '==', userId).onSnapshot((querySnapshot) => {
-            // Clear the existing table rows
-            productTableBody.innerHTML = '';
+        // Czyszczenie istniej¹cych wierszy tabeli
+        productTableBody.innerHTML = '';
 
+        productsCollection.where('userId', '==', userId).get()
+        .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const tr = document.createElement('tr');
@@ -280,12 +284,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 productTableBody.appendChild(tr);
             });
-        }, (error) => {
+        })
+        .catch((error) => {
             console.error("Error getting documents: ", error);
         });
     }
 
-    // Wywo³aj funkcjê populateProductTable na starcie
+    // Wywo³anie funkcji populateProductTable przy starcie strony
     populateProductTable();
 });
 </script>
