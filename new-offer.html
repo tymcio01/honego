@@ -289,19 +289,17 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
             <div class="drag-area">
                 <div class="products-area" ondragover="allowDrop(event)">
                     <h3>Available Products</h3>
-                    <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item">Sala konferencyjna 90 osób teatr - $900</div>
-                    <div draggable="true" ondragstart="drag(event)" id="product2" class="product-item">Ball Room 500 pax 550m2 theatre - $5000</div>
+                    <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item" data-value="900">Sala konferencyjna 90 osób teatr - $900</div>
+<div draggable="true" ondragstart="drag(event)" id="product2" class="product-item" data-value="5000">Ball Room 500 pax 550m2 theatre - $5000</div>
+<!-- Add more draggable products with their respective data-value attributes -->
 
-<div draggable="true" ondragstart="drag(event)" id="product2" class="product-item">Ball Room 500 pax 550m2 theatre - $5000</div>
-
-<div draggable="true" ondragstart="drag(event)" id="product2" class="product-item">Ball Room 500 pax 550m2 theatre - $5000</div>
-
-<div draggable="true" ondragstart="drag(event)" id="product2" class="product-item">Ball Room 500 pax 550m2 theatre - $5000</div>
                     <!-- Add more draggable products here -->
                 </div>
                 <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <h3>Selected Products</h3>
                     <!-- Dropped products will appear here -->
+<div id="totalSum">Total Sum: 0 PLN</div>
+
                 </div>
             </div>
 <!-- Additional comments box -->
@@ -327,7 +325,23 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
     <footer>
         &copy; 2023 Honego - All Rights Reserved
-    </footer><script>
+    </footer>
+
+<script>
+
+function calculateTotal() {
+        let sum = 0;
+
+// Get all the products in the selected area
+        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+        selectedProducts.forEach(function(product) {
+            // Parse the data-value attribute to a number and add it to the sum
+            sum += Number(product.getAttribute('data-value'));
+        });
+        // Display the total sum
+        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
+    }
+
         // Funkcje obs³ugi drag and drop
         function allowDrop(event) {
             event.preventDefault();
@@ -342,6 +356,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
             const data = event.dataTransfer.getData("text/plain");
             const draggableElement = document.getElementById(data);
             let dropzone = event.target;
+ calculateTotal(); // Call calculateTotal after a product is dropped
 
             while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
                 dropzone = dropzone.parentNode;
@@ -360,6 +375,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
             const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
 
             destinationArea.appendChild(product);
+calculateTotal();
         }
 
         // Dodajemy obs³ugê podwójnego klikniêcia do wszystkich produktów
