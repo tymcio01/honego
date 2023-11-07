@@ -119,6 +119,16 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const productForm = document.querySelector('#productForm');
+    const productNameInput = document.getElementById('productName');
+    const descriptionInput = document.getElementById('description');
+    const unitPriceInput = document.getElementById('unitPrice');
+    const productTableBody = document.getElementById('productTableBody');
+
+    function saveProductToFirestore(event) {
+        event.preventDefault();
+
 // Konfiguracja Firebase
 var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
