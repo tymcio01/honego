@@ -128,25 +128,25 @@ var firebaseConfig = {
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
 };
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 
-firebase.auth().onAuthStateChanged((user) => {
+  firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-        window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
     }
     // U¿ytkownik jest zalogowany
-});
+  });
 
-// Funkcja wylogowywania
-function logout() {
+  // Funkcja wylogowywania
+  function logout() {
     firebase.auth().signOut().then(() => {
-        // Wylogowanie udane, przekierowanie na index.html
-        window.location.href = 'index.html';
+      // Wylogowanie udane, przekierowanie na index.html
+      window.location.href = 'index.html';
     }).catch((error) => {
-        // Obs³uga b³êdów
-        console.error('Logout Failed', error);
+      // Obs³uga b³êdów
+      console.error('Logout Failed', error);
     });
-}
+  }
 </script>
 
 <div class="container">
@@ -219,15 +219,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
 
-        // SprawdŸ, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-    
         // Pobierz identyfikator zalogowanego u¿ytkownika
-        const userId = user.uid;
+        const userId = firebase.auth().currentUser.uid;
 
         productsCollection.add({
             productName: productName,
@@ -240,6 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
             productNameInput.value = '';
             descriptionInput.value = '';
             unitPriceInput.value = '';
+            
+            // Po dodaniu produktu, odœwie¿ tabelê
+            populateProductTable();
         })
         .catch(function(error) {
             console.error("Error adding document: ", error);
@@ -251,16 +247,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function populateProductTable() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
-
-        // SprawdŸ, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
     
         // Pobierz identyfikator zalogowanego u¿ytkownika
-        const userId = user.uid;
+        const userId = firebase.auth().currentUser.uid;
 
         productsCollection.where('userId', '==', userId).onSnapshot((querySnapshot) => {
             // Clear the existing table rows
