@@ -116,92 +116,77 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script>
 
-// Konfiguracja Firebase
-  var firebaseConfig = {
-apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+<script>
+    // Konfiguracja Firebase
+    var firebaseConfig = {
+        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+    };
+    firebase.initializeApp(firebaseConfig);
 
- };
-  firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+        // User is logged in
+    });
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+    function saveProfileToFirestore(event) {
+        event.preventDefault(); // Prevent the default form submit action
+
+        // Get values from form
+        var username = document.getElementById('username').value;
+        var signature = document.getElementById('signature').value;
+        var email = document.getElementById('email').value;
+        var companyName = document.getElementById('company-name').value;
+        var companyPhone = document.getElementById('company-phone').value;
+        var companyWebsite = document.getElementById('company-Website').value;
+        var companyAddress = document.getElementById('company-Address').value;
+
+        // Reference to your Firestore collection
+        var db = firebase.firestore();
+        var profilesCollection = db.collection('profiles');
+
+        // Add a new document with a generated id
+        profilesCollection.add({
+            username: username,
+            signature: signature,
+            email: email,
+            companyName: companyName,
+            companyPhone: companyPhone,
+            companyWebsite: companyWebsite,
+            companyAddress: companyAddress
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            // Handle successful data submission here (e.g., clear form, show message)
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+            // Handle errors here
+        });
     }
-    // U¿ytkownik jest zalogowany
-  });
 
-function saveProfileToFirestore(event) {
-    event.preventDefault(); // Prevent the default form submit action
+    // Function for logging out
+    function logout() {
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'index.html'; // Successful logout, redirect to index.html
+        }).catch((error) => {
+            console.error('Logout Failed', error);
+        });
+    }
 
-    // Get values from form
-    var username = document.getElementById('username').value;
-    var signature = document.getElementById('signature').value;
-    var email = document.getElementById('email').value;
-    var companyName = document.getElementById('company-name').value;
-    var companyPhone = document.getElementById('company-phone').value;
-    var companyWebsite = document.getElementById('company-Website').value;
-    var companyAddress = document.getElementById('company-Address').value;
-
-    // Reference to your Firestore collection
-    var db = firebase.firestore();
-    var profilesCollection = db.collection('profiles');
-
-    // Add a new document with a generated id
-    profilesCollection.add({
-        username: username,
-        signature: signature,
-        email: email,
-        companyName: companyName,
-        companyPhone: companyPhone,
-        companyWebsite: companyWebsite,
-        companyAddress: companyAddress
-    })
-    .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        // Handle successful data submission here (e.g., clear form, show message)
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-        // Handle errors here
+    // Attach event listeners once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        var profileForm = document.querySelector('.profile-form form');
+        profileForm.addEventListener('submit', saveProfileToFirestore);
     });
-}
-
-// Funkcja wylogowywania
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      // Wylogowanie udane, przekierowanie na index.html
-      window.location.href = 'index.html';
-    }).catch((error) => {
-      // Obs³uga b³êdów
-      console.error('Logout Failed', error);
-    });
-  }
-
-// Funkcja wylogowywania
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      // Wylogowanie udane, przekierowanie na index.html
-      window.location.href = 'index.html';
-    }).catch((error) => {
-      // Obs³uga b³êdów
-      console.error('Logout Failed', error);
-    });
-  }
-
- // Attach event listeners once the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            var profileForm = document.querySelector('.profile-form form');
-            profileForm.addEventListener('submit', saveProfileToFirestore);
-
 </script>
-
     <div class="container">
 
         <aside>
