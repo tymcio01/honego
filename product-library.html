@@ -121,7 +121,8 @@
 <script>
 // Konfiguracja Firebase
 var firebaseConfig = {
-    authDomain: "honego-52c31.firebaseapp.com",
+    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+        authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
@@ -191,7 +192,7 @@ function logout() {
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="productTableBody"><!-- Dane produktów zostan¹ wygenerowane dynamicznie --></tbody>
+                <tbody id="productTableBody"><!-- The populated product rows will go here --></tbody>
             </table>
         </div>
     </div>
@@ -209,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const unitPriceInput = document.getElementById('unitPrice');
     const productTableBody = document.getElementById('productTableBody');
 
-    // Funkcja do dodawania produktu do Firestore
     function saveProductToFirestore(event) {
         event.preventDefault();
 
@@ -223,14 +223,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Sprawdzenie, czy u¿ytkownik jest zalogowany
         const user = firebase.auth().currentUser;
         if (!user) {
-            console.error('U¿ytkownik nie jest zalogowany.');
+            console.error('User is not logged in.');
             return;
         }
 
         // Pobranie identyfikatora zalogowanego u¿ytkownika
         const userId = user.uid;
 
-        // Dodanie produktu do Firestore
         productsCollection.add({
             productName: productName,
             description: description,
@@ -238,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
             userId: userId
         })
         .then(function(docRef) {
-            console.log("Dokument dodany z identyfikatorem: ", docRef.id);
+            console.log("Document written with ID: ", docRef.id);
             // Po dodaniu produktu, odœwie¿amy tabelê
             populateProductTable();
             productNameInput.value = '';
@@ -246,13 +245,12 @@ document.addEventListener('DOMContentLoaded', function() {
             unitPriceInput.value = '';
         })
         .catch(function(error) {
-            console.error("B³¹d podczas dodawania dokumentu: ", error);
+            console.error("Error adding document: ", error);
         });
     }
 
     productForm.addEventListener('submit', saveProductToFirestore);
 
-    // Funkcja do generowania danych w tabeli
     function populateProductTable() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
@@ -260,17 +258,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Sprawdzenie, czy u¿ytkownik jest zalogowany
         const user = firebase.auth().currentUser;
         if (!user) {
-            console.error('U¿ytkownik nie jest zalogowany.');
+            console.error('User is not logged in.');
             return;
         }
 
         // Pobranie identyfikatora zalogowanego u¿ytkownika
         const userId = user.uid;
 
-        // Wyczyszczenie istniej¹cych wierszy tabeli
+        // Czyszczenie istniej¹cych wierszy tabeli
         productTableBody.innerHTML = '';
 
-        // Pobranie produktów u¿ytkownika i wygenerowanie wierszy tabeli
         productsCollection.where('userId', '==', userId).get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -289,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         })
         .catch((error) => {
-            console.error("B³¹d podczas pobierania dokumentów: ", error);
+            console.error("Error getting documents: ", error);
         });
     }
 
