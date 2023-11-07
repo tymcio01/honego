@@ -97,18 +97,18 @@
         }
 
         .profile-form button {
-            background: #fff; /* White background */
-            color: #333; /* Black text */
+            background: #fff;
+            color: #000;
             padding: 10px 15px;
-            border: 2px solid #000; /* Black border */
+            border: 2px solid #000;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .profile-form button:hover {
-            background: #333; /* Black background on hover */
-            color: #fff; /* White text on hover */
+            background: #000;
+            color: #fff;
         }
     </style>
 </head>
@@ -119,91 +119,137 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const productForm = document.querySelector('#productForm');
-    const productNameInput = document.getElementById('productName');
-    const descriptionInput = document.getElementById('description');
-    const unitPriceInput = document.getElementById('unitPrice');
-    const productTableBody = document.getElementById('productTableBody');
-
-    function saveProductToFirestore(event) {
-        event.preventDefault();
-
-// Konfiguracja Firebase
-var firebaseConfig = {
-    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    // Firebase configuration (wklej swoje dane konfiguracyjne)
+    var firebaseConfig = {
+        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-};
-firebase.initializeApp(firebaseConfig);
+    };
 
-// Sprawdzenie stanu uwierzytelnienia u¿ytkownika
-firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-        window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-    }
-    // U¿ytkownik jest zalogowany
-});
+    firebase.initializeApp(firebaseConfig);
 
-// Funkcja wylogowywania
-function logout() {
-    firebase.auth().signOut().then(() => {
-        // Wylogowanie udane, przekierowanie na index.html
-        window.location.href = 'index.html';
-    }).catch((error) => {
-        // Obs³uga b³êdów
-        console.error('Logout Failed', error);
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = 'index.html'; // Przekierowanie na stronê logowania, jeœli u¿ytkownik nie jest zalogowany
+        }
     });
-}
+
+    function saveProfileToFirestore(event) {
+        event.preventDefault();
+        // Funkcja zapisu profilu do Firestore (mo¿esz dostosowaæ j¹ do swoich potrzeb)
+        var username = document.getElementById('username').value;
+        var signature = document.getElementById('signature').value;
+        var email = document.getElementById('email').value;
+        var companyName = document.getElementById('company-name').value;
+        var companyPhone = document.getElementById('company-phone').value;
+        var companyWebsite = document.getElementById('company-Website').value;
+        var companyAddress = document.getElementById('company-Address').value;
+
+        var db = firebase.firestore();
+        var profilesCollection = db.collection('profiles');
+
+        profilesCollection.add({
+            username: username,
+            signature: signature,
+            email: email,
+            companyName: companyName,
+            companyPhone: companyPhone,
+            companyWebsite: companyWebsite,
+            companyAddress: companyAddress,
+            uid: firebase.auth().currentUser.uid
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            // Obs³uga udanego zapisu danych
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+            // Obs³uga b³êdów
+        });
+    }
+
+    function logout() {
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'index.html'; // Wylogowanie udane, przekierowanie na index.html
+        }).catch((error) => {
+            console.error('Logout Failed', error);
+        });
+    }
+
+    function populateProfileForm(userData) {
+        document.getElementById('username').value = userData.username || '';
+        document.getElementById('signature').value = userData.signature || '';
+        document.getElementById('email').value = userData.email || '';
+        document.getElementById('company-name').value = userData.companyName || '';
+        document.getElementById('company-phone').value = userData.companyPhone || '';
+        document.getElementById('company-Website').value = userData.companyWebsite || '';
+        document.getElementById('company-Address').value = userData.companyAddress || '';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var profileForm = document.querySelector('.profile-form form');
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                var db = firebase.firestore();
+                var profilesCollection = db.collection('profiles');
+                profilesCollection.where('uid', '==', user.uid).get()
+                    .then((querySnapshot) => {
+                        if (!querySnapshot.empty) {
+                            var userData = querySnapshot.docs[0].data();
+                            populateProfileForm(userData);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user data:', error);
+                    });
+            } else {
+                window.location.href = 'index.html'; // Przekierowanie na stronê logowania, jeœli u¿ytkownik nie jest zalogowany
+            }
+        });
+
+        profileForm.addEventListener('submit', saveProfileToFirestore);
+    });
+
 </script>
 
 <div class="container">
     <aside>
-        <h1>Honego</h1>
         <ul>
-            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
-            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
-            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
-            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
-            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
-            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+            <li><a href="#">Profil</a></li>
+            <li><a href="#" onclick="logout()">Wyloguj</a></li>
         </ul>
     </aside>
-
     <div class="main-content">
         <div class="profile-form">
-            <h2>Add/Edit Product</h2>
-            <form id="productForm">
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" required>
+            <h2>Edytuj Profil</h2>
+            <form>
+                <label for="username">Nazwa u¿ytkownika:</label>
+                <input type="text" id="username" name="username" required>
 
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
+                <label for="signature">Podpis:</label>
+                <input type="text" id="signature" name="signature">
 
-                <label for="unitPrice">Unit Price (PLN):</label>
-                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-                <button type="submit">Save Product</button>
+                <label for="company-name">Nazwa Firmy:</label>
+                <input type="text" id="company-name" name="company-name">
+
+                <label for="company-phone">Telefon Firmy:</label>
+                <input type="text" id="company-phone" name="company-phone">
+
+                <label for="company-Website">Strona Internetowa Firmy:</label>
+                <input type="text" id="company-Website" name="company-Website">
+
+                <label for="company-Address">Adres Firmy:</label>
+                <input type="text" id="company-Address" name="company-Address">
+
+                <button type="submit">Zapisz</button>
             </form>
-        </div>
-
-        <div class="product-table">
-            <h2>Product List</h2>
-            <table border="1" width="100%" cellpadding="5" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Description</th>
-                        <th>Unit Price (PLN)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="productTableBody"><!-- The populated product rows will go here --></tbody>
-            </table>
         </div>
     </div>
 </div>
@@ -212,97 +258,5 @@ function logout() {
     &copy; 2023 Honego - All Rights Reserved
 </footer>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const productForm = document.querySelector('#productForm');
-    const productNameInput = document.getElementById('productName');
-    const descriptionInput = document.getElementById('description');
-    const unitPriceInput = document.getElementById('unitPrice');
-    const productTableBody = document.getElementById('productTableBody');
-
-    function saveProductToFirestore(event) {
-        event.preventDefault();
-
-        const productName = productNameInput.value;
-        const description = descriptionInput.value;
-        const unitPrice = parseFloat(unitPriceInput.value);
-
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-
-        // Sprawdzenie, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-
-        // Pobranie identyfikatora zalogowanego u¿ytkownika
-        const userId = user.uid;
-
-        productsCollection.add({
-            productName: productName,
-            description: description,
-            unitPrice: unitPrice,
-            userId: userId
-        })
-        .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-            // Po dodaniu produktu, odœwie¿amy tabelê
-            populateProductTable();
-            productNameInput.value = '';
-            descriptionInput.value = '';
-            unitPriceInput.value = '';
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-        });
-    }
-
-    productForm.addEventListener('submit', saveProductToFirestore);
-
-    function populateProductTable() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-
-        // Sprawdzenie, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-
-        // Pobranie identyfikatora zalogowanego u¿ytkownika
-        const userId = user.uid;
-
-        // Czyszczenie istniej¹cych wierszy tabeli
-        productTableBody.innerHTML = '';
-
-        productsCollection.where('userId', '==', userId).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${data.productName}</td>
-                    <td>${data.description}</td>
-                    <td>${data.unitPrice} PLN</td>
-                    <td>
-                        <button type="button" onclick="editProduct(this)">Edit</button>
-                        <button type="button" onclick="deleteProduct(this)">Delete</button>
-                    </td>
-                `;
-                productTableBody.appendChild(tr);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
-        });
-    }
-
-    // Wywo³anie funkcji populateProductTable przy starcie strony
-    populateProductTable();
-});
-</script>
 </body>
 </html>
