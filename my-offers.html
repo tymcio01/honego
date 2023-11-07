@@ -58,14 +58,18 @@
             color: #333;
         }
 
-        /* Nowy kontener "Drafts" */
+        /* Nowy poziomy kontener "Drafts" */
         .drafts-container {
             flex: 1;
+            display: flex;
+            flex-direction: row;
             background-color: #fff;
             box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
 
+        /* Reszta stylów pozostaje taka sama */
+        
         .main-content {
             flex-grow: 1;
             padding: 20px;
@@ -78,43 +82,6 @@
             color: #f6f6f6;
             padding: 10px 20px;
             text-align: center;
-        }
-
-        .profile-form {
-            max-width: 500px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-form label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .profile-form input[type="text"],
-        .profile-form input[type="email"],
-        .profile-form input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .profile-form button {
-            background: #5cb85c;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .profile-form button:hover {
-            background: #4cae4c;
         }
     </style>
 </head>
@@ -168,29 +135,9 @@
         </ul>
     </aside>
 
-    <!-- Kontener "Drafts" -->
+    <!-- Nowy poziomy kontener "Drafts" -->
     <div class="drafts-container">
-        <h2>Drafts</h2>
         <!-- Tutaj mo¿na dodaæ zawartoœæ do kontenera "Drafts" -->
-    </div>
-
-    <!-- Reszta zawartoœci strony -->
-    <div class="main-content">
-        <div class="profile-form">
-            <h2>Profile Details</h2>
-            <form>
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-
-                <button type="submit">Update Profile</button>
-            </form>
-        </div>
     </div>
 </div>
 
