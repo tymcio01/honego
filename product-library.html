@@ -233,6 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
             productNameInput.value = '';
             descriptionInput.value = '';
             unitPriceInput.value = '';
+            
+            // Po dodaniu produktu, odœwie¿ tabelê
+            populateProductTable();
         })
         .catch(function(error) {
             console.error("Error adding document: ", error);
