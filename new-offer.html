@@ -313,6 +313,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
  <!-- File attachment input for multiple files -->
 <label for="fileAttachment">Attach Files:</label>
 <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
+<div id="fileNames"></div>
 </div>
 
         </div>
@@ -393,6 +394,16 @@ calculateTotal();
                 product.addEventListener('dblclick', moveProduct);
             });
         };
+
+// Function to handle file selection and display file names
+    document.getElementById('fileAttachment').addEventListener('change', function() {
+        var fileNamesDiv = document.getElementById('fileNames');
+        fileNamesDiv.innerHTML = ''; // Clear the current file names
+        for (var i = 0; i < this.files.length; i++) {
+            fileNamesDiv.innerHTML += this.files[i].name + '<br>'; // Display each file name on a new line
+        }
+    });
+
     </script>
 
 </body>
