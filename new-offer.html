@@ -405,31 +405,30 @@ calculateTotal();
         for (let i = 0; i < input.files.length; i++) {
             let file = input.files[i];
             let fileDiv = document.createElement('div');
-            fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(' + i + ');">&times;</a>';
+            fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(event, ' + i + ');">&times;</a>';
             fileListContainer.appendChild(fileDiv);
         }
     }
 
     // Function to remove a file from the list
-    function removeFile(index) {
-        var dt = new DataTransfer(); // Use DataTransfer to manipulate file input
-        var input = document.getElementById('fileAttachment');
-        var { files } = input;
+    function removeFile(event, index) {
+    event.preventDefault(); // Prevent the link from changing the URL hash
 
-        // Add all files from the file input to the DataTransfer object except the one to be removed
-        for (let i = 0; i < files.length; i++) {
-            if (index !== i) {
-                dt.items.add(files[i]);
-            }
+    var dt = new DataTransfer(); // Use DataTransfer to manipulate file input
+    var input = document.getElementById('fileAttachment');
+    var { files } = input;
+
+    // Add all files from the file input to the DataTransfer object except the one to be removed
+    for (let i = 0; i < files.length; i++) {
+        if (index !== i) {
+            dt.items.add(files[i]);
         }
-
-        // Update the file input with the new set of files
-        input.files = dt.files;
-        updateFileList(); // Update the list display
-
-        // Prevent the default link action
-        return false;
     }
+
+    // Update the file input with the new set of files
+    input.files = dt.files;
+    updateFileList(); // Update the list display
+}
 
     // Event listener to update the file list whenever files are selected
     document.getElementById('fileAttachment').addEventListener('change', updateFileList);
