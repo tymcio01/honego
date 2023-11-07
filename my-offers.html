@@ -58,18 +58,6 @@
             color: #333;
         }
 
-        /* Nowy poziomy kontener "Drafts" */
-        .drafts-container {
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            background-color: #fff;
-            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        /* Reszta stylów pozostaje taka sama */
-
         .main-content {
             flex-grow: 1;
             padding: 20px;
@@ -83,6 +71,43 @@
             padding: 10px 20px;
             text-align: center;
         }
+
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
     </style>
 </head>
 <body>
@@ -91,15 +116,17 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 <script>
-  // Konfiguracja Firebase
+
+// Konfiguracja Firebase
   var firebaseConfig = {
-    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
-    authDomain: "honego-52c31.firebaseapp.com",
-    projectId: "honego-52c31",
-    storageBucket: "honego-52c31.appspot.com",
-    messagingSenderId: "897927654843",
-    appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-  };
+apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+        authDomain: "honego-52c31.firebaseapp.com",
+        projectId: "honego-52c31",
+        storageBucket: "honego-52c31.appspot.com",
+        messagingSenderId: "897927654843",
+        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+
+ };
   firebase.initializeApp(firebaseConfig);
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -109,7 +136,7 @@
     // U¿ytkownik jest zalogowany
   });
 
-  // Funkcja wylogowywania
+// Funkcja wylogowywania
   function logout() {
     firebase.auth().signOut().then(() => {
       // Wylogowanie udane, przekierowanie na index.html
@@ -121,29 +148,48 @@
   }
 </script>
 
-<div class="container">
-    <aside>
-        <h1>Honego</h1>
-        <ul>
-            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+</script>
+
+
+    <div class="container">
+
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
             <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>
-    </aside>
+        </ul>    
 
-    <!-- Nowy poziomy kontener "Drafts" z przyk³adow¹ zawartoœci¹ -->
-    <div class="drafts-container">
-        <h2>Drafts</h2>
-        <p>To jest przyk³adowa zawartoœæ kontenera "Drafts". Mo¿esz dodaæ treœæ tutaj.</p>
+        </aside>
+
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Profile Details</h2>
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+        </div>
+
     </div>
-</div>
 
-<footer>
-    &copy; 2023 Honego - All Rights Reserved
-</footer>
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
+
 </body>
 </html>
