@@ -128,6 +128,27 @@ firebase.auth().onAuthStateChanged((user) => {
             initializeFirebase();
         });
 
+        function initializeFirebase() {
+            const productForm = document.querySelector('#productForm');
+            const productNameInput = document.getElementById('productName');
+            const descriptionInput = document.getElementById('description');
+            const unitPriceInput = document.getElementById('unitPrice');
+            const productTableBody = document.getElementById('productTableBody');
+
+            // Your code for saving products and populating the product table here
+
+            // Ensure to define the functions saveProductToFirestore and populateProductTable as per your requirements.
+
+            productForm.addEventListener('submit', saveProductToFirestore);
+
+            function populateProductTable() {
+                // Your code for populating the product table here
+            }
+
+            // Initialize Firebase and populate the product table on page load
+            const db = firebase.firestore();
+            populateProductTable();
+        }
 // Konfiguracja Firebase
 var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
