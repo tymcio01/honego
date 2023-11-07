@@ -58,6 +58,14 @@
             color: #333;
         }
 
+        /* Nowy kontener "Drafts" */
+        .drafts-container {
+            flex: 1;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
         .main-content {
             flex-grow: 1;
             padding: 20px;
@@ -116,17 +124,15 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 <script>
-
-// Konfiguracja Firebase
+  // Konfiguracja Firebase
   var firebaseConfig = {
-apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
-        authDomain: "honego-52c31.firebaseapp.com",
-        projectId: "honego-52c31",
-        storageBucket: "honego-52c31.appspot.com",
-        messagingSenderId: "897927654843",
-        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-
- };
+    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    authDomain: "honego-52c31.firebaseapp.com",
+    projectId: "honego-52c31",
+    storageBucket: "honego-52c31.appspot.com",
+    messagingSenderId: "897927654843",
+    appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+  };
   firebase.initializeApp(firebaseConfig);
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -136,7 +142,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     // U¿ytkownik jest zalogowany
   });
 
-// Funkcja wylogowywania
+  // Funkcja wylogowywania
   function logout() {
     firebase.auth().signOut().then(() => {
       // Wylogowanie udane, przekierowanie na index.html
@@ -148,48 +154,48 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   }
 </script>
 
-</script>
-
-
-    <div class="container">
-
-        <aside>
-            <h1>Honego</h1>
-            <ul>
-<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+<div class="container">
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
             <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>    
+        </ul>
+    </aside>
 
-        </aside>
-
-        <div class="main-content">
-            <div class="profile-form">
-                <h2>Profile Details</h2>
-                <form>
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-
-                    <button type="submit">Update Profile</button>
-                </form>
-            </div>
-        </div>
-
+    <!-- Kontener "Drafts" -->
+    <div class="drafts-container">
+        <h2>Drafts</h2>
+        <!-- Tutaj mo¿na dodaæ zawartoœæ do kontenera "Drafts" -->
     </div>
 
-    <footer>
-        &copy; 2023 Honego - All Rights Reserved
-    </footer>
+    <!-- Reszta zawartoœci strony -->
+    <div class="main-content">
+        <div class="profile-form">
+            <h2>Profile Details</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2023 Honego - All Rights Reserved
+</footer>
 </body>
 </html>
