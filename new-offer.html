@@ -228,38 +228,34 @@ max-height: 30px;
 <body>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-var firebaseConfig = {
-    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    var firebaseConfig = {
+        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+    };
 
-};
+    firebase.initializeApp(firebaseConfig);
 
-firebase.initializeApp(firebaseConfig);
-
-firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-        window.location.href = 'index.html';
-    }
-});
-
-// Funkcja wylogowywania
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      // Wylogowanie udane, przekierowanie na index.html
-      window.location.href = 'index.html';
-    }).catch((error) => {
-      // Obs³uga b³êdów
-      console.error('Logout Failed', error);
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = 'index.html';
+        }
     });
-}
+
+    function logout() {
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'index.html';
+        }).catch((error) => {
+            console.error('Logout Failed', error);
+        });
+    }
 </script>
 
 <div class="container">
@@ -290,9 +286,11 @@ firebase.auth().onAuthStateChanged((user) => {
             <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
-            <div class="products-area" ondragover="allowDrop(event)">
+            <div class="products-area" ondragover="allowDrop(event)" ondrop="drop(event)">
                 <h3>Available Products</h3>
-                
+                <div class="product-item" id="product1" draggable="true" data-value="50">Product 1 - 50 PLN</div>
+                <div class="product-item" id="product2" draggable="true" data-value="75">Product 2 - 75 PLN</div>
+                <!-- Dodaj wiêcej produktów w odpowiednim formacie -->
             </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h3>Selected Products</h3>
@@ -318,101 +316,36 @@ firebase.auth().onAuthStateChanged((user) => {
     &copy; 2023 Honego - All Rights Reserved
 </footer>
 <script>
-function allowDrop(event) {
-    event.preventDefault();
-  }
-
-  function drag(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-  }
-
-  function drop(event) {
-    event.preventDefault();
-    const data = event.dataTransfer.getData("text/plain");
-    const draggableElement = document.getElementById(data);
-    let dropzone = event.target;
-    calculateTotal();
-    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-      dropzone = dropzone.parentNode;
+    function allowDrop(event) {
+        event.preventDefault();
     }
-    if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
-      dropzone.appendChild(draggableElement);
+
+    function drag(event) {
+        event.dataTransfer.setData("text/plain", event.target.id);
     }
-  }
 
-  function moveProduct(event) {
-    const product = event.target;
-    const currentArea = product.parentNode;
-    const isProductAvailable = currentArea.classList.contains('products-area');
-    const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
-    destinationArea.appendChild(product);
-    calculateTotal();
-  }
-
-  window.onload = function() {
-    const products = document.querySelectorAll('.product-item');
-    products.forEach(function(product) {
-      product.addEventListener('dblclick', moveProduct);
-    });
-  };
-
-function updateFileList() {
-    var input = document.getElementById('fileAttachment');
-    var fileListContainer = document.getElementById('fileList');
-    fileListContainer.innerHTML = '';
-    for (let i = 0; i < input.files.length; i++) {
-        let file = input.files[i];
-        let fileDiv = document.createElement('div');
-        fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(' + i + ');">&times;</a>';
-        fileListContainer.appendChild(fileDiv);
-    }
-}
-function removeFile(index) {
-    var dt = new DataTransfer();
-    var input = document.getElementById('fileAttachment');
-    var { files } = input;
-    for (let i = 0; i < files.length; i++) {
-        if (index !== i) {
-            dt.items.add(files[i]);
+    function drop(event) {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("text/plain");
+        const draggableElement = document.getElementById(data);
+        let dropzone = event.target;
+        calculateTotal();
+        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+            dropzone = dropzone.parentNode;
+        }
+        if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
+            dropzone.appendChild(draggableElement);
         }
     }
-    input.files = dt.files;
-    updateFileList();
-    return false;
-}
-document.getElementById('fileAttachment').addEventListener('change', updateFileList);
-function fetchAndPopulateProducts() {
-    const db = firebase.firestore();
-    const productsCollection = db.collection('products');
-    productsCollection.get()
-        .then((querySnapshot) => {
-            const productsArea = document.querySelector('.products-area');
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const productItem = document.createElement('div');
-                productItem.classList.add('product-item');
-                productItem.draggable = true;
-                productItem.dataset.value = data.unitPrice;
-                productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                productItem.addEventListener('dragstart', drag);
-                productsArea.appendChild(productItem);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
+
+    function calculateTotal() {
+        let sum = 0;
+        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+        selectedProducts.forEach(function (product) {
+            sum += Number(product.getAttribute('data-value'));
         });
-}
-window.onload = function() {
-    fetchAndPopulateProducts();
-};
-function calculateTotal() {
-    let sum = 0;
-    const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-    selectedProducts.forEach(function(product) {
-        sum += Number(product.getAttribute('data-value'));
-    });
-    document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
-}
+        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
+    }
 </script>
 </body>
 </html>
