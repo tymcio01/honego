@@ -216,13 +216,13 @@ max-height: 30px;
     </style>
 
  <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tutaj umieœæ kod, który ma byæ wykonany po za³adowaniu ca³ej zawartoœci strony
+    window.onload = function() {
+        // Tutaj umieœæ kod, który ma byæ wykonany po za³adowaniu ca³ej zawartoœci strony
 
-            // Przyk³ad:
-            fetchAndPopulateProducts();
-        });
-    </script>
+        // Przyk³ad:
+        fetchAndPopulateProducts();
+    };
+</script>
 
 </head>
 <body>
@@ -347,7 +347,7 @@ function moveProduct(event) {
     destinationArea.appendChild(product);
     calculateTotal();
 }
-
+window.onload = function() {
     const products = document.querySelectorAll('.product-item');
     products.forEach(function(product) {
         product.addEventListener('dblclick', moveProduct);
@@ -399,6 +399,8 @@ function fetchAndPopulateProducts() {
             console.error("Error getting documents: ", error);
         });
 }
+window.onload = function() {
+    fetchAndPopulateProducts();
 };
 function calculateTotal() {
     let sum = 0;
