@@ -218,6 +218,7 @@ max-height: 30px;
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
 
@@ -288,6 +289,9 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
             <!-- Drag and Drop Area outside of the form -->
             <div class="drag-area">
                 <div class="products-area" ondragover="allowDrop(event)">
+
+<div class="products-area" ondragover="allowDrop(event)">
+
                     <h3>Available Products</h3>
                     <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item" data-value="900">Meeting room 110m2 - 900</div>
 <div draggable="true" ondragstart="drag(event)" id="product2" class="product-item" data-value="5000">Ball room 500m2 - 5000</div>
@@ -434,7 +438,42 @@ calculateTotal();
     // Event listener to update the file list whenever files are selected
     document.getElementById('fileAttachment').addEventListener('change', updateFileList);
 
-    // ...existing script elements...
+    <script>
+    // Function to fetch products from Firestore and populate the table
+    function fetchAndPopulateProducts() {
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+
+        productsCollection.get()
+            .then((querySnapshot) => {
+                const productsArea = document.querySelector('.products-area');
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('product-item');
+                    productItem.draggable = true;
+                    productItem.dataset.value = data.unitPrice;
+                    productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
+
+                    // Add a drag event listener
+                    productItem.addEventListener('dragstart', drag);
+
+                    productsArea.appendChild(productItem);
+                });
+            })
+            .catch((error) => {
+                console.error("Error getting documents: ", error);
+            });
+    }
+
+    // Call the function to populate products when the page loads
+    window.onload = function() {
+        fetchAndPopulateProducts();
+    };
+
 </script>
+
 </body>
+
 </html>
