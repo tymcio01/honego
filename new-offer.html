@@ -6,6 +6,7 @@
     <title>Honego</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    
     <style>
         html {
             height: 100%;
@@ -213,32 +214,41 @@ max-height: 30px;
         .btn-email { background-color: #28a745; color: white; }
 
     </style>
+
+ <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tutaj umieœæ kod, który ma byæ wykonany po za³adowaniu ca³ej zawartoœci strony
+
+            // Przyk³ad:
+            fetchAndPopulateProducts();
+        });
+    </script>
+
 </head>
 <body>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-
-// Konfiguracja Firebase
-  var firebaseConfig = {
-apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+var firebaseConfig = {
+    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
 
- };
-  firebase.initializeApp(firebaseConfig);
+};
 
-  firebase.auth().onAuthStateChanged((user) => {
+firebase.initializeApp(firebaseConfig);
+
+firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+        window.location.href = 'index.html';
     }
-    // U¿ytkownik jest zalogowany
-  });
+});
 
 // Funkcja wylogowywania
   function logout() {
@@ -249,76 +259,55 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
       // Obs³uga b³êdów
       console.error('Logout Failed', error);
     });
-  }
+}
 </script>
 
-    <div class="container">
-
-        <aside>
-            <h1>Honego</h1>
-            <ul>
-<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+<div class="container">
+    <aside>
+        <h1>Honego</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
             <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>    
-        </aside>
+        </ul>
+    </aside>
 
-        <div class="main-content">
-            <div class="profile-form">
-                <h2>Create New Offer</h2>
-                <label for="clientName">Client Name/Company:</label>
-                <input type="text" id="clientName" name="clientName" required>
-
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" required>
-
-                <label for="clientEmail">Client Email:</label>
-                <input type="email" id="clientEmail" name="clientEmail" required>
-
-                <label for="receiversName">Receiver's Name:</label>
-                <input type="text" id="receiversName" name="receiversName" required>
-
-                <button type="submit">Create Offer</button>
-            </div>
-            
-            <!-- Drag and Drop Area outside of the form -->
-            <div class="drag-area">
-                <div class="products-area" ondragover="allowDrop(event)">
-                    <h3>Available Products</h3>
-                    <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item" data-value="900">Meeting room 110m2 - 900</div>
-<div draggable="true" ondragstart="drag(event)" id="product2" class="product-item" data-value="5000">Ball room 500m2 - 5000</div>
-<div draggable="true" ondragstart="drag(event)" id="product3" class="product-item" data-value="330">Double Room Standard 15m2 - 330</div>
-
-<!-- Add more draggable products with their respective data-value attributes -->
-
-                    <!-- Add more draggable products here -->
-                </div>
-                <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <h3>Selected Products</h3>
-                    <!-- Dropped products will appear here -->
-<div id="totalSum">Total Sum: 0 PLN</div>
-
-                </div>
-            </div>
-<!-- Additional comments box -->
     <div class="main-content">
+        <div class="profile-form">
+            <h2>Create New Offer</h2>
+            <label for="clientName">Client Name/Company:</label>
+            <input type="text" id="clientName" name="clientName" required>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+            <label for="clientEmail">Client Email:</label>
+            <input type="email" id="clientEmail" name="clientEmail" required>
+            <label for="receiversName">Receiver's Name:</label>
+            <input type="text" id="receiversName" name="receiversName" required>
+            <button type="submit">Create Offer</button>
+        </div>
+        <div class="drag-area">
+            <div class="products-area" ondragover="allowDrop(event)">
+                <h3>Available Products</h3>
+                <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item" data-value="900">Meeting room 110m2 - 900 PLN</div>
+                <div draggable="true" ondragstart="drag(event)" id="product2" class="product-item" data-value="5000">Ball room 500m2 - 5000 PLN</div>
+                <div draggable="true" ondragstart="drag(event)" id="product3" class="product-item" data-value="330">Double Room Standard 15m2 - 330 PLN</div>
+            </div>
+            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h3>Selected Products</h3>
+                <div id="totalSum">Total Sum: 0 PLN</div>
+            </div>
+        </div>
         <div class="comments-box">
             <label for="additionalComments">Additional Notes & Conditions:</label>
             <textarea id="additionalComments" name="additionalComments" placeholder="Enter any additional notes and conditions here..."></textarea>
-
- <!-- File attachment input for multiple files -->
-<label for="fileAttachment">Attach Files:</label>
-<input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
-<div id="fileList"></div>
-</div>
-
+            <label for="fileAttachment">Attach Files:</label>
+            <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
+            <div id="fileList"></div>
         </div>
- <!-- Buttons for form actions -->
-    <div class="main-content">
         <div class="form-actions">
             <button type="button" class="btn-draft">Save as Draft</button>
             <button type="button" class="btn-preview">Preview</button>
@@ -326,115 +315,101 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
             <button type="button" class="btn-email">Send by Email</button>
         </div>
     </div>
-    </div>
-        </div>
-
-    </div>
-
-
-    <footer>
-        &copy; 2023 Honego - All Rights Reserved
-    </footer>
-
+</div>
+<footer>
+    &copy; 2023 Honego - All Rights Reserved
+</footer>
 <script>
-
-function calculateTotal() {
-        let sum = 0;
-
-// Get all the products in the selected area
-        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-        selectedProducts.forEach(function(product) {
-            // Parse the data-value attribute to a number and add it to the sum
-            sum += Number(product.getAttribute('data-value'));
-        });
-        // Display the total sum
-        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
+function allowDrop(event) {
+    event.preventDefault();
+}
+function drag(event) {
+    event.dataTransfer.setData("text/plain", event.target.id);
+}
+function drop(event) {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text/plain");
+    const draggableElement = document.getElementById(data);
+    let dropzone = event.target;
+    calculateTotal();
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
     }
-
-        // Funkcje obs³ugi drag and drop
-        function allowDrop(event) {
-            event.preventDefault();
+    if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
+        dropzone.appendChild(draggableElement);
+    }
+}
+function moveProduct(event) {
+    const product = event.target;
+    const currentArea = product.parentNode;
+    const isProductAvailable = currentArea.classList.contains('products-area');
+    const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
+    destinationArea.appendChild(product);
+    calculateTotal();
+}
+window.onload = function() {
+    const products = document.querySelectorAll('.product-item');
+    products.forEach(function(product) {
+        product.addEventListener('dblclick', moveProduct);
+    });
+};
+function updateFileList() {
+    var input = document.getElementById('fileAttachment');
+    var fileListContainer = document.getElementById('fileList');
+    fileListContainer.innerHTML = '';
+    for (let i = 0; i < input.files.length; i++) {
+        let file = input.files[i];
+        let fileDiv = document.createElement('div');
+        fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(' + i + ');">&times;</a>';
+        fileListContainer.appendChild(fileDiv);
+    }
+}
+function removeFile(index) {
+    var dt = new DataTransfer();
+    var input = document.getElementById('fileAttachment');
+    var { files } = input;
+    for (let i = 0; i < files.length; i++) {
+        if (index !== i) {
+            dt.items.add(files[i]);
         }
-
-        function drag(event) {
-            event.dataTransfer.setData("text/plain", event.target.id);
-        }
-
-        function drop(event) {
-            event.preventDefault();
-            const data = event.dataTransfer.getData("text/plain");
-            const draggableElement = document.getElementById(data);
-            let dropzone = event.target;
- calculateTotal(); // Call calculateTotal after a product is dropped
-
-            while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-                dropzone = dropzone.parentNode;
-            }
-
-            if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
-                dropzone.appendChild(draggableElement);
-            }
-        }
-
-        // Nowa funkcja do obs³ugi przenoszenia produktów przez podwójne klikniêcie
-        function moveProduct(event) {
-            const product = event.target;
-            const currentArea = product.parentNode;
-            const isProductAvailable = currentArea.classList.contains('products-area');
-            const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
-
-            destinationArea.appendChild(product);
-calculateTotal();
-        }
-
-        // Dodajemy obs³ugê podwójnego klikniêcia do wszystkich produktów
-        window.onload = function() {
-            const products = document.querySelectorAll('.product-item');
-            products.forEach(function(product) {
-                product.addEventListener('dblclick', moveProduct);
+    }
+    input.files = dt.files;
+    updateFileList();
+    return false;
+}
+document.getElementById('fileAttachment').addEventListener('change', updateFileList);
+function fetchAndPopulateProducts() {
+    const db = firebase.firestore();
+    const productsCollection = db.collection('products');
+    productsCollection.get()
+        .then((querySnapshot) => {
+            const productsArea = document.querySelector('.products-area');
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.draggable = true;
+                productItem.dataset.value = data.unitPrice;
+                productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
+                productItem.addEventListener('dragstart', drag);
+                productsArea.appendChild(productItem);
             });
-        };
-
-// Function to update the file list display
-    function updateFileList() {
-        var input = document.getElementById('fileAttachment');
-        var fileListContainer = document.getElementById('fileList');
-        fileListContainer.innerHTML = ''; // Clear the list
-
-        // Display each file in the list with a remove button
-        for (let i = 0; i < input.files.length; i++) {
-            let file = input.files[i];
-            let fileDiv = document.createElement('div');
-            fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(' + i + ');">&times;</a>';
-            fileListContainer.appendChild(fileDiv);
-        }
-    }
-
-    // Function to remove a file from the list
-    function removeFile(index) {
-        var dt = new DataTransfer(); // Use DataTransfer to manipulate file input
-        var input = document.getElementById('fileAttachment');
-        var { files } = input;
-
-        // Add all files from the file input to the DataTransfer object except the one to be removed
-        for (let i = 0; i < files.length; i++) {
-            if (index !== i) {
-                dt.items.add(files[i]);
-            }
-        }
-
-        // Update the file input with the new set of files
-        input.files = dt.files;
-        updateFileList(); // Update the list display
-
-        // Prevent the default link action
-        return false;
-    }
-
-    // Event listener to update the file list whenever files are selected
-    document.getElementById('fileAttachment').addEventListener('change', updateFileList);
-
-    // ...existing script elements...
+        })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+}
+window.onload = function() {
+    fetchAndPopulateProducts();
+};
+function calculateTotal() {
+    let sum = 0;
+    const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+    selectedProducts.forEach(function(product) {
+        sum += Number(product.getAttribute('data-value'));
+    });
+    document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
+}
 </script>
 </body>
 </html>
