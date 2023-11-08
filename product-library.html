@@ -130,6 +130,15 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+ // W³¹cz persystencjê danych Firestore
+        firebase.firestore().enablePersistence()
+            .then(function () {
+                // Persystencja danych Firestore zosta³a w³¹czona pomyœlnie
+            })
+            .catch(function (err) {
+                console.error("B³¹d podczas w³¹czania persystencji Firestore: ", err);
+            });
+
 // Sprawdzenie stanu uwierzytelnienia u¿ytkownika
 firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
