@@ -330,27 +330,6 @@ function sendOffer(clientId) {
     console.log('Sending offer to client with ID:', clientId);
 }
 
-// Dodanie s³uchacza zdarzeñ do formularza
-document.getElementById('addClientForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
-
-    // Pobranie danych z formularza
-    var clientData = {
-        company: document.getElementById('company').value,
-        name: document.getElementById('name').value,
-        surname: document.getElementById('surname').value,
-        address: document.getElementById('address').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        industry: document.getElementById('industry').value,
-    };
-
-    // Dodanie klienta do Firestore
-    addClientToFirestore(clientData);
-
-    // Czyszczenie formularza
-    document.getElementById('addClientForm').reset();
-});
 
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
