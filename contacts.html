@@ -132,134 +132,226 @@
     </style>
 </head>
 <body>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<script>
-    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    <script>
+        // Konfiguracja Firebase
+        var firebaseConfig = {
+            "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+        };
+        firebase.initializeApp(firebaseConfig);
 
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+            }
+            // U¿ytkownik jest zalogowany
+        });
+
+        // Funkcja wylogowywania
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Wylogowanie udane, przekierowanie na index.html
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                // Obs³uga b³êdów
+                console.error('Logout Failed', error);
+            });
+        }
+
+        // Funkcja dodawania klienta do Firestore
+        function addClientToFirestore(clientData) {
+            const db = firebase.firestore();
+            const clientsCollection = db.collection('clients');
+
+            clientsCollection.add(clientData)
+                .then((docRef) => {
+                    console.log('Document written with ID: ', docRef.id);
+                })
+                .catch((error) => {
+                    console.error('Error adding document: ', error);
+                });
+        }
+
+        // Dodanie s³uchacza zdarzeñ do formularza
+        document.getElementById('addClientForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+
+            // Pobranie danych z formularza
+            var company = document.getElementById('company').value;
+            var name = document.getElementById('name').value;
+            var surname = document.getElementById('surname').value;
+            var address = document.getElementById('address').value;
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var industry = document.getElementById('industry').value;
+
+            // Tworzenie obiektu zawieraj¹cego dane klienta
+            var clientData = {
+                company: company,
+                name: name,
+                surname: surname,
+                address: address,
+                phone: phone,
+                email: email,
+                industry: industry
+            };
+
+            // Dodanie klienta do Firestore
+            addClientToFirestore(clientData);
+
+            // Czyszczenie formularza
+            document.getElementById('addClientForm').reset();
+        });
+    </script>
+
+    <div class="container">
+        <aside>
+
+            
+        <h1>Honego</h1>
+        <ul>
+<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
+            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
+            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
+            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+        </ul>    
+</aside>
+
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Add New Client</h2>
+                <form id="addClientForm">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" required>
+                    
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname" name="surname" required>
+                    
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                    
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" name="phone" required>
+                    
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    
+                    <label for="industry">Industry</label>
+                    <input type="text" id="industry" name="industry" required>
+                    
+                    <button type="submit">Add Client</button>
+                </form>
+            </div>
+
+            <div style="padding: 20px 0; text-align: center;">
+                <button type="button">Search</button>
+                <button type="button" id="exportBtn">Export</button>
+            </div>
+
+            <table class="customer-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)"><i class="fas fa-sort"></i> Company</th>
+                        <th onclick="sortTable(1)"><i class="fas fa-sort"></i> Name</th>
+                        <th onclick="sortTable(2)"><i class="fas fa-sort"></i> Surname</th>
+                        <th onclick="sortTable(3)"><i class="fas fa-sort"></i> Address</th>
+                        <th onclick="sortTable(4)"><i class="fas fa-sort"></i> Phone</th>
+                        <th onclick="sortTable(5)"><i class="fas fa-sort"></i> Email</th>
+                        <th onclick="sortTable(6)"><i class="fas fa-sort"></i> Industry</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Wiersze z klientami zostan¹ tutaj dodane -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
+
+<script>
+
+// Funkcja dodawania klienta do Firestore
+function addClientToFirestore(clientData) {
+    const db = firebase.firestore();
+    const clientsCollection = db.collection('clients');
+
+    clientsCollection.add(clientData)
+        .then((docRef) => {
+            console.log('Document written with ID: ', docRef.id);
+            // Aktualizacja tabeli po dodaniu klienta
+            updateTableWithClient(clientData, docRef.id);
+        })
+        .catch((error) => {
+            console.error('Error adding document: ', error);
+        });
+}
+
+// Funkcja aktualizacji tabeli po dodaniu klienta
+function updateTableWithClient(clientData, clientId) {
+    const tableBody = document.getElementById('tableBody');
+
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${clientData.company}</td>
+        <td>${clientData.name}</td>
+        <td>${clientData.surname}</td>
+        <td>${clientData.address}</td>
+        <td>${clientData.phone}</td>
+        <td>${clientData.email}</td>
+        <td>${clientData.industry}</td>
+        <td><button class="send-offer-btn" type="button" onclick="sendOffer('${clientId}')">Send Offer</button></td>
+    `;
+
+    tableBody.appendChild(newRow);
+}
+
+// Funkcja wysy³ania oferty dla klienta
+function sendOffer(clientId) {
+    // Tutaj mo¿esz dodaæ kod obs³uguj¹cy wysy³anie oferty dla klienta
+    // Mo¿esz u¿yæ clientId do zidentyfikowania klienta, któremu wysy³asz ofertê
+    console.log('Sending offer to client with ID:', clientId);
+}
+
+// Dodanie s³uchacza zdarzeñ do formularza
+document.getElementById('addClientForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+
+    // Pobranie danych z formularza
+    var clientData = {
+        company: document.getElementById('company').value,
+        name: document.getElementById('name').value,
+        surname: document.getElementById('surname').value,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        industry: document.getElementById('industry').value,
     };
 
-    firebase.initializeApp(firebaseConfig);
+    // Dodanie klienta do Firestore
+    addClientToFirestore(clientData);
 
-    var currentUser; // Przechowuje informacje o zalogowanym u¿ytkowniku
+    // Czyszczenie formularza
+    document.getElementById('addClientForm').reset();
+});
 
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            currentUser = user; // Ustalamy aktualnego u¿ytkownika
-        } else {
-            window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-        }
-    });
-
-    // Funkcja wylogowywania
-    function logout() {
-        firebase.auth().signOut().then(() => {
-            // Wylogowanie udane, przekierowanie na index.html
-            window.location.href = 'index.html';
-        }).catch((error) => {
-            // Obs³uga b³êdów
-            console.error('Logout Failed', error);
-        });
-    }
-
-    // Funkcja dodawania klienta do Firestore
-    function addClientToFirestore(clientData) {
-        const db = firebase.firestore();
-        const clientsCollection = db.collection('clients');
-
-        // Dodajemy identyfikator u¿ytkownika jako pole w dokumencie klienta
-        clientData.userId = currentUser.uid;
-
-        clientsCollection.add(clientData)
-            .then((docRef) => {
-                console.log('Document written with ID: ', docRef.id);
-                // Aktualizacja tabeli po dodaniu klienta
-                updateTableWithClient(clientData, docRef.id);
-            })
-            .catch((error) => {
-                console.error('Error adding document: ', error);
-            });
-    }
-
-    // Funkcja pobieraj¹ca i wyœwietlaj¹ca klientów z Firestore dla bie¿¹cego u¿ytkownika
-    function fetchClientsFromFirestore() {
-        const db = firebase.firestore();
-        const clientsCollection = db.collection('clients');
-
-        // Pobieramy klientów tylko dla bie¿¹cego u¿ytkownika
-        clientsCollection.where('userId', '==', currentUser.uid).get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const clientData = doc.data();
-                    updateTableWithClient(clientData, doc.id);
-                });
-            })
-            .catch((error) => {
-                console.error('Error fetching clients: ', error);
-            });
-    }
-
-    // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
-    function updateTableWithClient(clientData, docId) {
-        var newRow = `<tr>
-            <td>${clientData.company}</td>
-            <td>${clientData.name}</td>
-            <td>${clientData.surname}</td>
-            <td>${clientData.address}</td>
-            <td>${clientData.phone}</td>
-            <td>${clientData.email}</td>
-            <td>${clientData.industry}</td>
-            <td><button class="send-offer-btn" type="button">Send Offer</button></td>
-        </tr>`;
-
-        // Dodanie nowego wiersza do tabeli
-        document.getElementById('tableBody').innerHTML += newRow;
-    }
-
-    // Dodanie s³uchacza zdarzeñ do formularza
-    document.getElementById('addClientForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
-
-        // Pobranie danych z formularza
-        var company = document.getElementById('company').value;
-        var name = document.getElementById('name').value;
-        var surname = document.getElementById('surname').value;
-        var address = document.getElementById('address').value;
-        var phone = document.getElementById('phone').value;
-        var email = document.getElementById('email').value;
-        var industry = document.getElementById('industry').value;
-
-        // Tworzenie obiektu zawieraj¹cego dane klienta
-        var clientData = {
-            company: company,
-            name: name,
-            surname: surname,
-            address: address,
-            phone: phone,
-            email: email,
-            industry: industry
-        };
-
-        // Dodanie klienta do Firestore
-        addClientToFirestore(clientData);
-    });
-
-    // Po zalogowaniu pobieramy klientów z Firestore dla bie¿¹cego u¿ytkownika
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            currentUser = user;
-            // Pobieramy i wyœwietlamy klientów z Firestore
-            fetchClientsFromFirestore();
-        }
-    });
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
