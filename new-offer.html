@@ -6,9 +6,8 @@
     <title>Honego</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+</script>
     <style>
         html {
             height: 100%;
@@ -218,6 +217,11 @@ max-height: 30px;
     </style>
 </head>
 <body>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js">
+
 <script>
 var firebaseConfig = {
     apiKey: "your-api-key",
@@ -256,7 +260,9 @@ function logout() {
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
         </ul>
+
     </aside>
+
     <div class="main-content">
         <div class="profile-form">
             <h2>Create New Offer</h2>
@@ -270,6 +276,7 @@ function logout() {
             <input type="text" id="receiversName" name="receiversName" required>
             <button type="submit">Create Offer</button>
         </div>
+
         <div class="drag-area">
             <div class="products-area" ondragover="allowDrop(event)">
                 <h3>Available Products</h3>
