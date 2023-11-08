@@ -347,10 +347,6 @@ function moveProduct(event) {
     destinationArea.appendChild(product);
     calculateTotal();
 }
-window.onload = function() {
-    const products = document.querySelectorAll('.product-item');
-    products.forEach(function(product) {
-        product.addEventListener('dblclick', moveProduct);
     });
 };
 function updateFileList() {
