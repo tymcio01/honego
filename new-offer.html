@@ -320,37 +320,42 @@ firebase.auth().onAuthStateChanged((user) => {
 <script>
 function allowDrop(event) {
     event.preventDefault();
-}
-function drag(event) {
+  }
+
+  function drag(event) {
     event.dataTransfer.setData("text/plain", event.target.id);
-}
-function drop(event) {
+  }
+
+  function drop(event) {
     event.preventDefault();
     const data = event.dataTransfer.getData("text/plain");
     const draggableElement = document.getElementById(data);
     let dropzone = event.target;
     calculateTotal();
     while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-        dropzone = dropzone.parentNode;
+      dropzone = dropzone.parentNode;
     }
     if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
-        dropzone.appendChild(draggableElement);
+      dropzone.appendChild(draggableElement);
     }
-}
-function moveProduct(event) {
+  }
+
+  function moveProduct(event) {
     const product = event.target;
     const currentArea = product.parentNode;
     const isProductAvailable = currentArea.classList.contains('products-area');
     const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
     destinationArea.appendChild(product);
     calculateTotal();
-}
-window.onload = function() {
+  }
+
+  window.onload = function() {
     const products = document.querySelectorAll('.product-item');
     products.forEach(function(product) {
-        product.addEventListener('dblclick', moveProduct);
+      product.addEventListener('dblclick', moveProduct);
     });
-};
+  };
+
 function updateFileList() {
     var input = document.getElementById('fileAttachment');
     var fileListContainer = document.getElementById('fileList');
