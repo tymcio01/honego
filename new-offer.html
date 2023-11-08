@@ -72,7 +72,7 @@
             text-align: center;
         }
 
-        .new-product {
+        .profile-form {
             max-width: 500px;
             margin: 20px auto;
             background: #fff;
@@ -81,14 +81,14 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .new-product label {
+        .profile-form label {
             display: block;
             margin-bottom: 5px;
         }
 
-        .new-product input[type="text"],
-        .new-product input[type="email"],
-        .new-product input[type="password"] {
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -96,203 +96,345 @@
             border-radius: 4px;
         }
 
-        .new-product button {
-            background: #fff; /* White background */
-            color: #333; /* Black text */
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
             padding: 10px 15px;
-            border: 2px solid #000; /* Black border */
+            border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
         }
 
-        .new-product button:hover {
-            background: #333; /* Black background on hover */
-            color: #fff; /* White text on hover */
+        .profile-form button:hover {
+            background: #4cae4c;
         }
+
+        /* Updated styles for the drag and drop functionality */
+        .drag-area {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Adds more space between the columns */
+            margin-top: 20px;
+        }
+
+        .products-area,
+        .selected-area {
+            width: calc(50% - 15px); /* Each area takes half of the container width minus the gap */
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 300px; /* Triple the default height */
+max-height: 300px;
+overflow-y: auto;
+            overflow-y: auto;
+        }
+
+        .products-area h3,
+        .selected-area h3 {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #333;
+            font-size: 1.5em;
+        }
+
+        .product-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+min-height: 30px;
+max-height: 30px;
+        }
+
+        .product-item:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .drag-over {
+            background-color: #e1e1e1;
+        }
+
+.comments-box {
+            max-width: 100%;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-box textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-height: 150px; /* Set a minimum height for the textarea */
+            margin-bottom: 20px;
+        }
+
+        .comments-box label {
+            display: block;
+            margin-bottom: 5px;
+        }
+/* Style for the buttons */
+        .form-actions {
+            text-align: center; /* Center the buttons */
+            margin-top: 20px;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            margin-right: 10px; /* Space between buttons */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-actions button:not(:last-child) {
+            margin-right: 20px;
+        }
+
+        .form-actions button:hover {
+            opacity: 0.9; /* Slight fade effect on hover */
+        }
+
+        /* Specific styles for each button */
+        .btn-draft { background-color: #6c757d; color: white; }
+        .btn-preview { background-color: #17a2b8; color: white; }
+        .btn-pdf { background-color: #dc3545; color: white; }
+        .btn-email { background-color: #28a745; color: white; }
+
     </style>
 </head>
 <body>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
+
 // Konfiguracja Firebase
-var firebaseConfig = {
-    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+  var firebaseConfig = {
+apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-};
-firebase.initializeApp(firebaseConfig);
 
-// Sprawdzenie stanu uwierzytelnienia u¿ytkownika
-firebase.auth().onAuthStateChanged((user) => {
+ };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-        window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
     }
     // U¿ytkownik jest zalogowany
-});
+  });
 
 // Funkcja wylogowywania
-function logout() {
+  function logout() {
     firebase.auth().signOut().then(() => {
-        // Wylogowanie udane, przekierowanie na index.html
-        window.location.href = 'index.html';
+      // Wylogowanie udane, przekierowanie na index.html
+      window.location.href = 'index.html';
     }).catch((error) => {
-        // Obs³uga b³êdów
-        console.error('Logout Failed', error);
+      // Obs³uga b³êdów
+      console.error('Logout Failed', error);
     });
-}
+  }
 </script>
 
-<div class="container">
-    <aside>
-        <h1>Honego</h1>
-        <ul>
-            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+    <div class="container">
+
+        <aside>
+            <h1>Honego</h1>
+            <ul>
+<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
             <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>
-    </aside>
+        </ul>    
+        </aside>
 
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Create New Offer</h2>
+                <label for="clientName">Client Name/Company:</label>
+                <input type="text" id="clientName" name="clientName" required>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+
+                <label for="clientEmail">Client Email:</label>
+                <input type="email" id="clientEmail" name="clientEmail" required>
+
+                <label for="receiversName">Receiver's Name:</label>
+                <input type="text" id="receiversName" name="receiversName" required>
+
+                <button type="submit">Create Offer</button>
+            </div>
+            
+            <!-- Drag and Drop Area outside of the form -->
+            <div class="drag-area">
+                <div class="products-area" ondragover="allowDrop(event)">
+                    <h3>Available Products</h3>
+                    <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item" data-value="900">Meeting room 110m2 - 900</div>
+<div draggable="true" ondragstart="drag(event)" id="product2" class="product-item" data-value="5000">Ball room 500m2 - 5000</div>
+<div draggable="true" ondragstart="drag(event)" id="product3" class="product-item" data-value="330">Double Room Standard 15m2 - 330</div>
+
+<!-- Add more draggable products with their respective data-value attributes -->
+
+                    <!-- Add more draggable products here -->
+                </div>
+                <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h3>Selected Products</h3>
+                    <!-- Dropped products will appear here -->
+<div id="totalSum">Total Sum: 0 PLN</div>
+
+                </div>
+            </div>
+<!-- Additional comments box -->
     <div class="main-content">
-        <div class="new-product">
-            <h2>Add/Edit Product</h2>
-            <form id="productForm">
-                <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" required>
+        <div class="comments-box">
+            <label for="additionalComments">Additional Notes & Conditions:</label>
+            <textarea id="additionalComments" name="additionalComments" placeholder="Enter any additional notes and conditions here..."></textarea>
 
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
-
-                <label for="unitPrice">Unit Price (PLN):</label>
-                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
-
-                <button type="submit">Save Product</button>
-            </form>
-        </div>
-
-        <div class="product-table">
-            <h2>Product List</h2>
-            <table border="1" width="100%" cellpadding="5" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Description</th>
-                        <th>Unit Price (PLN)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="productTableBody"><!-- The populated product rows will go here --></tbody>
-            </table>
-        </div>
-    </div>
+ <!-- File attachment input for multiple files -->
+<label for="fileAttachment">Attach Files:</label>
+<input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
+<div id="fileList"></div>
 </div>
 
-<footer>
-    &copy; 2023 Honego - All Rights Reserved
-</footer>
+        </div>
+ <!-- Buttons for form actions -->
+    <div class="main-content">
+        <div class="form-actions">
+            <button type="button" class="btn-draft">Save as Draft</button>
+            <button type="button" class="btn-preview">Preview</button>
+            <button type="button" class="btn-pdf">Generate PDF</button>
+            <button type="button" class="btn-email">Send by Email</button>
+        </div>
+    </div>
+    </div>
+        </div>
+
+    </div>
+
+
+    <footer>
+        &copy; 2023 Honego - All Rights Reserved
+    </footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const productForm = document.querySelector('#productForm');
-    const productNameInput = document.getElementById('productName');
-    const descriptionInput = document.getElementById('description');
-    const unitPriceInput = document.getElementById('unitPrice');
-    const productTableBody = document.getElementById('productTableBody');
 
-    function saveProductToFirestore(event) {
-        event.preventDefault();
+function calculateTotal() {
+        let sum = 0;
 
-        const productName = productNameInput.value;
-        const description = descriptionInput.value;
-        const unitPrice = parseFloat(unitPriceInput.value);
-
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-
-        // Sprawdzenie, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-
-        // Pobranie identyfikatora zalogowanego u¿ytkownika
-        const userId = user.uid;
-
-        productsCollection.add({
-            productName: productName,
-            description: description,
-            unitPrice: unitPrice,
-            userId: userId
-        })
-        .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-            // Po dodaniu produktu, odœwie¿amy tabelê
-            populateProductTable();
-            productNameInput.value = '';
-            descriptionInput.value = '';
-            unitPriceInput.value = '';
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
+// Get all the products in the selected area
+        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+        selectedProducts.forEach(function(product) {
+            // Parse the data-value attribute to a number and add it to the sum
+            sum += Number(product.getAttribute('data-value'));
         });
+        // Display the total sum
+        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
     }
 
-    productForm.addEventListener('submit', saveProductToFirestore);
-
-    function populateProductTable() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-
-        // Sprawdzenie, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
+        // Funkcje obs³ugi drag and drop
+        function allowDrop(event) {
+            event.preventDefault();
         }
 
-        // Pobranie identyfikatora zalogowanego u¿ytkownika
-        const userId = user.uid;
+        function drag(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
 
-        // Czyszczenie istniej¹cych wierszy tabeli
-        productTableBody.innerHTML = '';
+        function drop(event) {
+            event.preventDefault();
+            const data = event.dataTransfer.getData("text/plain");
+            const draggableElement = document.getElementById(data);
+            let dropzone = event.target;
+ calculateTotal(); // Call calculateTotal after a product is dropped
 
-        productsCollection.where('userId', '==', userId).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${data.productName}</td>
-                    <td>${data.description}</td>
-                    <td>${data.unitPrice} PLN</td>
-                    <td>
-                        <button type="button" onclick="editProduct(this)">Edit</button>
-                        <button type="button" onclick="deleteProduct(this)">Delete</button>
-                    </td>
-                `;
-                productTableBody.appendChild(tr);
+            while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+                dropzone = dropzone.parentNode;
+            }
+
+            if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
+                dropzone.appendChild(draggableElement);
+            }
+        }
+
+        // Nowa funkcja do obs³ugi przenoszenia produktów przez podwójne klikniêcie
+        function moveProduct(event) {
+            const product = event.target;
+            const currentArea = product.parentNode;
+            const isProductAvailable = currentArea.classList.contains('products-area');
+            const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
+
+            destinationArea.appendChild(product);
+calculateTotal();
+        }
+
+        // Dodajemy obs³ugê podwójnego klikniêcia do wszystkich produktów
+        window.onload = function() {
+            const products = document.querySelectorAll('.product-item');
+            products.forEach(function(product) {
+                product.addEventListener('dblclick', moveProduct);
             });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
-        });
+        };
+
+// Function to update the file list display
+    function updateFileList() {
+        var input = document.getElementById('fileAttachment');
+        var fileListContainer = document.getElementById('fileList');
+        fileListContainer.innerHTML = ''; // Clear the list
+
+        // Display each file in the list with a remove button
+        for (let i = 0; i < input.files.length; i++) {
+            let file = input.files[i];
+            let fileDiv = document.createElement('div');
+            fileDiv.innerHTML = file.name + ' <a href="#" onclick="removeFile(' + i + ');">&times;</a>';
+            fileListContainer.appendChild(fileDiv);
+        }
     }
 
-    // Wywo³anie funkcji populateProductTable przy starcie strony
-    populateProductTable();
-});
+    // Function to remove a file from the list
+    function removeFile(index) {
+        var dt = new DataTransfer(); // Use DataTransfer to manipulate file input
+        var input = document.getElementById('fileAttachment');
+        var { files } = input;
+
+        // Add all files from the file input to the DataTransfer object except the one to be removed
+        for (let i = 0; i < files.length; i++) {
+            if (index !== i) {
+                dt.items.add(files[i]);
+            }
+        }
+
+        // Update the file input with the new set of files
+        input.files = dt.files;
+        updateFileList(); // Update the list display
+
+        // Prevent the default link action
+        return false;
+    }
+
+    // Event listener to update the file list whenever files are selected
+    document.getElementById('fileAttachment').addEventListener('change', updateFileList);
+
+    // ...existing script elements...
 </script>
 </body>
 </html>
