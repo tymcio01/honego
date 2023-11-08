@@ -224,12 +224,13 @@ max-height: 30px;
 
 <script>
 var firebaseConfig = {
-    apiKey: "your-api-key",
-    authDomain: "your-auth-domain",
-    projectId: "your-project-id",
-    storageBucket: "your-storage-bucket",
-    messagingSenderId: "your-messaging-sender-id",
-    appId: "your-app-id"
+    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+        authDomain: "honego-52c31.firebaseapp.com",
+        projectId: "honego-52c31",
+        storageBucket: "honego-52c31.appspot.com",
+        messagingSenderId: "897927654843",
+        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -239,8 +240,6 @@ firebase.auth().onAuthStateChanged((user) => {
         window.location.href = 'index.html';
 });
     }
-
-
 
     function logout() {
         firebase.auth().signOut().then(() => {
