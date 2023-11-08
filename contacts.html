@@ -97,234 +97,232 @@
         }
 
         .profile-form button {
-    background: #fff; /* Bia³y t³o */
-    color: #000; /* Czarny tekst */
-    padding: 10px 15px;
-    border: 2px solid #000; /* Czarna obwódka */
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* P³ynna zmiana koloru przy hoverze */
-}
+            background: #fff;
+            color: #000;
+            padding: 10px 15px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-.profile-form button:hover {
-    background: #000; /* Czarne t³o przy hoverze */
-    color: #fff; /* Bia³y tekst przy hoverze */
-}
+        .profile-form button:hover {
+            background: #000;
+            color: #fff;
+        }
 
         /* Table Styles */
         .customer-table {
             width: calc(100% - 40px);
             margin-top: 20px;
             border-collapse: collapse;
-        }.customer-table th,
-.customer-table td {
-    border: 1px solid #000; /* Czarna obwódka */
-    padding: 8px;
-    text-align: left;
-}
+        }
 
-.customer-table th {
-    background-color: #fff; /* Bia³e t³o */
-    color: #000; /* Czarny tekst */
-}
+        .customer-table th,
+        .customer-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .customer-table th {
+            background-color: #fff;
+            color: #000;
+        }
     </style>
 </head>
 <body>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<script>
-
-// Konfiguracja Firebase
-  var firebaseConfig = {
-apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    <script>
+        // Konfiguracja Firebase
+        var firebaseConfig = {
+            "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
         storageBucket: "honego-52c31.appspot.com",
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+        };
+        firebase.initializeApp(firebaseConfig);
 
- };
-  firebase.initializeApp(firebaseConfig);
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+            }
+            // U¿ytkownik jest zalogowany
+        });
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-    }
-    // U¿ytkownik jest zalogowany
-  });
+        // Funkcja wylogowywania
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                // Wylogowanie udane, przekierowanie na index.html
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                // Obs³uga b³êdów
+                console.error('Logout Failed', error);
+            });
+        }
 
-// Funkcja wylogowywania
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      // Wylogowanie udane, przekierowanie na index.html
-      window.location.href = 'index.html';
-    }).catch((error) => {
-      // Obs³uga b³êdów
-      console.error('Logout Failed', error);
-    });
-  }
-</script>
+        // Funkcja dodawania klienta do Firestore
+        function addClientToFirestore(clientData) {
+            const db = firebase.firestore();
+            const clientsCollection = db.collection('clients');
+
+            clientsCollection.add(clientData)
+                .then((docRef) => {
+                    console.log('Document written with ID: ', docRef.id);
+                })
+                .catch((error) => {
+                    console.error('Error adding document: ', error);
+                });
+        }
+
+        // Dodanie s³uchacza zdarzeñ do formularza
+        document.getElementById('addClientForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+
+            // Pobranie danych z formularza
+            var company = document.getElementById('company').value;
+            var name = document.getElementById('name').value;
+            var surname = document.getElementById('surname').value;
+            var address = document.getElementById('address').value;
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var industry = document.getElementById('industry').value;
+
+            // Tworzenie obiektu zawieraj¹cego dane klienta
+            var clientData = {
+                company: company,
+                name: name,
+                surname: surname,
+                address: address,
+                phone: phone,
+                email: email,
+                industry: industry
+            };
+
+            // Dodanie klienta do Firestore
+            addClientToFirestore(clientData);
+
+            // Czyszczenie formularza
+            document.getElementById('addClientForm').reset();
+        });
+    </script>
+
     <div class="container">
-    <aside>
-        <h1>Honego</h1>
-        <ul>
-<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
-            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
-            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
-            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
-            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
-            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>    
-</aside>
-    <div class="main-content">
-        <div class="profile-form">
-            <h2>Add New Client</h2>
-            <form id="addClientForm">
-
-                <label for="company">Company</label>
-                <input type="text" id="company" name="company" required>
-
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="surname">Surname</label>
-                <input type="text" id="surname" name="surname" required>
-
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
-
-                <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" required>
-
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-
-			<label for="industry">Industry</label>
-			<input type="text" id="industry" name="industry" required>
-
-                <button type="submit">Add Client</button>
-            </form>
-        </div>
-
- <div style="padding: 20px 0; text-align: center;">
-                <button type="button">Search</button>
-                <button type="button" id="exportBtn">Export</button>
-
+        <aside>
+            <!-- Treœæ bocznego menu -->
+        </aside>
+        <div class="main-content">
+            <div class="profile-form">
+                <h2>Add New Client</h2>
+                <form id="addClientForm">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" required>
+                    
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname" name="surname" required>
+                    
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                    
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" name="phone" required>
+                    
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    
+                    <label for="industry">Industry</label>
+                    <input type="text" id="industry" name="industry" required>
+                    
+                    <button type="submit">Add Client</button>
+                </form>
             </div>
 
-        <table class="customer-table">
-            <thead>
-                <tr>
-                <th onclick="sortTable(0)"><i class="fas fa-sort"></i> Company</th>
-                <th onclick="sortTable(1)"><i class="fas fa-sort"></i> Name</th>
-                <th onclick="sortTable(2)"><i class="fas fa-sort"></i> Surname</th>
-                <th onclick="sortTable(3)"><i class="fas fa-sort"></i> Address</th>
-                <th onclick="sortTable(4)"><i class="fas fa-sort"></i> Phone</th>
-                <th onclick="sortTable(5)"><i class="fas fa-sort"></i> Email</th>
-                <th onclick="sortTable(6)"><i class="fas fa-sort"></i> Industry</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- Wiersze z klientami zostan¹ tutaj dodane -->
-            </tbody>
-        </table>
+            <div style="padding: 20px 0; text-align: center;">
+                <button type="button">Search</button>
+                <button type="button" id="exportBtn">Export</button>
+            </div>
+
+            <table class="customer-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)"><i class="fas fa-sort"></i> Company</th>
+                        <th onclick="sortTable(1)"><i class="fas fa-sort"></i> Name</th>
+                        <th onclick="sortTable(2)"><i class="fas fa-sort"></i> Surname</th>
+                        <th onclick="sortTable(3)"><i class="fas fa-sort"></i> Address</th>
+                        <th onclick="sortTable(4)"><i class="fas fa-sort"></i> Phone</th>
+                        <th onclick="sortTable(5)"><i class="fas fa-sort"></i> Email</th>
+                        <th onclick="sortTable(6)"><i class="fas fa-sort"></i> Industry</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Wiersze z klientami zostan¹ tutaj dodane -->
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
     <footer>
         &copy; 2023 Honego - All Rights Reserved
     </footer>
 
-<script>
-function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
+    <script>
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
 
-    // CSV file
-    csvFile = new Blob([csv], {type: "text/csv"});
+            // CSV file
+            csvFile = new Blob([csv], {type: "text/csv"});
 
-    // Download link
-    downloadLink = document.createElement("a");
+            // Download link
+            downloadLink = document.createElement("a");
 
-    // File name
-    downloadLink.download = filename;
+            // File name
+            downloadLink.download = filename;
 
-    // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+            // Create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
 
-    // Hide download link
-    downloadLink.style.display = "none";
+            // Hide download link
+            downloadLink.style.display = "none";
 
-    // Add the link to DOM
-    document.body.appendChild(downloadLink);
+            // Add the link to DOM
+            document.body.appendChild(downloadLink);
 
-    // Click download link
-    downloadLink.click();
-}
+            // Click download link
+            downloadLink.click();
+        }
 
-function exportTableToCSV(filename) {
-    var csv = [];
-    var rows = document.querySelectorAll("table tr");
-    
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
-        
-        for (var j = 0; j < cols.length; j++) 
-            row.push('"' + cols[j].innerText + '"');
-        
-        csv.push(row.join(","));        
-    }
+        function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
 
-    // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
-}
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
 
-document.getElementById('exportBtn').addEventListener('click', function () {
-    var now = new Date();
-    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
-    exportTableToCSV(filename);
-});
+                for (var j = 0; j < cols.length; j++)
+                    row.push('"' + cols[j].innerText + '"');
 
-// Dodanie s³uchacza zdarzeñ do formularza
-document.getElementById('addClientForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+                csv.push(row.join(","));
+            }
 
-    // Pobranie danych z formularza
-    var company = document.getElementById('company').value;
-    var name = document.getElementById('name').value;
-    var surname = document.getElementById('surname').value;
-    var address = document.getElementById('address').value;
-    var phone = document.getElementById('phone').value;
-    var email = document.getElementById('email').value;
-	var industry = document.getElementById('industry').value;
+            // Download CSV file
+            downloadCSV(csv.join("\n"), filename);
+        }
 
-    // Tworzenie nowego wiersza w tabeli
-    var newRow = `<tr>
-        <td>${company}</td>
-        <td>${name}</td>
-        <td>${surname}</td>
-        <td>${address}</td>
-        <td>${phone}</td>
-        <td>${email}</td>
- 	<td>${industry}</td>
-        <td><button class="send-offer-btn" type="button">Send Offer</button></td>
-    </tr>`;
-
-    // Dodanie nowego wiersza do cia³a tabeli
-    document.getElementById('tableBody').innerHTML += newRow;
-
-    // Czyszczenie formularza
-    document.getElementById('addClientForm').reset();
-});
-
-
-</script>
-
-
+        document.getElementById('exportBtn').addEventListener('click', function () {
+            var now = new Date();
+            var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
+            exportTableToCSV(filename);
+        });
+    </script>
 </body>
 </html>
