@@ -252,46 +252,43 @@ document.addEventListener('DOMContentLoaded', function() {
     productForm.addEventListener('submit', saveProductToFirestore);
 
     function populateProductTable() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
+    const db = firebase.firestore();
+    const productsCollection = db.collection('products');
 
-        // Sprawdzenie, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-
-        // Pobranie identyfikatora zalogowanego u¿ytkownika
-        const userId = user.uid;
-
-        // Czyszczenie istniej¹cych wierszy tabeli
-        productTableBody.innerHTML = '';
-
-        productsCollection.where('userId', '==', userId).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${data.productName}</td>
-                    <td>${data.description}</td>
-                    <td>${data.unitPrice} PLN</td>
-                    <td>
-                        <button type="button" onclick="editProduct(this)">Edit</button>
-                        <button type="button" onclick="deleteProduct(this)">Delete</button>
-                    </td>
-                `;
-                productTableBody.appendChild(tr);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
-        });
+    // Sprawdzenie, czy u¿ytkownik jest zalogowany
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        console.error('User is not logged in.');
+        return;
     }
 
-    // Wywo³anie funkcji populateProductTable przy starcie strony
-    function populateProductTable();
+    // Pobranie identyfikatora zalogowanego u¿ytkownika
+    const userId = user.uid;
+
+    // Czyszczenie istniej¹cych wierszy tabeli
+    productTableBody.innerHTML = '';
+
+    productsCollection.where('userId', '==', userId).get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${data.productName}</td>
+                <td>${data.description}</td>
+                <td>${data.unitPrice} PLN</td>
+                <td>
+                    <button type="button" onclick="editProduct(this)">Edit</button>
+                    <button type="button" onclick="deleteProduct(this)">Delete</button>
+                </td>
+            `;
+            productTableBody.appendChild(tr);
+        });
+    })
+    .catch((error) => {
+        console.error("Error getting documents: ", error);
+    });
+}
 });
 </script>
 </body>
