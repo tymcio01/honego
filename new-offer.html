@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Offer</title>
+    <title>Honego</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
         html {
             height: 100%;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -20,10 +21,12 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         .container {
             flex: 1;
             display: flex;
         }
+
         aside {
             width: 250px;
             background-color: #1c2121;
@@ -31,13 +34,16 @@
             box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
             color: #f6f6f6;
         }
+
         aside ul {
             list-style-type: none;
             padding: 0;
         }
+
         aside ul li {
             margin-bottom: 15px;
         }
+
         aside ul li a {
             text-decoration: none;
             color: #f6f6f6;
@@ -46,23 +52,27 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
+
         aside ul li a:hover {
             background-color: #f8f9fa;
             color: #333;
         }
+
         .main-content {
             flex-grow: 1;
             padding: 20px;
             background-color: #fff;
             box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
         footer {
             background-color: #1c2121;
             color: #f6f6f6;
             padding: 10px 20px;
             text-align: center;
         }
-        .new-offer {
+
+        .new-product {
             max-width: 500px;
             margin: 20px auto;
             background: #fff;
@@ -70,147 +80,79 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .new-offer label {
+
+        .new-product label {
             display: block;
             margin-bottom: 5px;
         }
-        .new-offer input[type="text"],
-        .new-offer input[type="email"],
-        .new-offer input[type="password"] {
+
+        .new-product input[type="text"],
+        .new-product input[type="email"],
+        .new-product input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        .new-offer button {
-            background: #5cb85c;
-            color: white;
+
+        .new-product button {
+            background: #fff; /* White background */
+            color: #333; /* Black text */
             padding: 10px 15px;
-            border: none;
+            border: 2px solid #000; /* Black border */
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
         }
-        .new-offer button:hover {
-            background: #4cae4c;
+
+        .new-product button:hover {
+            background: #333; /* Black background on hover */
+            color: #fff; /* White text on hover */
         }
-        .drag-area {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        .products-area,
-        .selected-area {
-            width: calc(50% - 15px);
-            padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            min-height: 300px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .products-area h3,
-        .selected-area h3 {
-            margin-bottom: 15px;
-            text-align: center;
-            color: #333;
-            font-size: 1.5em;
-        }
-        .product-item {
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            transition: background-color 0.2s, box-shadow 0.2s;
-            min-height: 7px;
-            max-height: 7px;
-        }
-        .product-item:hover {
-            background-color: #f0f0f0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .drag-over {
-            background-color: #e1e1e1;
-        }
-        .comments-box {
-            max-width: 100%;
-            margin: 20px 0;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .comments-box textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            min-height: 150px;
-            margin-bottom: 20px;
-        }
-        .comments-box label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-actions {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .form-actions button {
-            padding: 10px 20px;
-            margin-right: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .form-actions button:not(:last-child) {
-            margin-right: 20px;
-        }
-        .form-actions button:hover {
-            opacity: 0.9;
-        }
-        .btn-draft { background-color: #6c757d; color: white; }
-        .btn-preview { background-color: #17a2b8; color: white; }
-        .btn-pdf { background-color: #dc3545; color: white; }
-        .btn-email { background-color: #28a745; color: white; }
     </style>
 </head>
 <body>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
 <script>
-  var firebaseConfig = {
+// Konfiguracja Firebase
+var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
-    authDomain: "honego-52c31.firebaseapp.com",
-    projectId: "honego-52c31",
-    storageBucket: "honego-52c31.appspot.com",
-    messagingSenderId: "897927654843",
-    appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-  };
-  firebase.initializeApp(firebaseConfig);
-  firebase.auth().onAuthStateChanged((user) => {
+        authDomain: "honego-52c31.firebaseapp.com",
+        projectId: "honego-52c31",
+        storageBucket: "honego-52c31.appspot.com",
+        messagingSenderId: "897927654843",
+        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+};
+firebase.initializeApp(firebaseConfig);
+
+// Sprawdzenie stanu uwierzytelnienia u¿ytkownika
+firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-      window.location.href = 'index.html';
+        window.location.href = 'index.html'; // Przekierowanie na stronê logowania
     }
-  });
-  function logout() {
+    // U¿ytkownik jest zalogowany
+});
+
+// Funkcja wylogowywania
+function logout() {
     firebase.auth().signOut().then(() => {
-      window.location.href = 'index.html';
+        // Wylogowanie udane, przekierowanie na index.html
+        window.location.href = 'index.html';
     }).catch((error) => {
-      console.error('Logout Failed', error);
+        // Obs³uga b³êdów
+        console.error('Logout Failed', error);
     });
-  }
+}
 </script>
+
 <div class="container">
     <aside>
-        <h1>New Offer</h1>
+        <h1>Honego</h1>
         <ul>
             <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
@@ -221,51 +163,136 @@
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
         </ul>
     </aside>
+
     <div class="main-content">
-        <div class="new-offer">
-            <h2>Create New Offer</h2>
-            <label for="clientName">Client Name/Company:</label>
-            <input type="text" id="clientName" name="clientName" required>
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required>
-            <label for="clientEmail">Client Email:</label>
-            <input type="email" id="clientEmail" name="clientEmail" required>
-            <label for="receiversName">Receiver's Name:</label>
-            <input type="text" id="receiversName" name="receiversName" required>
-            <button type="submit">Create Offer</button>
+        <div class="new-product">
+            <h2>Add/Edit Product</h2>
+            <form id="productForm">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+
+                <label for="unitPrice">Unit Price (PLN):</label>
+                <input type="text" id="unitPrice" name="unitPrice" required pattern="^\d+(\.\d{1,2})?$" title="Please enter a valid price in PLN">
+
+                <button type="submit">Save Product</button>
+            </form>
         </div>
-        <div class="drag-area">
-            <div class="products-area" ondragover="allowDrop(event)">
-                <h3>Available Products</h3>
-                <div draggable="true" ondragstart="drag(event)" id="product1" class="product-item" data-value="900">Meeting room 110m2 - 900</div>
-                <div draggable="true" ondragstart="drag(event)" id="product2" class="product-item" data-value="5000">Ball room 500m2 - 5000</div>
-                <div draggable="true" ondragstart="drag(event)" id="product3" class="product-item" data-value="330">Double Room Standard 15m2 - 330</div>
-            </div>
-            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h3>Selected Products</h3>
-                <div id="totalSum">Total Sum: 0 PLN</div>
-            </div>
-        </div>
-        <div class="comments-box">
-            <label for="additionalComments">Additional Notes & Conditions:</label>
-            <textarea id="additionalComments" name="additionalComments" placeholder="Enter any additional notes and conditions here..."></textarea>
-            <label for="fileAttachment">Add attachment to your offer:</label>
-            <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
-            <div id="fileList"></div>
-        </div>
-        <div class="form-actions">
-            <button type="button" class="btn-draft">Save as Draft</button>
-            <button type="button" class="btn-preview">Preview</button>
-            <button type="button" class="btn-pdf">Generate PDF</button>
-            <button type="button" class="btn-email">Send by Email</button>
+
+        <div class="product-table">
+            <h2>Product List</h2>
+            <table border="1" width="100%" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Unit Price (PLN)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody"><!-- The populated product rows will go here --></tbody>
+            </table>
         </div>
     </div>
 </div>
+
 <footer>
     &copy; 2023 Honego - All Rights Reserved
 </footer>
+
 <script>
-    // JavaScript code (as provided in the original code)
+document.addEventListener('DOMContentLoaded', function() {
+    const productForm = document.querySelector('#productForm');
+    const productNameInput = document.getElementById('productName');
+    const descriptionInput = document.getElementById('description');
+    const unitPriceInput = document.getElementById('unitPrice');
+    const productTableBody = document.getElementById('productTableBody');
+
+    function saveProductToFirestore(event) {
+        event.preventDefault();
+
+        const productName = productNameInput.value;
+        const description = descriptionInput.value;
+        const unitPrice = parseFloat(unitPriceInput.value);
+
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+
+        // Sprawdzenie, czy u¿ytkownik jest zalogowany
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            console.error('User is not logged in.');
+            return;
+        }
+
+        // Pobranie identyfikatora zalogowanego u¿ytkownika
+        const userId = user.uid;
+
+        productsCollection.add({
+            productName: productName,
+            description: description,
+            unitPrice: unitPrice,
+            userId: userId
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            // Po dodaniu produktu, odœwie¿amy tabelê
+            populateProductTable();
+            productNameInput.value = '';
+            descriptionInput.value = '';
+            unitPriceInput.value = '';
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    productForm.addEventListener('submit', saveProductToFirestore);
+
+    function populateProductTable() {
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+
+        // Sprawdzenie, czy u¿ytkownik jest zalogowany
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            console.error('User is not logged in.');
+            return;
+        }
+
+        // Pobranie identyfikatora zalogowanego u¿ytkownika
+        const userId = user.uid;
+
+        // Czyszczenie istniej¹cych wierszy tabeli
+        productTableBody.innerHTML = '';
+
+        productsCollection.where('userId', '==', userId).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${data.productName}</td>
+                    <td>${data.description}</td>
+                    <td>${data.unitPrice} PLN</td>
+                    <td>
+                        <button type="button" onclick="editProduct(this)">Edit</button>
+                        <button type="button" onclick="deleteProduct(this)">Delete</button>
+                    </td>
+                `;
+                productTableBody.appendChild(tr);
+            });
+        })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+    }
+
+    // Wywo³anie funkcji populateProductTable przy starcie strony
+    populateProductTable();
+});
 </script>
 </body>
 </html>
