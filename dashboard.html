@@ -4,33 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Honego</title>
-<link rel="stylesheet" href=style.css>
+<link rel="stylesheet" href="style.css"> <!-- Link to your external style.css file -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background: #f8f9fa;
             color: #333;
-            height: 100vh;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
+            flex: 1;
             display: flex;
         }
-
-         aside {
-        width: 250px;
-        background-color: #1c2121; /* Updated background color */
-        min-height: 100vh;
-        padding: 20px;
-        box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-        color: #f6f6f6; /* You may want to change the text color for better contrast */
-    }
 
         aside {
             width: 250px;
@@ -61,7 +57,7 @@
         aside ul li a:hover {
             background-color: #f8f9fa;
             color: #333;
-
+        }
 
         .main-content {
             flex-grow: 1;
@@ -70,28 +66,69 @@
             box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .card {
-            background: #f1f1f1;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .chart-container {
-            position: relative;
-            height: 200px;
-        }
-
         footer {
+            background-color: #1c2121;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
 
-        background-color: #1c2121; /* Updated background color */
-        color: #f6f6f6;
-        padding: 10px 20px;
-        text-align: center;
-        border-top: 0px solid #e1e1e1;
-        height: 400px; /* Updated height */
-    }
-    </style>
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .profile-form button {
+            background: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .profile-form button:hover {
+            background: #4cae4c;
+        }
+
+.horizontal-table {
+            width: 100%;
+            height: 200px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .horizontal-table th,
+        .horizontal-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        .horizontal-table th {
+            background-color: #f0f0f0;
+        }    
+</style>
+
 </head>
 <body>
 
@@ -114,9 +151,9 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
   firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronÃª logowania
+      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
     }
-    // UÂ¿ytkownik jest zalogowany
+    // U¿ytkownik jest zalogowany
   });
 
 // Funkcja wylogowywania
@@ -125,7 +162,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
       // Wylogowanie udane, przekierowanie na index.html
       window.location.href = 'index.html';
     }).catch((error) => {
-      // ObsÂ³uga bÂ³ÃªdÃ³w
+      // Obs³uga b³êdów
       console.error('Logout Failed', error);
     });
   }
@@ -183,7 +220,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
                 labels: ['Today', 'This Week', 'This Month'],
                 datasets: [{
                     label: 'Number of Offers',
-                    data: [5, 20, 50], // PrzykÂ³adowe dane
+                    data: [5, 20, 50], // Przyk³adowe dane
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
