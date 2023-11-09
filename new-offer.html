@@ -260,6 +260,10 @@ firebase.auth().onAuthStateChanged((user) => {
       console.error('Logout Failed', error);
     });
 }
+// Run fetchAndPopulateProducts only once when the page loads
+window.onload = function() {
+    fetchAndPopulateProducts();
+
 </script>
 
 <div class="container">
