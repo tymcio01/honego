@@ -309,36 +309,26 @@ max-height: 30px;
     }
 
     function drag(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-    event.dataTransfer.setData("text/value", event.target.dataset.value); // Przekazanie wartoœci
-    event.dataTransfer.setData("text/name", event.target.textContent); // Przekazanie nazwy
-}
-
-function drop(event) {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("text/plain");
-    const value = event.dataTransfer.getData("text/value");
-    const name = event.dataTransfer.getData("text/name");
-    let dropzone = event.target;
-
-    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-        dropzone = dropzone.parentNode;
+        event.dataTransfer.setData("text/plain", event.target.id);
     }
 
-    if (dropzone && dropzone.classList.contains('selected-area')) {
-        // Tworzymy nowy element z przekazanymi danymi
-        const productItem = document.createElement('div');
-        productItem.classList.add('product-item');
-        productItem.draggable = true;
-        productItem.id = 'selected-' + id; // Nowy unikalny identyfikator dla klonu
-        productItem.dataset.value = value;
-        productItem.textContent = name;
-        productItem.addEventListener('dragstart', drag);
-        dropzone.appendChild(productItem);
-    }
-    calculateTotal();
-}
+    function drop(event) {
+        event.preventDefault();
+        const id = event.dataTransfer.getData("text/plain");
+        const draggableElement = document.getElementById(id);
+        let dropzone = event.target;
 
+        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+            dropzone = dropzone.parentNode;
+        }
+
+        if (dropzone && dropzone.classList.contains('selected-area')) {
+            const clone = draggableElement.cloneNode(true);
+            clone.id = 'selected-' + draggableElement.id; 
+            clone.addEventListener('dragstart', drag);
+            dropzone.appendChild(clone);
+        }
+        calculateTotal();
     }
 
     function calculateTotal() {
@@ -360,7 +350,7 @@ function drop(event) {
                 querySnapshot.forEach((doc, index) => {
                     const data = doc.data();
                     const productItem = document.createElement('div');
-                    productItem.id = 'product-' + index; // Nadanie unikalnego ID
+                    productItem.id = 'product-' + index;
                     productItem.classList.add('product-item');
                     productItem.draggable = true;
                     productItem.dataset.value = data.unitPrice;
