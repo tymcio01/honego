@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Honego</title>
-<link rel="stylesheet" href="style.css"> <!-- Link to your external style.css file -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
@@ -114,9 +114,9 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
   firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
+      window.location.href = 'index.html'; // Przekierowanie na stronÃª logowania
     }
-    // U¿ytkownik jest zalogowany
+    // UÂ¿ytkownik jest zalogowany
   });
 
 // Funkcja wylogowywania
@@ -125,7 +125,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
       // Wylogowanie udane, przekierowanie na index.html
       window.location.href = 'index.html';
     }).catch((error) => {
-      // Obs³uga b³êdów
+      // ObsÂ³uga bÂ³ÃªdÃ³w
       console.error('Logout Failed', error);
     });
   }
@@ -183,7 +183,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
                 labels: ['Today', 'This Week', 'This Month'],
                 datasets: [{
                     label: 'Number of Offers',
-                    data: [5, 20, 50], // Przyk³adowe dane
+                    data: [5, 20, 50], // PrzykÂ³adowe dane
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
