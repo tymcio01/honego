@@ -119,7 +119,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-// Konfiguracja Firebase
+
 var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
@@ -130,17 +130,53 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-// Sprawdzenie stanu uwierzytelnienia u¿ytkownika
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        // U¿ytkownik jest zalogowany, wywo³anie funkcji populateProductTable.
-        populateProductTable();
+	
+    populateProductTable();
     } else {
         window.location.href = 'index.html'; // Przekierowanie na stronê logowania, jeœli u¿ytkownik nie jest zalogowany.
     }
 });
 
 function populateProductTable() {
+    const db = firebase.firestore();
+    const productsCollection = db.collection('products');
+    const productTableBody = document.getElementById('productTableBody');
+
+    // Czyszczenie istniej¹cych wierszy tabeli
+    productTableBody.innerHTML = '';
+
+    // Sprawdzenie, czy u¿ytkownik jest zalogowany
+    const user = firebase.auth().currentUser;
+    if (user) {
+        // Pobranie identyfikatora zalogowanego u¿ytkownika i pobranie produktów
+        const userId = user.uid;
+
+        productsCollection.where('userId', '==', userId).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${data.productName}</td>
+                    <td>${data.description}</td>
+                    <td>${data.unitPrice} PLN</td>
+                    <td>
+                        <button type="button" onclick="editProduct(this)">Edit</button>
+                        <button type="button" onclick="deleteProduct(this)">Delete</button>
+                    </td>
+                `;
+                productTableBody.appendChild(tr);
+            });
+        })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+    } else {
+        console.error('User is not logged in.');
+    }
 }
 
 // Funkcja wylogowywania
@@ -254,49 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    productForm.addEventListener('submit', saveProductToFirestore);
-
-    function populateProductTable() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-
-        // Sprawdzenie, czy u¿ytkownik jest zalogowany
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            console.error('User is not logged in.');
-            return;
-        }
-
-        // Pobranie identyfikatora zalogowanego u¿ytkownika
-        const userId = user.uid;
-
-        // Czyszczenie istniej¹cych wierszy tabeli
-        productTableBody.innerHTML = '';
-
-        productsCollection.where('userId', '==', userId).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${data.productName}</td>
-                    <td>${data.description}</td>
-                    <td>${data.unitPrice} PLN</td>
-                    <td>
-                        <button type="button" onclick="editProduct(this)">Edit</button>
-                        <button type="button" onclick="deleteProduct(this)">Delete</button>
-                    </td>
-                `;
-                productTableBody.appendChild(tr);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
-        });
-    }
-
-    // Wywo³anie funkcji populateProductTable przy starcie strony
-    populateProductTable();
+    
 });
 </script>
 </body>
