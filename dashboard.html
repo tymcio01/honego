@@ -32,6 +32,14 @@
         color: #f6f6f6; /* You may want to change the text color for better contrast */
     }
 
+        aside {
+            width: 250px;
+            background-color: #1c2121;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
+
         aside ul {
             list-style-type: none;
             padding: 0;
@@ -51,9 +59,9 @@
         }
 
         aside ul li a:hover {
-        background-color: #f8f9fa;
-        color: #333; /* Ensure the hover state is also visible against the lighter background */
-    }
+            background-color: #f8f9fa;
+            color: #333;
+
 
         .main-content {
             flex-grow: 1;
@@ -126,8 +134,10 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
     <div class="container">
         <aside>
-        <h1>Honego</h1> <!-- This is the new H1 tag added -->
-    <ul>
+
+            
+        <h1>Honego</h1>
+        <ul>
 <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
             <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
             <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
@@ -137,6 +147,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
         </ul>    
 </aside>
+
 
         <div class="main-content">
             <div class="card">
