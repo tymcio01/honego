@@ -317,12 +317,6 @@ max-height: 30px;
         event.preventDefault();
     }
 
-     // Funkcja drop z obs³ug¹ przenoszenia produktów miêdzy tabelami
-    function drop(event) {
-        event.preventDefault();
-        const data = event.dataTransfer.getData("text/plain");
-        const draggableElement = document.getElementById(data);
-        let dropzone = event.target;
         calculateTotal();
         while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
             dropzone = dropzone.parentNode;
@@ -394,6 +388,25 @@ max-height: 30px;
         });
         document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
     }
+
+function drop(event) {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("text/plain");
+        const draggableElement = document.getElementById(data);
+        let dropzone = event.target;
+        
+        // Sprawdzenie, czy draggableElement i dropzone nie s¹ null
+        if (draggableElement && dropzone) {
+            calculateTotal();
+            while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+                dropzone = dropzone.parentNode;
+            }
+            if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
+                dropzone.appendChild(draggableElement.cloneNode(true));
+            }
+        }
+    }
+
 </script>
 </body>
 </html>
