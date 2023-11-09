@@ -109,18 +109,23 @@
             background: #4cae4c;
         }
 
- .area {
-        margin-bottom: 20px; /* Adjust the gap between areas as needed */
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+.horizontal-table {
+            width: 100%;
+            height: 200px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-    .area h2 {
-        margin-top: 0;
-    }
-    </style>
+        .horizontal-table th,
+        .horizontal-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        .horizontal-table th {
+            background-color: #f0f0f0;
+        }    </style>
 </head>
 <body>
 
@@ -180,24 +185,61 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         </aside>
 
         <div class="main-content">
-    <!-- First Area -->
-    <div class="area">
-        <h2>First Area</h2>
-        <!-- Add content for the first area here -->
-    </div>
+    <!-- First Horizontal Table -->
+            <table class="horizontal-table">
+                <thead>
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Data 1</td>
+                        <td>Data 2</td>
+                        <td>Data 3</td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <!-- Second Area -->
-    <div class="area">
-        <h2>Second Area</h2>
-        <!-- Add content for the second area here -->
-    </div>
+            <!-- Second Horizontal Table -->
+            <table class="horizontal-table">
+                <thead>
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Data 1</td>
+                        <td>Data 2</td>
+                        <td>Data 3</td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <!-- Third Area -->
-    <div class="area">
-        <h2>Third Area</h2>
-        <!-- Add content for the third area here -->
+            <!-- Third Horizontal Table -->
+            <table class="horizontal-table">
+                <thead>
+                    <tr>
+                        <th>Header 1</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Data 1</td>
+                        <td>Data 2</td>
+                        <td>Data 3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
      <footer>
         &copy; 2023 Honego - All Rights Reserved
