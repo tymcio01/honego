@@ -195,20 +195,7 @@
             });
         }
 
-        // Funkcja dodawania klienta do Firestore
-        function addClientToFirestore(clientData) {
-            const db = firebase.firestore();
-            const clientsCollection = db.collection('clients');
-
-            clientsCollection.add(clientData)
-                .then((docRef) => {
-                    console.log('Document written with ID: ', docRef.id);
-                })
-                .catch((error) => {
-                    console.error('Error adding document: ', error);
-                });
-        }
-
+       
         // Dodanie s³uchacza zdarzeñ do formularza
         document.getElementById('addClientForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
@@ -356,7 +343,23 @@ function sendOffer(clientId) {
         });
     }
 
-        // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
+    // Funkcja dodawania klienta do Firestore
+    function addClientToFirestore(clientData) {
+        const db = firebase.firestore();
+        const clientsCollection = db.collection('clients');
+
+        clientsCollection.add(clientData)
+            .then((docRef) => {
+                console.log('Document written with ID: ', docRef.id);
+                // Aktualizacja tabeli po dodaniu klienta
+                updateTableWithClient(clientData, docRef.id);
+            })
+            .catch((error) => {
+                console.error('Error adding document: ', error);
+            });
+    }
+
+    // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
     function updateTableWithClient(clientData, docId) {
         var newRow = `<tr>
             <td>${clientData.company}</td>
