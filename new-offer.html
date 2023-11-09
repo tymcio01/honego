@@ -305,6 +305,10 @@ max-height: 30px;
         event.preventDefault();
     }
 
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
     function drag(event) {
         event.dataTransfer.setData("text/plain", event.target.id);
     }
@@ -321,19 +325,8 @@ max-height: 30px;
         if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
             dropzone.appendChild(draggableElement.cloneNode(true));
         }
-    
-    let productsLoaded = false; // Dodaj zmienn¹, aby œledziæ, czy produkty zosta³y ju¿ za³adowane
+    }
 
-    (function () {
-        // Check if products are already loaded
-        const productsLoaded = document.querySelector('.products-area .product-item');
-
-        if (!productsLoaded) {
-            // Products not loaded, fetch and populate them
-            fetchAndPopulateProducts();
-        }
-
-        
     function updateFileList() {
         var input = document.getElementById('fileAttachment');
         var fileListContainer = document.getElementById('fileList');
@@ -349,7 +342,7 @@ max-height: 30px;
     function removeFile(index) {
         var dt = new DataTransfer();
         var input = document.getElementById('fileAttachment');
-        var {files} = input;
+        var { files } = input;
         for (let i = 0; i < files.length; i++) {
             if (index !== i) {
                 dt.items.add(files[i]);
@@ -360,7 +353,7 @@ max-height: 30px;
         return false;
     }
 
-     function fetchAndPopulateProducts() {
+    function fetchAndPopulateProducts() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
         const productsArea = document.querySelector('.products-area');
