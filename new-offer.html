@@ -304,59 +304,70 @@ max-height: 30px;
     &copy; 2023 Honego - All Rights Reserved
 </footer>
 <script>
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
     function drag(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-}
-
-function drop(event) {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("text/plain");
-    const originalElement = document.getElementById(id);
-    let dropzone = event.target;
-
-    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-        dropzone = dropzone.parentNode;
+        event.dataTransfer.setData("text/plain", event.target.id);
     }
 
-    if (dropzone && dropzone.classList.contains('selected-area')) {
-        // Tworzymy klon z unikalnym ID, aby unikn¹æ konfliktów
-        const clone = originalElement.cloneNode(true);
-        const newId = `selected-${id}-${Math.random().toString(16).slice(2)}`; // Dodajemy losowy ci¹g, aby zapewniæ unikalnoœæ
-        clone.id = newId;
-        clone.addEventListener('dragstart', drag);
-        dropzone.appendChild(clone);
+    function drop(event) {
+        event.preventDefault();
+        const id = event.dataTransfer.getData("text/plain");
+        const draggableElement = document.getElementById(id);
+        let dropzone = event.target;
+
+        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+            dropzone = dropzone.parentNode;
+        }
+
+        if (dropzone && dropzone.classList.contains('selected-area')) {
+            const clone = draggableElement.cloneNode(true);
+            const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
+            clone.id = newId;
+            clone.addEventListener('dragstart', drag);
+            dropzone.appendChild(clone);
+        }
+        calculateTotal();
     }
-    calculateTotal();
-}
 
-function fetchAndPopulateProducts() {
-    const db = firebase.firestore();
-    const productsCollection = db.collection('products');
-    const productsArea = document.querySelector('.products-area');
-
-    productsCollection.get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const productItem = document.createElement('div');
-                productItem.id = doc.id; // U¿yj ID dokumentu Firebase jako ID elementu
-                productItem.classList.add('product-item');
-                productItem.draggable = true;
-                productItem.dataset.value = data.unitPrice;
-                productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                productItem.addEventListener('dragstart', drag);
-                productsArea.appendChild(productItem);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
+    function calculateTotal() {
+        let sum = 0;
+        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+        selectedProducts.forEach(function (product) {
+            sum += Number(product.dataset.value);
         });
-}
+        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
+    }
 
-window.onload = function () {
-    fetchAndPopulateProducts();
-};
+    function fetchAndPopulateProducts() {
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+        const productsArea = document.querySelector('.products-area');
 
+        productsCollection.get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const productItem = document.createElement('div');
+                    productItem.id = 'product-' + doc.id; // U¿yj Firebase doc.id dla ID elementu
+                    productItem.classList.add('product-item');
+                    productItem.draggable = true;
+                    productItem.dataset.value = data.unitPrice;
+                    productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
+                    productItem.addEventListener('dragstart', drag);
+                    productsArea.appendChild(productItem);
+                });
+            })
+            .catch((error) => {
+                console.error("Error getting documents: ", error);
+            });
+    }
+
+    window.onload = function () {
+        fetchAndPopulateProducts();
+    };
 
     function calculateTotal() {
         let sum = 0;
