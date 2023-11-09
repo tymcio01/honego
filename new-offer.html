@@ -273,6 +273,8 @@ max-height: 30px;
         </div>
         <div class="drag-area">
             <div class="products-area" ondragover="allowDrop(event)">
+
+
                 <h3>Available Products</h3>
                 <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
             </div>
@@ -313,6 +315,7 @@ max-height: 30px;
         event.dataTransfer.setData("text/plain", event.target.id);
     }
 
+     // Funkcja drop z obs³ug¹ przenoszenia produktów miêdzy tabelami
     function drop(event) {
         event.preventDefault();
         const data = event.dataTransfer.getData("text/plain");
