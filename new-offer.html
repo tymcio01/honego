@@ -309,30 +309,36 @@ max-height: 30px;
     }
 
     function drag(event) {
-        event.dataTransfer.setData("text/plain", event.target.id);
+    event.dataTransfer.setData("text/plain", event.target.id);
+    event.dataTransfer.setData("text/value", event.target.dataset.value); // Przekazanie wartoœci
+    event.dataTransfer.setData("text/name", event.target.textContent); // Przekazanie nazwy
+}
+
+function drop(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/plain");
+    const value = event.dataTransfer.getData("text/value");
+    const name = event.dataTransfer.getData("text/name");
+    let dropzone = event.target;
+
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
     }
 
-    function drop(event) {
-        event.preventDefault();
-        const data = event.dataTransfer.getData("text/plain");
-        const draggableElement = document.getElementById(data);
-        let dropzone = event.target;
+    if (dropzone && dropzone.classList.contains('selected-area')) {
+        // Tworzymy nowy element z przekazanymi danymi
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+        productItem.draggable = true;
+        productItem.id = 'selected-' + id; // Nowy unikalny identyfikator dla klonu
+        productItem.dataset.value = value;
+        productItem.textContent = name;
+        productItem.addEventListener('dragstart', drag);
+        dropzone.appendChild(productItem);
+    }
+    calculateTotal();
+}
 
-        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-            dropzone = dropzone.parentNode;
-        }
-
-        if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
-            if (dropzone.classList.contains('products-area')) {
-                dropzone.appendChild(draggableElement);
-            } else {
-                // Klonowanie i dodawanie sklonowanego elementu do wybranej strefy
-                const clone = draggableElement.cloneNode(true);
-                clone.id = 'selected-' + draggableElement.id; // Zapewnienie unikalnoœci ID dla sklonowanych elementów
-                dropzone.appendChild(clone);
-            }
-            calculateTotal();
-        }
     }
 
     function calculateTotal() {
