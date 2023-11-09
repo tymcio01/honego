@@ -360,14 +360,13 @@ max-height: 30px;
         return false;
     }
 
-    document.getElementById('fileAttachment').addEventListener('change', updateFileList);
-
-    function fetchAndPopulateProducts() {
+     function fetchAndPopulateProducts() {
         const db = firebase.firestore();
         const productsCollection = db.collection('products');
+        const productsArea = document.querySelector('.products-area');
+
         productsCollection.get()
             .then((querySnapshot) => {
-                const productsArea = document.querySelector('.products-area');
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const productItem = document.createElement('div');
@@ -378,17 +377,15 @@ max-height: 30px;
                     productItem.addEventListener('dragstart', drag);
                     productsArea.appendChild(productItem);
                 });
-                productsLoaded = true; // Oznacz produkty jako za³adowane
             })
             .catch((error) => {
                 console.error("Error getting documents: ", error);
             });
     }
 
+    // Wywo³aj funkcjê fetchAndPopulateProducts przy ³adowaniu strony
     window.onload = function () {
-        if (!productsLoaded) {
-            fetchAndPopulateProducts(); // Za³aduj produkty przy pierwszym za³adowaniu strony
-        }
+        fetchAndPopulateProducts();
     };
 
     function calculateTotal() {
