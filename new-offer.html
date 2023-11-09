@@ -118,50 +118,7 @@
             margin-top: 20px;
         }
 
-        .products-area,
-        .selected-area {
-            width: calc(50% - 15px); /* Each area takes half of the container width minus the gap */
-            padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            min-height: 300px; /* Triple the default height */
-max-height: 300px;
-overflow-y: auto;
-            overflow-y: auto;
-        }
-
-        .products-area h3,
-        .selected-area h3 {
-            margin-bottom: 15px;
-            text-align: center;
-            color: #333;
-            font-size: 1.5em;
-        }
-
-        .product-item {
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            transition: background-color 0.2s, box-shadow 0.2s;
-min-height: 30px;
-max-height: 30px;
-        }
-
-        .product-item:hover {
-            background-color: #f0f0f0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .drag-over {
-            background-color: #e1e1e1;
-        }
-
-.comments-box {
+        .comments-box {
             max-width: 100%;
             margin: 20px 0;
             padding: 20px;
@@ -184,7 +141,8 @@ max-height: 30px;
             display: block;
             margin-bottom: 5px;
         }
-/* Style for the buttons */
+
+        /* Style for the buttons */
         .form-actions {
             text-align: center; /* Center the buttons */
             margin-top: 20px;
@@ -271,16 +229,6 @@ max-height: 30px;
             <input type="text" id="receiversName" name="receiversName" required>
             <button type="submit">Create Offer</button>
         </div>
-        <div class="drag-area">
-            <div class="products-area" ondragover="allowDrop(event)">
-                <h3>Available Products</h3>
-                <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
-            </div>
-            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h3>Selected Products</h3>
-                <div id="totalSum">Total Sum: 0 PLN</div>
-            </div>
-        </div>
         <div class="comments-box">
             <label for="additionalComments">Additional Notes & Conditions:</label>
             <textarea id="additionalComments" name="additionalComments"
@@ -301,54 +249,6 @@ max-height: 30px;
     &copy; 2023 Honego - All Rights Reserved
 </footer>
 <script>
-    function allowDrop(event) {
-        event.preventDefault();
-    }
-
-    function drag(event) {
-        event.dataTransfer.setData("text/plain", event.target.id);
-    }
-
-    function drop(event) {
-        event.preventDefault();
-        const data = event.dataTransfer.getData("text/plain");
-        const draggableElement = document.getElementById(data);
-        let dropzone = event.target;
-        calculateTotal();
-        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-            dropzone = dropzone.parentNode;
-        }
-        if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
-            dropzone.appendChild(draggableElement.cloneNode(true));
-        }
-    }
-
-    function moveProduct(event) {
-        const product = event.target;
-        const currentArea = product.parentNode;
-        const isProductAvailable = currentArea.classList.contains('products-area');
-        const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
-        destinationArea.appendChild(product.cloneNode(true));
-        calculateTotal();
-    }
-
-    let productsLoaded = false; // Dodaj zmienn¹, aby œledziæ, czy produkty zosta³y ju¿ za³adowane
-
-    (function () {
-        // Check if products are already loaded
-        const productsLoaded = document.querySelector('.products-area .product-item');
-
-        if (!productsLoaded) {
-            // Products not loaded, fetch and populate them
-            fetchAndPopulateProducts();
-        }
-
-        const products = document.querySelectorAll('.product-item');
-        products.forEach(function (product) {
-            product.addEventListener('dblclick', moveProduct);
-        });
-    })();
-
     function updateFileList() {
         var input = document.getElementById('fileAttachment');
         var fileListContainer = document.getElementById('fileList');
@@ -376,44 +276,6 @@ max-height: 30px;
     }
 
     document.getElementById('fileAttachment').addEventListener('change', updateFileList);
-
-    function fetchAndPopulateProducts() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-        productsCollection.get()
-            .then((querySnapshot) => {
-                const productsArea = document.querySelector('.products-area');
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const productItem = document.createElement('div');
-                    productItem.classList.add('product-item');
-                    productItem.draggable = true;
-                    productItem.dataset.value = data.unitPrice;
-                    productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                    productItem.addEventListener('dragstart', drag);
-                    productsArea.appendChild(productItem);
-                });
-                productsLoaded = true; // Oznacz produkty jako za³adowane
-            })
-            .catch((error) => {
-                console.error("Error getting documents: ", error);
-            });
-    }
-
-    window.onload = function () {
-        if (!productsLoaded) {
-            fetchAndPopulateProducts(); // Za³aduj produkty przy pierwszym za³adowaniu strony
-        }
-    };
-
-    function calculateTotal() {
-        let sum = 0;
-        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-        selectedProducts.forEach(function (product) {
-            sum += Number(product.getAttribute('data-value'));
-        });
-        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
-    }
 </script>
 </body>
 </html>
