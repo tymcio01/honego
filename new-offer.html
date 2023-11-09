@@ -321,17 +321,7 @@ max-height: 30px;
         if (dropzone && (dropzone.classList.contains('products-area') || dropzone.classList.contains('selected-area'))) {
             dropzone.appendChild(draggableElement.cloneNode(true));
         }
-    }
-
-     function moveProduct(event) {
-        const product = event.target;
-        const currentArea = product.parentNode;
-        const isProductAvailable = currentArea.classList.contains('products-area');
-        const destinationArea = isProductAvailable ? document.querySelector('.selected-area') : document.querySelector('.products-area');
-        destinationArea.appendChild(product.cloneNode(true));
-        calculateTotal();
-    }
-
+    
     let productsLoaded = false; // Dodaj zmienn¹, aby œledziæ, czy produkty zosta³y ju¿ za³adowane
 
     (function () {
@@ -343,12 +333,7 @@ max-height: 30px;
             fetchAndPopulateProducts();
         }
 
-        const products = document.querySelectorAll('.product-item');
-        products.forEach(function (product) {
-            product.addEventListener('dblclick', moveProduct);
-        });
-    })();
-
+        
     function updateFileList() {
         var input = document.getElementById('fileAttachment');
         var fileListContainer = document.getElementById('fileList');
