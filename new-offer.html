@@ -256,7 +256,7 @@ max-height: 30px;
             <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
             <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
         </ul>
-      </aside>
+    </aside>
 
     <div class="main-content">
         <div class="profile-form">
@@ -272,6 +272,10 @@ max-height: 30px;
             <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
+            <div class="products-area" ondragover="allowDrop(event)">
+                <h3>Available Products</h3>
+                <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
+            </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h3>Selected Products</h3>
                 <div id="totalSum">Total Sum: 0 PLN</div>
