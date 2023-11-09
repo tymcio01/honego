@@ -338,10 +338,12 @@ function sendOffer(clientId) {
     firebase.initializeApp(firebaseConfig);
 
     firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-            window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-        }
-    });
+        if (user) {
+        populateClientsTable(); // Correct placement
+    } else {
+        window.location.href = 'index.html'; // Redirect to login if no user
+    }
+});
 
     // Funkcja wylogowywania
     function logout() {
@@ -354,23 +356,7 @@ function sendOffer(clientId) {
         });
     }
 
-    // Funkcja dodawania klienta do Firestore
-    function addClientToFirestore(clientData) {
-        const db = firebase.firestore();
-        const clientsCollection = db.collection('clients');
-
-        clientsCollection.add(clientData)
-            .then((docRef) => {
-                console.log('Document written with ID: ', docRef.id);
-                // Aktualizacja tabeli po dodaniu klienta
-                updateTableWithClient(clientData, docRef.id);
-            })
-            .catch((error) => {
-                console.error('Error adding document: ', error);
-            });
-    }
-
-    // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
+        // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
     function updateTableWithClient(clientData, docId) {
         var newRow = `<tr>
             <td>${clientData.company}</td>
