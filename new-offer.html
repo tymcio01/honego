@@ -327,12 +327,59 @@ max-height: 30px;
             const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
             clone.id = newId;
             clone.addEventListener('dragstart', drag);
+            
+			// Dodajemy interfejs do zarz¹dzania iloœci¹
+            const quantityDiv = document.createElement('div');
+            quantityDiv.className = 'quantity-controls';
+
+            const minusButton = document.createElement('button');
+            minusButton.textContent = '-';
+            minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
+
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.value = 1;
+            quantityInput.min = 1;
+            quantityInput.className = 'product-quantity';
+            quantityInput.addEventListener('change', calculateTotal);
+
+            const plusButton = document.createElement('button');
+            plusButton.textContent = '+';
+            plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
+
+            quantityDiv.appendChild(minusButton);
+            quantityDiv.appendChild(quantityInput);
+            quantityDiv.appendChild(plusButton);
+            clone.appendChild(quantityDiv);
+
             dropzone.appendChild(clone);
+            calculateTotal();
         }
+    }
+
+    function adjustQuantity(productId, adjustment) {
+        const productElement = document.getElementById(productId);
+        const quantityInput = productElement.querySelector('.product-quantity');
+        let quantity = parseInt(quantityInput.value);
+        quantity = quantity + adjustment;
+
+        if (quantity < 1) quantity = 1; // Nie pozwalamy na wartoœci mniejsze ni¿ 1
+        quantityInput.value = quantity;
+
         calculateTotal();
     }
 
     function calculateTotal() {
+        let sum = 0;
+        document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
+            const price = Number(product.dataset.value);
+            const quantity = Number(product.querySelector('.product-quantity').value);
+            sum += price * quantity;
+        });
+        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
+    }
+
+    function fetchAndPopulateProducts() {
         let sum = 0;
         const selectedProducts = document.querySelectorAll('.selected-area .product-item');
         selectedProducts.forEach(function (product) {
@@ -377,6 +424,8 @@ max-height: 30px;
         });
         document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
     }
+	 window.onload = fetchAndPopulateProducts;
+	
 </script>
 </body>
 </html>
