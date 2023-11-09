@@ -250,38 +250,6 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-// Fetch and populate products from Firestore
-function fetchAndPopulateProducts() {
-    const db = firebase.firestore();
-    const productsCollection = db.collection('products');
-    const productsArea = document.querySelector('.products-area');
-
-    productsCollection.get()
-        .then((querySnapshot) => {
-            // Clear the existing products to prevent duplicates
-            productsArea.innerHTML = '';
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const productItem = document.createElement('div');
-                productItem.classList.add('product-item');
-                productItem.draggable = true;
-                productItem.dataset.value = data.unitPrice;
-                productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                productItem.addEventListener('dragstart', drag);
-                productsArea.appendChild(productItem);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
-        });
-}
-
-// Run fetchAndPopulateProducts only once when the page loads
-window.onload = function() {
-    fetchAndPopulateProducts();
-};
-
 // Funkcja wylogowywania
   function logout() {
     firebase.auth().signOut().then(() => {
@@ -382,11 +350,13 @@ function allowDrop(event) {
   }
 
   window.onload = function() {
+    fetchAndPopulateProducts();
+
     const products = document.querySelectorAll('.product-item');
     products.forEach(function(product) {
-      product.addEventListener('dblclick', moveProduct);
+        product.addEventListener('dblclick', moveProduct);
     });
-  };
+};
 
 function updateFileList() {
     var input = document.getElementById('fileAttachment');
