@@ -307,12 +307,14 @@ max-height: 30px;
         event.preventDefault();
     }
 
-    function allowDrop(event) {
+    // Funkcja do obs³ugi przenoszenia produktów do obszaru dostêpnych produktów
+    function allowDropProducts(event) {
         event.preventDefault();
     }
 
-    function drag(event) {
-        event.dataTransfer.setData("text/plain", event.target.id);
+     // Funkcja do obs³ugi przenoszenia produktów do obszaru wybranych produktów
+    function allowDropSelected(event) {
+        event.preventDefault();
     }
 
      // Funkcja drop z obs³ug¹ przenoszenia produktów miêdzy tabelami
