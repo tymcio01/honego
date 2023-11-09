@@ -139,24 +139,23 @@
     <script>
         // Konfiguracja Firebase
         var firebaseConfig = {
-            "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
-        authDomain: "honego-52c31.firebaseapp.com",
-        projectId: "honego-52c31",
-        storageBucket: "honego-52c31.appspot.com",
-        messagingSenderId: "897927654843",
-        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-        };
-        firebase.initializeApp(firebaseConfig);
+    apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
+    authDomain: "honego-52c31.firebaseapp.com",
+    projectId: "honego-52c31",
+    storageBucket: "honego-52c31.appspot.com",
+    messagingSenderId: "897927654843",
+    appId: "1:897927654843:web:54bf5b398542dfd076a89e"
+};
+firebase.initializeApp(firebaseConfig);
 
-       firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        // User is signed in, so now call `populateClientsTable`.
         populateClientsTable();
     } else {
-        // No user is signed in, so redirect to the login page.
-        window.location.href = 'index.html';
+        window.location.href = 'index.html'; // Redirect to login if no user
     }
 });
+
 
 		
 		function populateClientsTable() {
