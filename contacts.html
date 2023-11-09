@@ -317,40 +317,6 @@
 
 <script>
 
-// Funkcja dodawania klienta do Firestore
-function addClientToFirestore(clientData) {
-    const db = firebase.firestore();
-    const clientsCollection = db.collection('clients');
-
-    clientsCollection.add(clientData)
-        .then((docRef) => {
-            console.log('Document written with ID: ', docRef.id);
-            // Aktualizacja tabeli po dodaniu klienta
-            updateTableWithClient(clientData, docRef.id);
-        })
-        .catch((error) => {
-            console.error('Error adding document: ', error);
-        });
-}
-
-// Funkcja aktualizacji tabeli po dodaniu klienta
-function updateTableWithClient(clientData, clientId) {
-    const tableBody = document.getElementById('tableBody');
-
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-        <td>${clientData.company}</td>
-        <td>${clientData.name}</td>
-        <td>${clientData.surname}</td>
-        <td>${clientData.address}</td>
-        <td>${clientData.phone}</td>
-        <td>${clientData.email}</td>
-        <td>${clientData.industry}</td>
-        <td><button class="send-offer-btn" type="button" onclick="sendOffer('${clientId}')">Send Offer</button></td>
-    `;
-
-    tableBody.appendChild(newRow);
-}
 
 // Funkcja wysy³ania oferty dla klienta
 function sendOffer(clientId) {
@@ -360,51 +326,7 @@ function sendOffer(clientId) {
 }
 
 
-    var firebaseConfig = {
-        apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
-        authDomain: "honego-52c31.firebaseapp.com",
-        projectId: "honego-52c31",
-        storageBucket: "honego-52c31.appspot.com",
-        messagingSenderId: "897927654843",
-        appId: "1:897927654843:web:54bf5b398542dfd076a89e"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-    firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-            window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-        }
-    });
-
-    // Funkcja wylogowywania
-    function logout() {
-        firebase.auth().signOut().then(() => {
-            // Wylogowanie udane, przekierowanie na index.html
-            window.location.href = 'index.html';
-        }).catch((error) => {
-            // Obs³uga b³êdów
-            console.error('Logout Failed', error);
-        });
-    }
-
-    // Funkcja dodawania klienta do Firestore
-    function addClientToFirestore(clientData) {
-        const db = firebase.firestore();
-        const clientsCollection = db.collection('clients');
-
-        clientsCollection.add(clientData)
-            .then((docRef) => {
-                console.log('Document written with ID: ', docRef.id);
-                // Aktualizacja tabeli po dodaniu klienta
-                updateTableWithClient(clientData, docRef.id);
-            })
-            .catch((error) => {
-                console.error('Error adding document: ', error);
-            });
-    }
-
-    // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
+        // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
     function updateTableWithClient(clientData, docId) {
         var newRow = `<tr>
             <td>${clientData.company}</td>
