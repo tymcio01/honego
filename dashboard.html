@@ -32,14 +32,6 @@
         color: #f6f6f6; /* You may want to change the text color for better contrast */
     }
 
-        aside {
-            width: 250px;
-            background-color: #1c2121;
-            padding: 20px;
-            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-            color: #f6f6f6;
-        }
-
         aside ul {
             list-style-type: none;
             padding: 0;
@@ -59,9 +51,9 @@
         }
 
         aside ul li a:hover {
-            background-color: #f8f9fa;
-            color: #333;
-
+        background-color: #f8f9fa;
+        color: #333; /* Ensure the hover state is also visible against the lighter background */
+    }
 
         .main-content {
             flex-grow: 1;
@@ -134,36 +126,35 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
     <div class="container">
         <aside>
-
-            
-        <h1>Honego</h1>
-        <ul>
-<li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
-            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
-            <li><a href="new-offer.html"><i class="fas fa-plus"></i> Create New Offer</a></li>
-            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product/Service Library</a></li>
-            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
-            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
-        </ul>    
+        <h1>Honego</h1> <!-- This is the new H1 tag added -->
+    <ul>
+<li>
+<li><a href="dashboard.html">Dashboard</a></li>
+        
+<li><a href="my-offers.html">My Offers</a></li>
+        <li><a href="new-offer.html">Create New Offer</a></li>
+		<li><a href="contacts.html">Contacts</a></li>
+        <li><a href="product-library.html">Product/Service Library</a></li>
+                <li><a href="account-settings.html">Account Settings</a></li>
+        <li><a href="#" onclick="logout();">Log out</a></li>
+    </ul>
 </aside>
-
 
         <div class="main-content">
             <div class="card">
-                <h2>Podsumowanie</h2>
-                <p>Numbers of offer sent daily.</p>
+                <h2>Summary</h2>
+                <p>Here you can see a quick overview of your mentions.</p>
                 <div class="chart-container">
                     <canvas id="offersChart"></canvas>
                 </div>
             </div>
             <div class="card">
-                <h2>Big Deals</h2>
-                <p>See the biggest requests you received to take care of it.</p>
+                <h2>Alerts</h2>
+                <p>Check the latest alerts for your brand.</p>
             </div>
             <div class="card">
-                <h2>Active Sales Performance</h2>
-                <p>See the performance vs KPI`s.</p>
+                <h2>Statistics</h2>
+                <p>View detailed statistics and reports.</p>
             </div>
         </div>
     </div>
