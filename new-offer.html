@@ -304,69 +304,59 @@ max-height: 30px;
     &copy; 2023 Honego - All Rights Reserved
 </footer>
 <script>
-    function allowDrop(event) {
-        event.preventDefault();
-    }
-
     function drag(event) {
-        event.dataTransfer.setData("text/plain", event.target.id);
+    event.dataTransfer.setData("text/plain", event.target.id);
+}
+
+function drop(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/plain");
+    const originalElement = document.getElementById(id);
+    let dropzone = event.target;
+
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
     }
 
-    function drop(event) {
-        event.preventDefault();
-        const id = event.dataTransfer.getData("text/plain");
-        const draggableElement = document.getElementById(id);
-        let dropzone = event.target;
-
-        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-            dropzone = dropzone.parentNode;
-        }
-
-        if (dropzone && dropzone.classList.contains('selected-area')) {
-            const clone = draggableElement.cloneNode(true);
-            clone.id = 'selected-' + draggableElement.id; 
-            clone.addEventListener('dragstart', drag);
-            dropzone.appendChild(clone);
-        }
-        calculateTotal();
+    if (dropzone && dropzone.classList.contains('selected-area')) {
+        // Tworzymy klon z unikalnym ID, aby unikn¹æ konfliktów
+        const clone = originalElement.cloneNode(true);
+        const newId = `selected-${id}-${Math.random().toString(16).slice(2)}`; // Dodajemy losowy ci¹g, aby zapewniæ unikalnoœæ
+        clone.id = newId;
+        clone.addEventListener('dragstart', drag);
+        dropzone.appendChild(clone);
     }
+    calculateTotal();
+}
 
-    function calculateTotal() {
-        let sum = 0;
-        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-        selectedProducts.forEach(function (product) {
-            sum += Number(product.dataset.value);
-        });
-        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
-    }
+function fetchAndPopulateProducts() {
+    const db = firebase.firestore();
+    const productsCollection = db.collection('products');
+    const productsArea = document.querySelector('.products-area');
 
-    function fetchAndPopulateProducts() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-        const productsArea = document.querySelector('.products-area');
-
-        productsCollection.get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc, index) => {
-                    const data = doc.data();
-                    const productItem = document.createElement('div');
-                    productItem.id = 'product-' + index;
-                    productItem.classList.add('product-item');
-                    productItem.draggable = true;
-                    productItem.dataset.value = data.unitPrice;
-                    productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                    productItem.addEventListener('dragstart', drag);
-                    productsArea.appendChild(productItem);
-                });
-            })
-            .catch((error) => {
-                console.error("Error getting documents: ", error);
+    productsCollection.get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const productItem = document.createElement('div');
+                productItem.id = doc.id; // U¿yj ID dokumentu Firebase jako ID elementu
+                productItem.classList.add('product-item');
+                productItem.draggable = true;
+                productItem.dataset.value = data.unitPrice;
+                productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
+                productItem.addEventListener('dragstart', drag);
+                productsArea.appendChild(productItem);
             });
-    }
+        })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+}
 
-    window.onload = function () {
-        fetchAndPopulateProducts();
-    };
+window.onload = function () {
+    fetchAndPopulateProducts();
+};
+
 
     function calculateTotal() {
         let sum = 0;
