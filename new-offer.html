@@ -417,13 +417,16 @@ max-height: 30px;
     };
 
     function calculateTotal() {
-        let sum = 0;
-        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-        selectedProducts.forEach(function (product) {
-            sum += Number(product.getAttribute('data-value'));
-        });
-        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
-    }
+    let sum = 0;
+    document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
+        const price = parseFloat(product.dataset.value);
+        const quantityInput = product.querySelector('.product-quantity');
+        const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+        sum += price * quantity;
+    });
+    document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN`; // Zaokr¹glenie do dwóch miejsc po przecinku
+}
+
 	 window.onload = fetchAndPopulateProducts;
 	
 </script>
