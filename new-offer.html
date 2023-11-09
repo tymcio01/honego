@@ -349,14 +349,20 @@ function allowDrop(event) {
     calculateTotal();
   }
 
-  window.onload = function() {
-    fetchAndPopulateProducts();
+  (function() {
+    // Check if products are already loaded
+    const productsLoaded = document.querySelector('.products-area .product-item');
+
+    if (!productsLoaded) {
+        // Products not loaded, fetch and populate them
+        fetchAndPopulateProducts();
+    }
 
     const products = document.querySelectorAll('.product-item');
     products.forEach(function(product) {
         product.addEventListener('dblclick', moveProduct);
     });
-};
+})();
 
 function updateFileList() {
     var input = document.getElementById('fileAttachment');
@@ -404,6 +410,8 @@ function fetchAndPopulateProducts() {
             console.error("Error getting documents: ", error);
         });
 }
+window.onload = function() {
+    fetchAndPopulateProducts();
 };
 function calculateTotal() {
     let sum = 0;
