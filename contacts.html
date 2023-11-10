@@ -528,7 +528,25 @@ document.getElementById('searchBtn').addEventListener('click', function () {
             tr[i].style.display = "none";
         }
     }
+	
+	// First, get a reference to the search input and search button
+var searchInput = document.getElementById('searchInput');
+var searchBtn = document.getElementById('searchBtn');
+
+// Add an event listener to the search input
+searchInput.addEventListener('keypress', function (e) {
+    // Check if the pressed key is "Enter"
+    if (e.key === 'Enter') {
+        // If it is, trigger the click event on the search button
+        searchBtn.click();
+    }
 });
+
+// The search button click event handler remains the same
+searchBtn.addEventListener('click', function () {
+    // Your search function...
+});
+
 
 
     </script>
