@@ -141,9 +141,6 @@ overflow-y: auto;
         }
 
         .product-item {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
             padding: 12px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -153,15 +150,7 @@ overflow-y: auto;
             transition: background-color 0.2s, box-shadow 0.2s;
 min-height: 30px;
 max-height: 30px;
-
-		}
-			.quantity-controls {
-			display: flex;
-			gap: 5px;
         }
-		
-		.quantity-controls button {
-		}
 
         .product-item:hover {
             background-color: #f0f0f0;
@@ -336,42 +325,49 @@ max-height: 30px;
         }
 
         if (dropzone && dropzone.classList.contains('selected-area')) {
-        const clone = draggableElement.cloneNode(true);
-        const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
-        clone.id = newId;
-        clone.addEventListener('dragstart', drag);
+            const clone = draggableElement.cloneNode(true);
+            const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
+            clone.id = newId;
+            clone.addEventListener('dragstart', drag);
+            
+			// Dodajemy interfejs do zarz¹dzania iloœci¹
+            const quantityDiv = document.createElement('div');
+            quantityDiv.className = 'quantity-controls';
 
-        // Tworzenie nowej struktury dla produktu
-        const productNameSpan = document.createElement('span');
-        productNameSpan.classList.add('product-name');
-        productNameSpan.textContent = draggableElement.textContent; // Zak³adaj¹c, ¿e draggableElement ma tekst nazwy produktu i ceny
+            const minusButton = document.createElement('button');
+            minusButton.textContent = '-';
+            minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
 
-        const quantityDiv = document.createElement('div');
-        quantityDiv.className = 'quantity-controls';
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.value = 1;
+            quantityInput.min = 1;
+            quantityInput.className = 'product-quantity';
+            quantityInput.addEventListener('change', calculateTotal);
 
-        const minusButton = document.createElement('button');
-        minusButton.textContent = '-';
-        minusButton.onclick = function() { adjustQuantity(newId, -1); };
+            const plusButton = document.createElement('button');
+            plusButton.textContent = '+';
+            plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
 
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.value = 1;
-        quantityInput.min = 1;
-        quantityInput.className = 'product-quantity';
+            quantityDiv.appendChild(minusButton);
+            quantityDiv.appendChild(quantityInput);
+            quantityDiv.appendChild(plusButton);
+            clone.appendChild(quantityDiv);
 
-        const plusButton = document.createElement('button');
-        plusButton.textContent = '+';
-        plusButton.onclick = function() { adjustQuantity(newId, 1); };
+            dropzone.appendChild(clone);
+            calculateTotal();
+        }
+    }
 
-        quantityDiv.appendChild(minusButton);
-        quantityDiv.appendChild(quantityInput);
-        quantityDiv.appendChild(plusButton);
+    function adjustQuantity(productId, adjustment) {
+        const productElement = document.getElementById(productId);
+        const quantityInput = productElement.querySelector('.product-quantity');
+        let quantity = parseInt(quantityInput.value);
+        quantity = quantity + adjustment;
 
-        clone.innerHTML = ''; // Usuñ oryginaln¹ zawartoœæ
-        clone.appendChild(productNameSpan); // Dodaj nazwê produktu
-        clone.appendChild(quantityDiv); // Dodaj przyciski iloœci
+        if (quantity < 1) quantity = 1; // Nie pozwalamy na wartoœci mniejsze ni¿ 1
+        quantityInput.value = quantity;
 
-        dropzone.appendChild(clone);
         calculateTotal();
     }
 
