@@ -273,14 +273,18 @@ max-height: 30px;
             <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
-            <div class="products-area" ondragover="allowDrop(event)">
-
-
-                <h3>Available Products</h3>
-                <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
-            </div>
-            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h3>Selected Products</h3>
+    <div class="products-column">
+        <h3>Available Products</h3>
+        <div class="products-area" ondragover="allowDrop(event)">
+            <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
+        </div>
+    </div>
+    <div class="selected-column">
+        <h3>Selected Products</h3>
+        <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <!-- Produkty bêd¹ tutaj przenoszone -->
+        </div>
+        <div id="totalSum">Total Sum: 0 PLN</div>
                 <div id="totalSum">Total Sum: 0 PLN</div>
             </div>
         </div>
