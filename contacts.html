@@ -275,9 +275,11 @@ firebase.auth().onAuthStateChanged((user) => {
             </div>
 
             <div style="padding: 20px 0; text-align: center;">
-                <button type="button">Search</button>
-                <button type="button" id="exportBtn">Export</button>
-            </div>
+    <input type="text" id="searchInput" placeholder="Search clients...">
+    <button type="button" id="searchBtn">Search</button>
+    <button type="button" id="exportBtn">Export</button>
+</div>
+
 
             <table class="customer-table">
                 <thead>
@@ -500,6 +502,33 @@ document.getElementById('exportBtn').addEventListener('click', function () {
     exportTableToCSV(filename);
 });
 
+document.getElementById('searchBtn').addEventListener('click', function () {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    table = document.querySelector(".customer-table");
+    tr = table.getElementsByTagName('tr');
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 1; i < tr.length; i++) { // Start from 1 to skip the header row
+        td = tr[i].getElementsByTagName("td");
+        var showRow = false;
+        for (var j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    showRow = true;
+                    break;
+                }
+            }
+        }
+        if (showRow) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+});
 
 
     </script>
