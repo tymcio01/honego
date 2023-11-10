@@ -430,36 +430,39 @@ function sendOffer(clientId) {
     var csv = [];
     var rows = document.querySelectorAll("table tr");
 
-    // Dodajemy nag³ówki tabeli jako pierwszy wiersz w CSV
+    // Extract headers
     var headers = rows[0].querySelectorAll("th");
     var headerArray = [];
-    for(var i = 0; i < headers.length; i++) {
-        headerArray.push('"' + headers[i].innerText + '"');
+    for (var i = 0; i < headers.length; i++) {
+        headerArray.push('"' + headers[i].innerText.trim() + '"'); // Trim spaces and wrap in quotes
     }
-    csv.push(headerArray.join(",")); // Dodajemy nag³ówki do CSV
+    csv.push(headerArray.join(",")); // Add headers to CSV
 
-    // Dodajemy dane tabeli do CSV
+    // Extract data
     for (var i = 1; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll("td");
 
         for (var j = 0; j < cols.length; j++) {
-            var data = cols[j].innerText.replace(/"/g, '""'); // Zastêpujemy wszystkie cudzys³owy ich podwójnymi wersjami
-            row.push('"' + data + '"'); // Dane umieszczamy w cudzys³owach
+            var text = cols[j].innerText.trim(); // Trim spaces
+            var data = text.replace(/"/g, '""'); // Escape double quotes
+            if (data.includes(",")) {
+                data = '"' + data + '"'; // Wrap data with commas in quotes
+            }
+            row.push(data);
         }
 
-        csv.push(row.join(",")); // Dodajemy dane do CSV
+        csv.push(row.join(",")); // Add row to CSV
     }
 
     // Download CSV file
     downloadCSV(csv.join("\n"), filename);
 }
 
-
-        document.getElementById('exportBtn').addEventListener('click', function () {
-            var now = new Date();
-            var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
-            exportTableToCSV(filename);
-        });
+document.getElementById('exportBtn').addEventListener('click', function () {
+    var now = new Date();
+    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
+    exportTableToCSV(filename);
+});
     </script>
 </body>
 </html>
