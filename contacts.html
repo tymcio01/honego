@@ -430,28 +430,16 @@ function sendOffer(clientId) {
     var csv = [];
     var rows = document.querySelectorAll("table tr");
 
-    // Extract headers
-    var headers = rows[0].querySelectorAll("th");
-    var headerArray = [];
-    for (var i = 0; i < headers.length; i++) {
-        headerArray.push('"' + headers[i].innerText.trim() + '"'); // Trim spaces and wrap in quotes
-    }
-    csv.push(headerArray.join(",")); // Add headers to CSV
-
-    // Extract data
-    for (var i = 1; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td");
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
 
         for (var j = 0; j < cols.length; j++) {
-            var text = cols[j].innerText.trim(); // Trim spaces
-            var data = text.replace(/"/g, '""'); // Escape double quotes
-            if (data.includes(",")) {
-                data = '"' + data + '"'; // Wrap data with commas in quotes
-            }
+            // Wrap the data with quotes and escape internal quotes.
+            var data = '"' + cols[j].innerText.replace(/"/g, '""') + '"';
             row.push(data);
         }
 
-        csv.push(row.join(",")); // Add row to CSV
+        csv.push(row.join(","));
     }
 
     // Download CSV file
@@ -463,6 +451,7 @@ document.getElementById('exportBtn').addEventListener('click', function () {
     var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
     exportTableToCSV(filename);
 });
+
     </script>
 </body>
 </html>
