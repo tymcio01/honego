@@ -233,6 +233,27 @@
         profileForm.addEventListener('submit', saveProfileToFirestore);
     });
 
+document.getElementById('hotelLogo').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Tworzenie obiektu URL do podglądu
+        const previewUrl = URL.createObjectURL(file);
+        
+        // Tworzenie elementu img i dodawanie źródła URL
+        const img = document.createElement('img');
+        img.src = previewUrl;
+        img.style.width = '100px'; // Ustawienie szerokości miniatury
+        img.style.height = 'auto'; // Ustawienie wysokości, aby zachować proporcje
+        img.style.marginTop = '10px'; // Dodanie marginesu od góry
+
+        // Usuwanie poprzednich podglądów, jeśli istnieją
+        const previewContainer = document.getElementById('hotelLogoPreview');
+        previewContainer.innerHTML = '';
+        previewContainer.appendChild(img);
+    }
+});
+
+
 </script>
 
 <div class="container">
@@ -293,6 +314,9 @@
 		<div class="upload-buttons">
     <label for="hotelLogo">Hotel logo:</label>
     <input type="file" id="hotelLogo" name="hotelLogo" accept="image/*">
+	<label for="hotelLogo">Hotel logo:</label>
+<input type="file" id="hotelLogo" name="hotelLogo" accept="image/*">
+<div id="hotelLogoPreview"></div> <!-- Kontener na podgląd logo hotelu -->
     
     <label for="genericPdfOffer">Generic PDF offer:</label>
     <input type="file" id="genericPdfOffer" name="genericPdfOffer" accept="application/pdf">
