@@ -426,31 +426,58 @@ function sendOffer(clientId) {
             downloadLink.click();
         }
 
-        function exportTableToCSV(filename) {
-    var csv = [];
+        function exportTableToTSV(filename) {
+    var tsv = [];
     var rows = document.querySelectorAll("table tr");
 
     for (var i = 0; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll("td, th");
 
         for (var j = 0; j < cols.length; j++) {
-            // Wrap the data with quotes and escape internal quotes.
-            var data = '"' + cols[j].innerText.replace(/"/g, '""') + '"';
+            // Add the data and replace any internal tab characters with a space.
+            var data = cols[j].innerText.replace(/\t/g, ' ');
             row.push(data);
         }
 
-        csv.push(row.join(","));
+        tsv.push(row.join("\t")); // Join data points with a tab character
     }
 
-    // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
+    // Download TSV file
+    downloadTSV(tsv.join("\n"), filename);
+}
+
+function downloadTSV(tsv, filename) {
+    var tsvFile;
+    var downloadLink;
+
+    // TSV file
+    tsvFile = new Blob([tsv], {type: "text/tab-separated-values"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(tsvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
 }
 
 document.getElementById('exportBtn').addEventListener('click', function () {
     var now = new Date();
-    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
-    exportTableToCSV(filename);
+    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".tsv";
+    exportTableToTSV(filename);
 });
+
 
     </script>
 </body>
