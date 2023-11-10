@@ -446,12 +446,34 @@ function sendOffer(clientId) {
     downloadTSV(tsv.join("\n"), filename);
 }
 
-function downloadTSV(tsv, filename) {
-    var tsvFile;
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++) {
+            // Clean the data to ensure no line breaks, double quotes, or commas interfere with CSV formatting
+            var text = cols[j].textContent || cols[j].innerText;
+            text = text.replace(/"/g, '""'); // Escape double quotes
+            text = text.replace(/(\r\n|\n|\r)/gm, ""); // Remove line breaks
+            row.push('"' + text + '"'); // Wrap data in double quotes
+        }
+
+        csv.push(row.join(",")); // Separate data points with commas
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
     var downloadLink;
 
-    // TSV file
-    tsvFile = new Blob([tsv], {type: "text/tab-separated-values"});
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
 
     // Download link
     downloadLink = document.createElement("a");
@@ -460,7 +482,7 @@ function downloadTSV(tsv, filename) {
     downloadLink.download = filename;
 
     // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(tsvFile);
+    downloadLink.href = window.URL.createObjectURL(csvFile);
 
     // Hide download link
     downloadLink.style.display = "none";
@@ -474,9 +496,10 @@ function downloadTSV(tsv, filename) {
 
 document.getElementById('exportBtn').addEventListener('click', function () {
     var now = new Date();
-    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".tsv";
-    exportTableToTSV(filename);
+    var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
+    exportTableToCSV(filename);
 });
+
 
 
     </script>
