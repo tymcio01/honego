@@ -211,7 +211,15 @@ max-height: 30px;
         .btn-draft { background-color: #6c757d; color: white; }
         .btn-preview { background-color: #17a2b8; color: white; }
         .btn-pdf { background-color: #dc3545; color: white; }
-        .btn-email { background-color: #28a745; color: white; }</style>
+        .btn-email { background-color: #28a745; color: white; }
+		
+		#totalSum {
+  font-weight: bold; /* Make text bold */
+  text-align: right; /* Align text to the right */
+}
+
+		
+		</style>
 </head>
 <body>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -281,8 +289,9 @@ max-height: 30px;
             </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h3>Selected Products</h3>
-                <div id="totalSum">Total Sum: 0 PLN</div>
+                
             </div>
+			<div id="totalSum">Total Sum: 0 PLN</div>
         </div>
         <div class="comments-box">
             <label for="additionalComments">Additional Notes & Conditions:</label>
