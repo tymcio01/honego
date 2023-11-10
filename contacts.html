@@ -427,21 +427,33 @@ function sendOffer(clientId) {
         }
 
         function exportTableToCSV(filename) {
-            var csv = [];
-            var rows = document.querySelectorAll("table tr");
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
 
-            for (var i = 0; i < rows.length; i++) {
-                var row = [], cols = rows[i].querySelectorAll("td, th");
+    // Dodajemy nag³ówki tabeli jako pierwszy wiersz w CSV
+    var headers = rows[0].querySelectorAll("th");
+    var headerArray = [];
+    for(var i = 0; i < headers.length; i++) {
+        headerArray.push('"' + headers[i].innerText + '"');
+    }
+    csv.push(headerArray.join(",")); // Dodajemy nag³ówki do CSV
 
-                for (var j = 0; j < cols.length; j++)
-                    row.push('"' + cols[j].innerText + '"');
+    // Dodajemy dane tabeli do CSV
+    for (var i = 1; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td");
 
-                csv.push(row.join(","));
-            }
-
-            // Download CSV file
-            downloadCSV(csv.join("\n"), filename);
+        for (var j = 0; j < cols.length; j++) {
+            var data = cols[j].innerText.replace(/"/g, '""'); // Zastêpujemy wszystkie cudzys³owy ich podwójnymi wersjami
+            row.push('"' + data + '"'); // Dane umieszczamy w cudzys³owach
         }
+
+        csv.push(row.join(",")); // Dodajemy dane do CSV
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
 
         document.getElementById('exportBtn').addEventListener('click', function () {
             var now = new Date();
