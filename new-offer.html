@@ -213,21 +213,37 @@ max-height: 30px;
         .btn-pdf { background-color: #dc3545; color: white; }
         .btn-email { background-color: #28a745; color: white; }
 		
-		.sticky-header {
+		.products-column,
+    .selected-column {
+        width: calc(50% - 15px);
+        float: left;
+    }
+
+    .sticky-header {
         background-color: #fff;
         position: sticky;
-        top: 0;
-        z-index: 100;
-        padding: 10px;
-        margin-top: -10px; /* Offset for the padding to maintain layout continuity */
-        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.2);
+        top: 20px; /* Adjust this value as needed */
+        z-index: 10;
     }
 
     .products-area,
     .selected-area {
-        margin-top: 50px; /* Space for the sticky header */
-        
-		}
+        /* Remove margin-top if you have it here */
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        min-height: 300px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    /* Clearfix for the float */
+    .drag-area::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 	
 		</style>
 </head>
@@ -290,17 +306,22 @@ max-height: 30px;
             <input type="text" id="receiversName" name="receiversName" required>
             <button type="submit">Create Offer</button>
         </div>
-    <div class="sticky-header"><h3>Available Products</h3></div>
-    <div class="products-area" ondragover="allowDrop(event)">
-        <!-- Lista dostêpnych produktów -->
+		
+     <div class="drag-area">
+        <div class="products-column">
+            <div class="sticky-header"><h3>Available Products</h3></div>
+            <div class="products-area" ondragover="allowDrop(event)">
+                <!-- Lista dostêpnych produktów -->
+            </div>
+        </div>
+        <div class="selected-column">
+            <div class="sticky-header"><h3>Selected Products</h3></div>
+            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <!-- Lista wybranych produktów -->
+            </div>
+            <div id="totalSum">Total Sum: 0 PLN</div>
+        </div>
     </div>
-    <div class="sticky-header"><h3>Selected Products</h3></div>
-    <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <!-- Lista wybranych produktów -->
-    </div>
-    <div id="totalSum">Total Sum: 0 PLN</div>
-    
-</div>
         </div>
         <div class="comments-box">
             <label for="additionalComments">Additional Notes & Conditions:</label>
