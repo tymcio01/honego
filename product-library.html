@@ -154,11 +154,14 @@ function populateProductTable() {
         // Pobranie identyfikatora zalogowanego u¿ytkownika i pobranie produktów
         const userId = user.uid;
 
+
+
         productsCollection.where('userId', '==', userId).get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const tr = document.createElement('tr');
+				tr.setAttribute('data-product-id', doc.id);
                 tr.innerHTML = `
                     <td>${data.productName}</td>
                     <td>${data.description}</td>
@@ -189,6 +192,47 @@ function logout() {
         console.error('Logout Failed', error);
     });
 }
+
+function editProduct(element) {
+    // Assuming 'element' is the clicked button
+    const tr = element.closest('tr');
+    const productName = tr.cells[0].textContent;
+    const description = tr.cells[1].textContent;
+    const unitPrice = tr.cells[2].textContent.replace(' PLN', '');
+
+    // Set the form values to the product's values for editing
+    document.getElementById('productName').value = productName;
+    document.getElementById('description').value = description;
+    document.getElementById('unitPrice').value = unitPrice;
+
+    // Here you should also set some kind of identifier for the product,
+    // such as a hidden field in the form, so you know if you're editing an existing product
+}
+
+function deleteProduct(element) {
+    // Assuming 'element' is the clicked button
+    const tr = element.closest('tr');
+    const productName = tr.cells[0].textContent;
+
+    // Confirm before delete
+    if (confirm('Are you sure you want to delete ' + productName + '?')) {
+        const db = firebase.firestore();
+        const productsCollection = db.collection('products');
+
+        // You'll need to store and retrieve the product's Firestore document ID in order to delete it
+        // For example, if you have stored the Firestore document ID as an attribute on the row:
+        const productId = tr.getAttribute('data-product-id');
+
+        productsCollection.doc(productId).delete().then(() => {
+            console.log("Product successfully deleted!");
+            tr.remove(); // Remove the product row from the table
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+    }
+}
+
+
 </script>
 
 <div class="container">
