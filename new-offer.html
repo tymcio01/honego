@@ -378,15 +378,34 @@ max-height: 30px;
             plusButton.textContent = '+';
             plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
 
-            quantityDiv.appendChild(minusButton);
-            quantityDiv.appendChild(quantityInput);
-            quantityDiv.appendChild(plusButton);
-            clone.appendChild(quantityDiv);
+            const priceDiv = document.createElement('div');
+        priceDiv.textContent = draggableElement.dataset.value + ' PLN';
+        priceDiv.className = 'product-price';
+        priceDiv.contentEditable = true; // Umo¿liwia edycjê ceny
+        priceDiv.addEventListener('blur', updatePrice); // Aktualizacja ceny po edycji
 
-            dropzone.appendChild(clone);
-            calculateTotal();
-        }
+        quantityDiv.appendChild(minusButton);
+        quantityDiv.appendChild(quantityInput);
+        quantityDiv.appendChild(plusButton);
+        clone.appendChild(quantityDiv);
+        clone.appendChild(priceDiv);
+
+        dropzone.appendChild(clone);
+        calculateTotal();
     }
+}
+
+function updatePrice(event) {
+    const priceDiv = event.target;
+    const newPrice = priceDiv.textContent.replace(/ PLN/, '');
+    if (!isNaN(newPrice) && newPrice.trim() !== '') {
+        priceDiv.textContent = parseFloat(newPrice).toFixed(2) + ' PLN';
+        calculateTotal(); // Przeliczanie sumy po zmianie ceny
+    } else {
+        // Reset do poprzedniej wartoœci lub domyœlnej, jeœli niepoprawna wartoœæ
+        priceDiv.textContent = priceDiv.dataset.defaultValue + ' PLN';
+    }
+}
 
     function adjustQuantity(productId, adjustment) {
         const productElement = document.getElementById(productId);
