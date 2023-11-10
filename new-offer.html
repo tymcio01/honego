@@ -60,12 +60,13 @@
         }
 
         .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
-			
-        }
+    display: flex; /* Establish flex container */
+    flex-direction: row; /* Arrange children in a row */
+    align-items: flex-start; /* Align children to the start of the cross axis */
+    justify-content: flex-start; /* Align children to the start of the main axis */
+    gap: 20px; /* Space between flex items */
+    padding: 20px; /* Padding inside the main content area */
+}
 
         footer {
             background-color: #1c2121;
@@ -81,6 +82,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			flex: 0 0 auto;
         }
 
         .profile-form label {
@@ -113,14 +115,13 @@
 
         /* Updated styles for the drag and drop functionality */
         .drag-area {
-            display: flex;
-            justify-content: center;
-            gap: 30px; /* Adds more space between the columns */
-            margin-top: 20px;
-        }
+            flex-grow: 1;
+    display: flex; /* Make drag area also a flex container */
+    gap: 20px;
 
         .products-area,
         .selected-area {
+		flex: 1;
             width: calc(25% - 15px); /* Each area takes half of the container width minus the gap */
             padding: 20px;
             border: 2px solid #ccc;
@@ -304,7 +305,7 @@ max-height: 30px;
             <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
-            <div class="products-area" ondragover="allowDrop(event)">
+            <div class="products-area"> 
 
 
                 <h3>Available Products</h3>
