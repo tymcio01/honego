@@ -211,32 +211,7 @@ max-height: 30px;
         .btn-draft { background-color: #6c757d; color: white; }
         .btn-preview { background-color: #17a2b8; color: white; }
         .btn-pdf { background-color: #dc3545; color: white; }
-        .btn-email { background-color: #28a745; color: white; 
-		
-		}
-		
-		.form-actions {
-    display: flex;
-    align-items: center;
-    /* ... inne style ... */
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    margin-left: 15px; /* Dostosuj odstêp wed³ug potrzeb */
-    cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin-right: 5px; /* Dostosuj odstêp wed³ug potrzeb */
-}
-#totalSum {
-    font-weight: bold;
-    /* ... inne style ... */
-}
-		
-		</style>
+        .btn-email { background-color: #28a745; color: white; }</style>
 </head>
 <body>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -306,11 +281,9 @@ max-height: 30px;
             </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h3>Selected Products</h3>
-                
+                <div id="totalSum">Total Sum: 0 PLN</div>
             </div>
-			
         </div>
-		<div id="totalSum" style="text-align: right;">Total Sum: 0 PLN</div>
         <div class="comments-box">
             <label for="additionalComments">Additional Notes & Conditions:</label>
             <textarea id="additionalComments" name="additionalComments"
@@ -324,11 +297,7 @@ max-height: 30px;
             <button type="button" class="btn-preview">Preview</button>
             <button type="button" class="btn-pdf">Generate PDF</button>
             <button type="button" class="btn-email">Send by Email</button>
-    <label class="checkbox-label">
-        <input type="checkbox" id="blockRoomsCheckbox">
-        Block Rooms
-    </label>
-</div>
+        </div>
     </div>
 </div>
 <footer>
@@ -344,68 +313,49 @@ max-height: 30px;
     }
 
     function drop(event) {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("text/plain");
-    const draggableElement = document.getElementById(id);
-    let dropzone = event.target;
+        event.preventDefault();
+        const id = event.dataTransfer.getData("text/plain");
+        const draggableElement = document.getElementById(id);
+        let dropzone = event.target;
 
-    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-        dropzone = dropzone.parentNode;
+        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+            dropzone = dropzone.parentNode;
+        }
+
+        if (dropzone && dropzone.classList.contains('selected-area')) {
+            const clone = draggableElement.cloneNode(true);
+            const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
+            clone.id = newId;
+            clone.addEventListener('dragstart', drag);
+            
+			// Dodajemy interfejs do zarz¹dzania iloœci¹
+            const quantityDiv = document.createElement('div');
+            quantityDiv.className = 'quantity-controls';
+
+            const minusButton = document.createElement('button');
+            minusButton.textContent = '-';
+            minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
+
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.value = 1;
+            quantityInput.min = 1;
+            quantityInput.className = 'product-quantity';
+            quantityInput.addEventListener('change', calculateTotal);
+
+            const plusButton = document.createElement('button');
+            plusButton.textContent = '+';
+            plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
+
+            quantityDiv.appendChild(minusButton);
+            quantityDiv.appendChild(quantityInput);
+            quantityDiv.appendChild(plusButton);
+            clone.appendChild(quantityDiv);
+
+            dropzone.appendChild(clone);
+            calculateTotal();
+        }
     }
-
-    if (dropzone && dropzone.classList.contains('selected-area')) {
-        const clone = draggableElement.cloneNode(true);
-        const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
-        clone.id = newId;
-        clone.addEventListener('dragstart', drag);
-        
-        // Dodajemy interfejs do zarz¹dzania iloœci¹
-        const quantityDiv = document.createElement('div');
-        quantityDiv.className = 'quantity-controls';
-
-        const minusButton = document.createElement('button');
-        minusButton.textContent = '-';
-        minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
-
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.value = 1;
-        quantityInput.min = 1;
-        quantityInput.className = 'product-quantity';
-        quantityInput.addEventListener('change', calculateTotal);
-
-        const plusButton = document.createElement('button');
-        plusButton.textContent = '+';
-        plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
-
-        const priceDiv = document.createElement('div');
-        priceDiv.textContent = draggableElement.dataset.value + ' PLN';
-        priceDiv.className = 'product-price';
-        priceDiv.contentEditable = true; // Umo¿liwia edycjê ceny
-        priceDiv.addEventListener('blur', updatePrice); // Aktualizacja ceny po edycji
-
-        quantityDiv.appendChild(minusButton);
-        quantityDiv.appendChild(quantityInput);
-        quantityDiv.appendChild(plusButton);
-        clone.appendChild(quantityDiv);
-        clone.appendChild(priceDiv);
-
-        dropzone.appendChild(clone);
-        calculateTotal();
-    }
-}
-
-function updatePrice(event) {
-    const priceDiv = event.target;
-    const newPrice = priceDiv.textContent.replace(/ PLN/, '');
-    if (!isNaN(newPrice) && newPrice.trim() !== '') {
-        priceDiv.textContent = parseFloat(newPrice).toFixed(2) + ' PLN';
-        calculateTotal(); // Przeliczanie sumy po zmianie ceny
-    } else {
-        // Reset do poprzedniej wartoœci lub domyœlnej, jeœli niepoprawna wartoœæ
-        priceDiv.textContent = priceDiv.dataset.defaultValue + ' PLN';
-    }
-}
 
     function adjustQuantity(productId, adjustment) {
         const productElement = document.getElementById(productId);
