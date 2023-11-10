@@ -344,41 +344,41 @@ max-height: 30px;
     }
 
     function drop(event) {
-        event.preventDefault();
-        const id = event.dataTransfer.getData("text/plain");
-        const draggableElement = document.getElementById(id);
-        let dropzone = event.target;
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/plain");
+    const draggableElement = document.getElementById(id);
+    let dropzone = event.target;
 
-        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-            dropzone = dropzone.parentNode;
-        }
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
+    }
 
-        if (dropzone && dropzone.classList.contains('selected-area')) {
-            const clone = draggableElement.cloneNode(true);
-            const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
-            clone.id = newId;
-            clone.addEventListener('dragstart', drag);
-            
-			// Dodajemy interfejs do zarz¹dzania iloœci¹
-            const quantityDiv = document.createElement('div');
-            quantityDiv.className = 'quantity-controls';
+    if (dropzone && dropzone.classList.contains('selected-area')) {
+        const clone = draggableElement.cloneNode(true);
+        const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
+        clone.id = newId;
+        clone.addEventListener('dragstart', drag);
+        
+        // Dodajemy interfejs do zarz¹dzania iloœci¹
+        const quantityDiv = document.createElement('div');
+        quantityDiv.className = 'quantity-controls';
 
-            const minusButton = document.createElement('button');
-            minusButton.textContent = '-';
-            minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
+        const minusButton = document.createElement('button');
+        minusButton.textContent = '-';
+        minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
 
-            const quantityInput = document.createElement('input');
-            quantityInput.type = 'number';
-            quantityInput.value = 1;
-            quantityInput.min = 1;
-            quantityInput.className = 'product-quantity';
-            quantityInput.addEventListener('change', calculateTotal);
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.value = 1;
+        quantityInput.min = 1;
+        quantityInput.className = 'product-quantity';
+        quantityInput.addEventListener('change', calculateTotal);
 
-            const plusButton = document.createElement('button');
-            plusButton.textContent = '+';
-            plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
+        const plusButton = document.createElement('button');
+        plusButton.textContent = '+';
+        plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
 
-            const priceDiv = document.createElement('div');
+        const priceDiv = document.createElement('div');
         priceDiv.textContent = draggableElement.dataset.value + ' PLN';
         priceDiv.className = 'product-price';
         priceDiv.contentEditable = true; // Umo¿liwia edycjê ceny
