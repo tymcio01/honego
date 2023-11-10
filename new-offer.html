@@ -218,6 +218,29 @@ max-height: 30px;
         text-align: right; /* Align text to the right */
         padding-right: 20px; /* Adjust padding to align with the design */
     }
+	
+	.date-picker {
+    margin: 20px 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center align the content */
+}
+
+.date-picker label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.date-picker input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
 		</style>
 </head>
 <body>
@@ -294,13 +317,20 @@ max-height: 30px;
         </div>
 		<div id="totalSum" style="text-align: right; font-weight: bold;">Total Sum: 0 PLN</div>
         <div class="comments-box">
-            <label for="additionalComments">Additional Notes & Conditions:</label>
+            <label for="additionalComments">Message to client:</label>
             <textarea id="additionalComments" name="additionalComments"
                       placeholder="Enter any additional notes and conditions here..."></textarea>
+
             <label for="fileAttachment">Attach Files:</label>
             <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
             <div id="fileList"></div>
         </div>
+		
+		<div class="date-picker">
+    <label for="datePicker">Select Date:</label>
+    <input type="date" id="datePicker" name="date">
+</div>
+
         <div class="form-actions">
             <button type="button" class="btn-draft">Save as Draft</button>
             <button type="button" class="btn-preview">Preview</button>
