@@ -275,9 +275,10 @@ firebase.auth().onAuthStateChanged((user) => {
             </div>
 
             <div style="padding: 20px 0; text-align: center;">
-                <button type="button">Search</button>
-                <button type="button" id="exportBtn">Export</button>
-            </div>
+    <input type="text" id="searchInput" placeholder="Search clients...">
+    <button type="button" id="searchBtn">Search</button>
+    <button type="button" id="exportBtn">Export</button>
+</div>
 
             <table class="customer-table">
                 <thead>
@@ -323,7 +324,30 @@ function sendOffer(clientId) {
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
     };
 
-   
+   document.getElementById('searchBtn').addEventListener('click', searchTable);
+    document.getElementById('searchInput').addEventListener('keypress', function(event) {
+        // Trigger search when the user presses the Enter key
+        if (event.key === "Enter") {
+            searchTable();
+        }
+    });
+
+    function searchTable() {
+        var input, filter, table, tr, i;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        table = document.querySelector(".customer-table");
+        tr = table.getElementsByTagName('tr');
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 1; i < tr.length; i++) { // Skip the header row
+            var tds = tr[i].getElementsByTagName("td");
+            var found = Array.from(tds).some(td => {
+                return td.textContent.toUpperCase().indexOf(filter) > -1;
+            });
+            tr[i].style.display = found ? "" : "none";
+        }
+    }
 
     // Funkcja wylogowywania
     function logout() {
