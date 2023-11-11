@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Honego</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     
@@ -240,6 +242,26 @@ max-height: 30px;
     border-radius: 4px;
 }
 
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #333;
+    font-size: 16px;
+    padding: 5px 10px;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.quantity-btn:hover {
+    color: #5cb85c;
+}
 
 		</style>
 </head>
@@ -376,8 +398,8 @@ max-height: 30px;
             quantityDiv.className = 'quantity-controls';
 
             const minusButton = document.createElement('button');
-            minusButton.textContent = '-';
-            minusButton.addEventListener('click', function() { adjustQuantity(clone.id, -1); });
+			minusButton.innerHTML = '<i class="fas fa-minus"></i>';
+			minusButton.classList.add('quantity-btn', 'quantity-minus');
 
             const quantityInput = document.createElement('input');
             quantityInput.type = 'number';
@@ -387,8 +409,8 @@ max-height: 30px;
             quantityInput.addEventListener('change', calculateTotal);
 
             const plusButton = document.createElement('button');
-            plusButton.textContent = '+';
-            plusButton.addEventListener('click', function() { adjustQuantity(clone.id, 1); });
+			plusButton.innerHTML = '<i class="fas fa-plus"></i>';
+			plusButton.classList.add('quantity-btn', 'quantity-plus');
 
             quantityDiv.appendChild(minusButton);
             quantityDiv.appendChild(quantityInput);
