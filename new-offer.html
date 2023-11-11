@@ -369,131 +369,111 @@ max-height: 30px;
     &copy; 2023 Honego - All Rights Reserved
 </footer>
 <script>
-    function allowDrop(event) {
-        event.preventDefault();
-    }
+  function allowDrop(event) {
+      event.preventDefault();
+  }
 
-    function drag(event) {
-        event.dataTransfer.setData("text/plain", event.target.id);
-    }
+  function drag(event) {
+      event.dataTransfer.setData("text/plain", event.target.id);
+  }
 
-    function drop(event) {
-        event.preventDefault();
-        const id = event.dataTransfer.getData("text/plain");
-        const draggableElement = document.getElementById(id);
-        let dropzone = event.target;
+  function drop(event) {
+      event.preventDefault();
+      const id = event.dataTransfer.getData("text/plain");
+      const draggableElement = document.getElementById(id);
+      let dropzone = event.target;
 
-        while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-            dropzone = dropzone.parentNode;
-        }
+      while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+          dropzone = dropzone.parentNode;
+      }
 
-        if (dropzone && dropzone.classList.contains('selected-area')) {
-            const clone = draggableElement.cloneNode(true);
-            const newId = 'selected-' + Date.now(); // U¿yj timestampa dla unikalnego ID
-            clone.id = newId;
-            clone.addEventListener('dragstart', drag);
-            
-			// Dodajemy interfejs do zarz¹dzania iloœci¹
-            const quantityDiv = document.createElement('div');
-            quantityDiv.className = 'quantity-controls';
+      if (dropzone && dropzone.classList.contains('selected-area')) {
+          const clone = draggableElement.cloneNode(true);
+          const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
+          clone.id = newId;
+          clone.addEventListener('dragstart', drag);
+          
+          // Add interface to manage quantity
+          const quantityDiv = document.createElement('div');
+          quantityDiv.className = 'quantity-controls';
 
-            const minusButton = document.createElement('button');
-			minusButton.innerHTML = '<i class="fas fa-minus"></i>';
-			minusButton.classList.add('quantity-btn', 'quantity-minus');
+          const minusButton = document.createElement('button');
+          minusButton.innerHTML = '<i class="fas fa-minus"></i>';
+          minusButton.classList.add('quantity-btn', 'quantity-minus');
+          minusButton.onclick = function() { adjustQuantity(newId, -1); };
 
-            const quantityInput = document.createElement('input');
-            quantityInput.type = 'number';
-            quantityInput.value = 1;
-            quantityInput.min = 1;
-            quantityInput.className = 'product-quantity';
-            quantityInput.addEventListener('change', calculateTotal);
+          const quantityInput = document.createElement('input');
+          quantityInput.type = 'number';
+          quantityInput.value = 1;
+          quantityInput.min = 1;
+          quantityInput.className = 'product-quantity';
+          quantityInput.addEventListener('change', calculateTotal);
 
-            const plusButton = document.createElement('button');
-			plusButton.innerHTML = '<i class="fas fa-plus"></i>';
-			plusButton.classList.add('quantity-btn', 'quantity-plus');
+          const plusButton = document.createElement('button');
+          plusButton.innerHTML = '<i class="fas fa-plus"></i>';
+          plusButton.classList.add('quantity-btn', 'quantity-plus');
+          plusButton.onclick = function() { adjustQuantity(newId, 1); };
 
-            quantityDiv.appendChild(minusButton);
-            quantityDiv.appendChild(quantityInput);
-            quantityDiv.appendChild(plusButton);
-            clone.appendChild(quantityDiv);
+          quantityDiv.appendChild(minusButton);
+          quantityDiv.appendChild(quantityInput);
+          quantityDiv.appendChild(plusButton);
+          clone.appendChild(quantityDiv);
 
-            dropzone.appendChild(clone);
-            calculateTotal();
-        }
-    }
+          dropzone.appendChild(clone);
+          calculateTotal();
+      }
+  }
 
-    function adjustQuantity(productId, adjustment) {
-        const productElement = document.getElementById(productId);
-        const quantityInput = productElement.querySelector('.product-quantity');
-        let quantity = parseInt(quantityInput.value);
-        quantity = quantity + adjustment;
+  function adjustQuantity(productId, adjustment) {
+      const productElement = document.getElementById(productId);
+      const quantityInput = productElement.querySelector('.product-quantity');
+      let quantity = parseInt(quantityInput.value);
+      quantity += adjustment;
 
-        if (quantity < 1) quantity = 1; // Nie pozwalamy na wartoœci mniejsze ni¿ 1
-        quantityInput.value = quantity;
+      if (quantity < 1) quantity = 1; // Do not allow values less than 1
+      quantityInput.value = quantity;
 
-        calculateTotal();
-    }
+      calculateTotal();
+  }
 
-    function calculateTotal() {
-        let sum = 0;
-        document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
-            const price = Number(product.dataset.value);
-            const quantity = Number(product.querySelector('.product-quantity').value);
-            sum += price * quantity;
-        });
-        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
-    }
+  function calculateTotal() {
+      let sum = 0;
+      document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
+          const price = Number(product.dataset.value);
+          const quantity = Number(product.querySelector('.product-quantity').value);
+          sum += price * quantity;
+      });
+      document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN`; // Round to two decimal places
+  }
 
-    function fetchAndPopulateProducts() {
-        let sum = 0;
-        const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-        selectedProducts.forEach(function (product) {
-            sum += Number(product.dataset.value);
-        });
-        document.getElementById('totalSum').textContent = `Total Sum: ${sum} PLN`;
-    }
+  function fetchAndPopulateProducts() {
+      const db = firebase.firestore();
+      const productsCollection = db.collection('products');
+      const productsArea = document.querySelector('.products-area');
 
-    function fetchAndPopulateProducts() {
-        const db = firebase.firestore();
-        const productsCollection = db.collection('products');
-        const productsArea = document.querySelector('.products-area');
+      productsCollection.get()
+          .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const productItem = document.createElement('div');
+                  productItem.id = 'product-' + doc.id; // Use Firebase doc.id for element ID
+                  productItem.classList.add('product-item');
+                  productItem.draggable = true;
+                  productItem.dataset.value = data.unitPrice;
+                  productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
+                  productItem.addEventListener('dragstart', drag);
+                  productsArea.appendChild(productItem);
+              });
+          })
+          .catch((error) => {
+              console.error("Error getting documents: ", error);
+          });
+  }
 
-        productsCollection.get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const productItem = document.createElement('div');
-                    productItem.id = 'product-' + doc.id; // U¿yj Firebase doc.id dla ID elementu
-                    productItem.classList.add('product-item');
-                    productItem.draggable = true;
-                    productItem.dataset.value = data.unitPrice;
-                    productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                    productItem.addEventListener('dragstart', drag);
-                    productsArea.appendChild(productItem);
-                });
-            })
-            .catch((error) => {
-                console.error("Error getting documents: ", error);
-            });
-    }
-
-    window.onload = function () {
-        fetchAndPopulateProducts();
-    };
-
-    function calculateTotal() {
-    let sum = 0;
-    document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
-        const price = parseFloat(product.dataset.value);
-        const quantityInput = product.querySelector('.product-quantity');
-        const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-        sum += price * quantity;
-    });
-    document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN`; // Zaokr¹glenie do dwóch miejsc po przecinku
-}
-
-	 window.onload = fetchAndPopulateProducts;
-	
+  window.onload = function () {
+      fetchAndPopulateProducts();
+  };
 </script>
+
 </body>
 </html>
