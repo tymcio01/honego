@@ -240,28 +240,6 @@ max-height: 30px;
     border-radius: 4px;
 }
 
-#companyList {
-    position: absolute;
-    border: 1px solid #ddd;
-    border-top: none;
-    z-index: 10;
-    background: #fff;
-  }
-
-  #companyList ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  #companyList ul li {
-    padding: 5px;
-    cursor: pointer;
-  }
-
-  #companyList ul li:hover {
-    background-color: #f0f0f0;
-  }
 
 		</style>
 </head>
@@ -314,21 +292,15 @@ max-height: 30px;
     <div class="main-content">
         <div class="profile-form">
             <h2>Create New Offer</h2>
-            <label for="company">Company</label>
-			<input type="text" id="company" name="company" oninput="searchCompany(this.value)" autocomplete="off" required>
-			<div id="companyList"></div>
-            <input type="text" id="companyName" name="companyName" required>
+            <label for="clientName">Client Name/Company:</label>
+            <input type="text" id="clientName" name="clientName" required>
             <label for="address">Address:</label>
             <input type="text" id="address" name="address" required>
             <label for="clientEmail">Client Email:</label>
             <input type="email" id="clientEmail" name="clientEmail" required>
-			<label for="phone">Phone</label>
-			<input type="text" id="phone" name="phone" required>
             <label for="receiversName">Receiver's Name:</label>
             <input type="text" id="receiversName" name="receiversName" required>
-			<label for="industry">Industry</label>
-			<input type="text" id="industry" name="industry" required>
-            <button type="submit">Check</button>
+            <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
             <div class="products-area" ondragover="allowDrop(event)">
@@ -499,62 +471,6 @@ max-height: 30px;
 }
 
 	 window.onload = fetchAndPopulateProducts;
-	
-	function searchCompany(input) {
-    console.log("searchCompany triggered with input:", input); // Confirm input
-    const formattedInput = input.trim().toLowerCase(); // Consistent formatting
-
-    if (formattedInput.length < 3) {
-        document.getElementById('companyList').innerHTML = '';
-        return;
-    }
-
-    const db = firebase.firestore();
-    const clientsRef = db.collection('clients');
-    
-    console.log("Querying for companies starting with:", formattedInput);
-    clientsRef.orderBy('company').startAt(formattedInput).endAt(formattedInput + '\uf8ff')
-        .get()
-        .then((querySnapshot) => {
-            let companies = [];
-            querySnapshot.forEach((doc) => {
-                const company = doc.data().company;
-                console.log("Found company:", company); // Log each found company
-                if (company && company.toLowerCase().startsWith(formattedInput)) {
-                    companies.push(company);
-                }
-            });
-            if(companies.length === 0) {
-                console.log("No companies found in the snapshot.");
-            }
-            displayClients(companies);
-        })
-        .catch((error) => {
-            console.error("Error getting companies: ", error);
-        });
-}
-
-function displayClients(companies) {
-    console.log("Displaying companies:", companies); // Log companies to display
-    let list = '<ul>';
-    if (companies.length > 0) {
-        companies.forEach((company) => {
-            list += `<li onclick="selectCompany('${company}')">${company}</li>`;
-        });
-    } else {
-        list += `<li>No companies found</li>`;
-    }
-    list += '</ul>';
-    document.getElementById('companyList').innerHTML = list;
-}
-
-function selectCompany(name) {
-    console.log("Company selected:", name); // Confirm the selection
-    document.getElementById('company').value = name;
-    document.getElementById('companyList').innerHTML = '';
-}
-
-
 	
 </script>
 </body>
