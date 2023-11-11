@@ -409,6 +409,7 @@ overflow-y: auto;
           quantityInput.value = 1;
           quantityInput.min = 1;
           quantityInput.className = 'product-quantity';
+		  quantityInput.style.width = '40%';
           quantityInput.addEventListener('change', calculateTotal);
 
           const plusButton = document.createElement('button');
