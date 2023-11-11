@@ -110,16 +110,17 @@
             background: #4cae4c;
         }
 
-        /* Updated styles for the drag and drop functionality */
-        .drag-area {
-            display: flex-start;
-            gap: 20px; /* Adds more space between the columns */
-            margin-top: 20px;
+           .drag-area {
+            display: flex; 
+			flex-direction: row; 
+			justify-content: flex-start; 
+			align-items: flex-start; 
+			gap: 20px; /* Odst
         }
 
         .products-area,
         .selected-area {
-            width: 25%; /* Each area takes half of the container width minus the gap */
+            width: 50%; /* Each area takes half of the container width minus the gap */
             padding: 20px;
             border: 2px solid #ccc;
             border-radius: 8px;
