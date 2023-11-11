@@ -240,6 +240,28 @@ max-height: 30px;
     border-radius: 4px;
 }
 
+#companyList {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-top: none;
+    z-index: 10;
+    background: #fff;
+  }
+
+  #companyList ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #companyList ul li {
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  #companyList ul li:hover {
+    background-color: #f0f0f0;
+  }
 
 		</style>
 </head>
@@ -292,8 +314,10 @@ max-height: 30px;
     <div class="main-content">
         <div class="profile-form">
             <h2>Create New Offer</h2>
-            <label for="clientName">Company:</label>
-            <input type="text" id="clientName" name="clientName" required>
+            <label for="company">Company</label>
+			<input type="text" id="company" name="company" oninput="searchCompany(this.value)" autocomplete="off" required>
+			<div id="companyList"></div>
+            <input type="text" id="companyName" name="companyName" required>
             <label for="address">Address:</label>
             <input type="text" id="address" name="address" required>
             <label for="clientEmail">Client Email:</label>
@@ -475,6 +499,45 @@ max-height: 30px;
 }
 
 	 window.onload = fetchAndPopulateProducts;
+	
+	// Funkcja do wyszukiwania firmy
+  function searchCompany(input) {
+    if (input.length < 3) { // Minimalna d³ugoœæ zapytania, aby ograniczyæ liczbê zapytañ do bazy danych
+      document.getElementById('companyList').innerHTML = '';
+      return;
+    }
+
+    const db = firebase.firestore();
+    const companiesRef = db.collection('companies'); // Twoja kolekcja z firmami
+    companiesRef.where('companyName', '>=', input).where('companyName', '<=', input + '\uf8ff')
+      .get()
+      .then((querySnapshot) => {
+        let companies = [];
+        querySnapshot.forEach((doc) => {
+          companies.push(doc.data().companyName); // Pobieranie nazw firm
+        });
+        displayCompanies(companies);
+      })
+      .catch((error) => {
+        console.error("Error getting companies: ", error);
+      });
+  }
+
+  // Funkcja do wyœwietlania listy sugestii
+  function displayCompanies(companies) {
+    let list = '<ul>';
+    companies.forEach((company) => {
+      list += `<li onclick="selectCompany('${company}')">${company}</li>`;
+    });
+    list += '</ul>';
+    document.getElementById('companyList').innerHTML = list;
+  }
+
+  // Funkcja do ustawienia wybranej firmy jako wartoœci input
+  function selectCompany(name) {
+    document.getElementById('company').value = name;
+    document.getElementById('companyList').innerHTML = '';
+  }
 	
 </script>
 </body>
