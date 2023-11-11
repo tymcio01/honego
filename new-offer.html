@@ -143,15 +143,18 @@ overflow-y: auto;
         }
 
         .product-item {
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            transition: background-color 0.2s, box-shadow 0.2s;
-min-height: 30px;
-max-height: 30px;
+           display: flex; /* make the product item a flex container */
+    align-items: center; /* center items vertically */
+    justify-content: space-between; /* distribute space between items */
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    min-height: 30px;
+    max-height: 30px;
         }
 
         .product-item:hover {
@@ -245,8 +248,7 @@ max-height: 30px;
 .quantity-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
-}
+    }
 
 .quantity-btn {
     border: none;
@@ -378,51 +380,40 @@ max-height: 30px;
   }
 
   function drop(event) {
-      event.preventDefault();
-      const id = event.dataTransfer.getData("text/plain");
-      const draggableElement = document.getElementById(id);
-      let dropzone = event.target;
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/plain");
+    const draggableElement = document.getElementById(id);
+    let dropzone = event.target;
 
-      while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-          dropzone = dropzone.parentNode;
-      }
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
+    }
 
-      if (dropzone && dropzone.classList.contains('selected-area')) {
-          const clone = draggableElement.cloneNode(true);
-          const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
-          clone.id = newId;
-          clone.addEventListener('dragstart', drag);
-          
-          // Add interface to manage quantity
-          const quantityDiv = document.createElement('div');
-          quantityDiv.className = 'quantity-controls';
+    if (dropzone && dropzone.classList.contains('selected-area')) {
+        const clone = draggableElement.cloneNode(true);
+        const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
+        clone.id = newId;
+        clone.addEventListener('dragstart', drag);
+        
+        // Add interface to manage quantity
+        const quantityDiv = document.createElement('div');
+        quantityDiv.className = 'quantity-controls';
+        
+        // ... create minusButton, quantityInput, plusButton ...
 
-          const minusButton = document.createElement('button');
-          minusButton.innerHTML = '<i class="fas fa-minus"></i>';
-          minusButton.classList.add('quantity-btn', 'quantity-minus');
-          minusButton.onclick = function() { adjustQuantity(newId, -1); };
+        quantityDiv.appendChild(minusButton);
+        quantityDiv.appendChild(quantityInput);
+        quantityDiv.appendChild(plusButton);
+        
+        // After appending quantity controls to the clone
+        clone.appendChild(quantityDiv);
 
-          const quantityInput = document.createElement('input');
-          quantityInput.type = 'number';
-          quantityInput.value = 1;
-          quantityInput.min = 1;
-          quantityInput.className = 'product-quantity';
-          quantityInput.addEventListener('change', calculateTotal);
+        // Now, when you append the clone to the dropzone, it will have the new styles applied
+        dropzone.appendChild(clone);
+        calculateTotal();
+    }
+}
 
-          const plusButton = document.createElement('button');
-          plusButton.innerHTML = '<i class="fas fa-plus"></i>';
-          plusButton.classList.add('quantity-btn', 'quantity-plus');
-          plusButton.onclick = function() { adjustQuantity(newId, 1); };
-
-          quantityDiv.appendChild(minusButton);
-          quantityDiv.appendChild(quantityInput);
-          quantityDiv.appendChild(plusButton);
-          clone.appendChild(quantityDiv);
-
-          dropzone.appendChild(clone);
-          calculateTotal();
-      }
-  }
 
   function adjustQuantity(productId, adjustment) {
       const productElement = document.getElementById(productId);
