@@ -266,6 +266,21 @@ overflow-y: auto;
     color: #5cb85c;
 }
 
+.fixed-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+}
+
+/* Add padding to the top of the product areas to account for the fixed header */
+.products-area, .selected-area {
+    padding-top: 50px; /* Adjust the value to match your fixed header's height */
+    /* Other existing styles... */
+}
+
 		</style>
 </head>
 <body>
@@ -331,11 +346,11 @@ overflow-y: auto;
             <div class="products-area" ondragover="allowDrop(event)">
 
 
-                <h3>Available Products</h3>
+                <div class="fixed-header">Available Products</div>
                 <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
             </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h3>Selected Products</h3>
+                <div class="fixed-header">Selected Products</div>
                 
             </div>
 			
