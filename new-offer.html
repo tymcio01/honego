@@ -508,25 +508,25 @@ max-height: 30px;
     }
 
     const db = firebase.firestore();
-    const companiesRef = db.collection('companies'); // Twoja kolekcja z firmami
-    companiesRef.where('companyName', '>=', input).where('companyName', '<=', input + '\uf8ff')
+    const clientsRef = db.collection('clients'); // Twoja kolekcja z firmami
+    clientsRef.where('companyName', '>=', input).where('companyName', '<=', input + '\uf8ff')
       .get()
       .then((querySnapshot) => {
-        let companies = [];
+        let clients = [];
         querySnapshot.forEach((doc) => {
-          companies.push(doc.data().companyName); // Pobieranie nazw firm
+          clients.push(doc.data().companyName); // Pobieranie nazw firm
         });
-        displayCompanies(companies);
+        displayclients(clients);
       })
       .catch((error) => {
-        console.error("Error getting companies: ", error);
+        console.error("Error getting clients: ", error);
       });
   }
 
   // Funkcja do wyœwietlania listy sugestii
-  function displayCompanies(companies) {
+  function displayclients(clients) {
     let list = '<ul>';
-    companies.forEach((company) => {
+    clients.forEach((company) => {
       list += `<li onclick="selectCompany('${company}')">${company}</li>`;
     });
     list += '</ul>';
