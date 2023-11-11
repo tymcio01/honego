@@ -507,15 +507,16 @@ max-height: 30px;
       return;
     }
 
-    const db = firebase.firestore();
-    const clientsRef = db.collection('clients'); // Twoja kolekcja z firmami
+     const db = firebase.firestore();
+    const clientsRef = db.collection('clients');
     clientsRef.where('companyName', '>=', input).where('companyName', '<=', input + '\uf8ff')
-      .get()
-      .then((querySnapshot) => {
-        let clients = [];
-        querySnapshot.forEach((doc) => {
-          clients.push(doc.data().companyName); // Pobieranie nazw firm
-        });
+        .get()
+        .then((querySnapshot) => {
+            let clients = [];
+            querySnapshot.forEach((doc) => {
+                clients.push(doc.data().companyName);
+            });
+		console.log("Fetched clients:", clients);
         displayclients(clients);
       })
       .catch((error) => {
