@@ -500,45 +500,53 @@ max-height: 30px;
 
 	 window.onload = fetchAndPopulateProducts;
 	
-	// Funkcja do wyszukiwania firmy
-  function searchCompany(input) {
-    if (input.length < 3) { // Minimalna d³ugoœæ zapytania, aby ograniczyæ liczbê zapytañ do bazy danych
-      document.getElementById('companyList').innerHTML = '';
-      return;
+	function searchCompany(input) {
+    console.log("searchCompany triggered");
+    const formattedInput = input.trim().toLowerCase(); // Trim and convert input to lowercase
+
+    if (formattedInput.length < 3) {
+        document.getElementById('companyList').innerHTML = '';
+        return;
     }
 
-     const db = firebase.firestore();
+    const db = firebase.firestore();
     const clientsRef = db.collection('clients');
-    clientsRef.where('companyName', '>=', input).where('companyName', '<=', input + '\uf8ff')
+    clientsRef.orderBy('company').startAt(formattedInput).endAt(formattedInput + '\uf8ff')
         .get()
         .then((querySnapshot) => {
-            let clients = [];
+            let companies = [];
             querySnapshot.forEach((doc) => {
-                clients.push(doc.data().companyName);
+                const company = doc.data().company;
+                if (company && company.toLowerCase().startsWith(formattedInput)) {
+                    companies.push(company); // Add the original company name to the array
+                }
             });
-		console.log("Fetched clients:", clients);
-        displayclients(clients);
-      })
-      .catch((error) => {
-        console.error("Error getting clients: ", error);
-      });
-  }
+            console.log("Fetched companies:", companies);
+            displayClients(companies);
+        })
+        .catch((error) => {
+            console.error("Error getting companies: ", error);
+        });
+}
 
-  // Funkcja do wyœwietlania listy sugestii
-  function displayclients(clients) {
+function displayClients(companies) {
     let list = '<ul>';
-    clients.forEach((company) => {
-      list += `<li onclick="selectCompany('${company}')">${company}</li>`;
-    });
+    if (companies.length > 0) {
+        companies.forEach((company) => {
+            list += `<li onclick="selectCompany('${company}')">${company}</li>`;
+        });
+    } else {
+        list += `<li>No companies found</li>`;
+    }
     list += '</ul>';
     document.getElementById('companyList').innerHTML = list;
-  }
+}
 
-  // Funkcja do ustawienia wybranej firmy jako wartoœci input
-  function selectCompany(name) {
+function selectCompany(name) {
     document.getElementById('company').value = name;
     document.getElementById('companyList').innerHTML = '';
-  }
+}
+
 	
 </script>
 </body>
