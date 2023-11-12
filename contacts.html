@@ -177,6 +177,20 @@
     cursor: pointer;
 }
 
+.delete-btn {
+    background-color: #FF0000; /* Standard red background */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-left: 5px; /* Adds a little space between buttons if needed */
+}
+
+.delete-btn:hover {
+    background-color: #CC0000; /* Darker red on hover */
+}
     </style>
 </head>
 <body>
@@ -435,6 +449,7 @@ function sendOffer(clientId) {
             <td>${clientData.email}</td>
             <td>${clientData.industry}</td>
             <td><button class="send-offer-btn" type="button">Send Offer</button></td>
+			<button class="delete-btn" type="button" onclick="deleteProduct(this)">Delete</button>
         </tr>`;
 
         // Dodanie nowego wiersza do tabeli
