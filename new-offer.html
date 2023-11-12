@@ -405,15 +405,13 @@ overflow-y: auto;
   }
 
   function drop(event) {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("text/plain");
-    const draggableElement = document.getElementById(id);
-    let dropzone = event.target;
+      event.preventDefault();
+      const id = event.dataTransfer.getData("text/plain");
+      const draggableElement = document.getElementById(id);
+      let dropzone = event.target;
 
-      // Ensure we're dropping onto a dropzone, not just any child element
-    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-        dropzone = dropzone.parentNode;
-
+      while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+          dropzone = dropzone.parentNode;
       }
 
       if (dropzone && dropzone.classList.contains('selected-area')) {
@@ -462,16 +460,6 @@ overflow-y: auto;
 
       if (quantity < 1) quantity = 1; // Do not allow values less than 1
       quantityInput.value = quantity;
-
-
-// Dropping back into the "Available Products"
-    else if (dropzone.classList.contains('products-area')) {
-        if (draggableElement.classList.contains('selected-item')) {
-            // If the product is in "Selected Products", move it back to available
-            dropzone.appendChild(draggableElement);
-            draggableElement.classList.remove('selected-item'); // Unmark as selected
-        }
-    }
 
       calculateTotal();
   }
