@@ -412,12 +412,18 @@ overflow-y: auto;
 
       while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
           dropzone = dropzone.parentNode;
-      }
+		  dropzone = dropzone.parentNode;
+        } else {
+            // If we've reached the top of the document, exit the loop
+            return;
+        }
+    }
 
       if (dropzone && dropzone.classList.contains('selected-area')) {
           const clone = draggableElement.cloneNode(true);
           const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
           clone.id = newId;
+		  clone.classList.add('selected-item');
           clone.addEventListener('dragstart', drag);
           
           // Add interface to manage quantity
@@ -448,6 +454,12 @@ overflow-y: auto;
           clone.appendChild(quantityDiv);
 
           dropzone.appendChild(clone);
+		  } else if (dropzone.classList.contains('products-area') && draggableElement.classList.contains('selected-item')) {
+        // If moving back to available, remove the item from selected
+        draggableElement.parentNode.removeChild(draggableElement);
+    }
+		  
+		  
           calculateTotal();
       }
   }
