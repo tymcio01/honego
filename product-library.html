@@ -29,7 +29,7 @@
 
         aside {
             width: 250px;
-            background-color: #1c2121;
+            background-color: #005DCC;
             padding: 20px;
             box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
             color: #f6f6f6;
@@ -66,7 +66,7 @@
         }
 
         footer {
-            background-color: #1c2121;
+            background-color: #005DCC;
             color: #f6f6f6;
             padding: 10px 20px;
             text-align: center;
@@ -97,19 +97,60 @@
         }
 
         .profile-form button {
-            background: #fff; /* White background */
-            color: #333; /* Black text */
+            background: #fff;
+            color: #000;
             padding: 10px 15px;
-            border: 2px solid #000; /* Black border */
+            border: 2px solid #000;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .profile-form button:hover {
-            background: #333; /* Black background on hover */
-            color: #fff; /* White text on hover */
+            background: #005DCC;
+            color: #fff;
         }
+		
+		/* Table Styles */
+.product-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    font-size: 0.9em;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.product-table thead tr {
+    background-color: #005DCC;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px 15px;
+}
+
+.product-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.product-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.product-table tbody tr:last-of-type {
+    border-bottom: 2px solid #005DCC;
+}
+
+.product-table tbody tr.active-row {
+    font-weight: bold;
+    color: #005DCC;
+}
+		
     </style>
 </head>
 <body>
