@@ -177,6 +177,23 @@
     cursor: pointer;
 }
 
+.delete-btn {
+    background-color: #CC0000; /* Red color for delete button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-left: 5px; /* Spacing between buttons */
+}
+
+.delete-btn:hover {
+    background-color: #990000; /* Darker shade for hover effect */
+}
+
+
+
     </style>
 </head>
 <body>
@@ -423,6 +440,19 @@ function sendOffer(clientId) {
                 console.error('Error adding document: ', error);
             });
     }
+	
+	function deleteClient(clientId, btn) {
+    // Code to delete the client from Firestore
+    const db = firebase.firestore();
+    const clientsCollection = db.collection('clients');
+
+    clientsCollection.doc(clientId).delete().then(() => {
+        console.log("Document successfully deleted!");
+        btn.closest('tr').remove(); // Remove the row from the table
+    }).catch((error) => {
+        console.error("Error removing document: ", error);
+    });
+}
 
     // Funkcja aktualizuj¹ca tabelê po dodaniu klienta
     function updateTableWithClient(clientData, docId) {
