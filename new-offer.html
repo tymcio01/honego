@@ -421,14 +421,21 @@ overflow-y: auto;
       }
 
       if (dropzone && dropzone.classList.contains('selected-area')) {
-          const clone = draggableElement.cloneNode(true);
-          const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
-          clone.id = newId;
-          clone.addEventListener('dragstart', drag);
-		  
-		  clone.classList.add('movable');
+        const clone = draggableElement.cloneNode(true); // Utworzenie klona tutaj
+        const newId = 'selected-' + Date.now();
+        clone.id = newId;
+        clone.addEventListener('dragstart', drag);
         dropzone.appendChild(clone);
-        draggableElement.classList.add('hidden');
+        draggableElement.classList.add('hidden'); // Ukryj oryginalny element
+        calculateTotal();
+    }
+	// Jeœli przenosimy z powrotem do 'Available Products', przenosimy orygina³.
+    else if (dropzone && dropzone.classList.contains('products-area')) {
+        const originalElement = document.getElementById(draggableElement.getAttribute('data-original-id'));
+        if (originalElement) {
+            originalElement.classList.remove('hidden');
+        }
+        draggableElement.remove(); // Usuñ klon z 'Selected Products'
         calculateTotal();
     }
 }
