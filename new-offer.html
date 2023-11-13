@@ -298,7 +298,6 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
@@ -377,13 +376,6 @@ overflow-y: auto;
             <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
             <div id="fileList"></div>
         </div>
-		
-		<!-- Nowa sekcja dla miniaturek PDF -->
-<div class="pdf-thumbnails-container">
-<div id="thumbnailContainer"></div>
-  <h2>Select a PDF Template:</h2>
-  <div id="pdfThumbnails" class="thumbnails"><!-- Miniaturki zostan¹ tutaj dodane przez JavaScript --></div>
-</div>
 		
 		<div class="date-picker">
     <label for="datePicker">Offer valid until:</label>
@@ -508,34 +500,8 @@ overflow-y: auto;
           });
   }
 
-// Nowa funkcja do pobierania i wyœwietlania miniaturek PDF
-function fetchAndDisplayPdfThumbnails() {
-  const storage = firebase.storage();
-  const storageRef = storage.ref();
-  const thumbnailsRef = storageRef.child('https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/Tymek-thumbnail.png?alt=media&token=82002c9d-e458-4ef7-9642-4c66cdd2957f;'); // zmieñ œcie¿kê na w³aœciw¹
-
-  // Zak³adaj¹c, ¿e nazwy plików miniaturek s¹ zapisane w bazie danych lub jako array
-  const thumbnailFilenames = ['Tymek-thumbnail.png']; // dodaj wiêcej nazw plików miniaturek
-
-  thumbnailFilenames.forEach(filename => {
-    const thumbRef = thumbnailsRef.child(filename);
-    thumbRef.getDownloadURL().then((url) => {
-      // Stwórz element img i dodaj go do kontenera
-      const img = document.createElement('img');
-      img.src = 'https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/Tymek-thumbnail.png?alt=media&token=82002c9d-e458-4ef7-9642-4c66cdd2957f';
-      img.alt = 'Miniaturka PDF';
-      img.classList.add('thumbnail');
-      // Mo¿esz te¿ dodaæ onclick handler, jeœli chcesz obs³u¿yæ klikniêcie na miniaturkê
-      document.getElementById('pdfThumbnails').appendChild(img);
-    }).catch((error) => {
-      console.error('Error fetching PDF thumbnail:', error);
-    });
-  });
-}
-
   window.onload = function () {
       fetchAndPopulateProducts();
-	  fetchAndDisplayPdfThumbnails(); // dodaj wywo³anie tej funkcji
   };
 </script>
 
