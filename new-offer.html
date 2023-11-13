@@ -326,17 +326,32 @@ overflow-y: auto;
     }
 	
 	function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
-    const clientName = document.getElementById('clientName').value;
-    const address = document.getElementById('address').value;
-    const clientEmail = document.getElementById('clientEmail').value;
-    const receiversName = document.getElementById('receiversName').value;
-    const messageToClient = document.getElementById('additionalComments').value;
-    const offerValidUntil = document.getElementById('datePicker').value;
+  // Pobierz dane z formularza
+  const clientName = document.getElementById('clientName').value;
+  const address = document.getElementById('address').value;
+  const clientEmail = document.getElementById('clientEmail').value;
+  const receiversName = document.getElementById('receiversName').value;
+  const additionalComments = document.getElementById('additionalComments').value;
+  const offerValidUntil = document.getElementById('datePicker').value;
 
-    doc.setFontSize(11);
+  let productsText = 'Wybrane produkty:\n'; // Inicjalizacja zmiennej przed u¿yciem
+
+  // Pobierz wybrane produkty
+  const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+  selectedProducts.forEach(product => {
+    const productName = product.textContent || '';
+    productsText += productName + '\n'; // Dopisz ka¿dy produkt do zmiennej productsText
+  });
+
+  // Formatowanie i dodawanie treœci do PDF
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text('Szczegó³y Oferty', 105, 20, null, null, 'center');
+
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
   doc.text(`Nazwa klienta/firmy: ${clientName}`, 10, 40);
   doc.text(`Adres: ${address}`, 10, 50);
@@ -346,24 +361,13 @@ overflow-y: auto;
   doc.text(`Uwagi dodatkowe: ${additionalComments}`, 10, 90);
   doc.text(productsText, 10, 100);
 
-     // Pobierz wybrane produkty
-  const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-  let productsText = 'Wybrane produkty:\n';
-  selectedProducts.forEach(product => {
-    const productName = product.textContent || '';
-    productsText += productName + '\n';
-  });
-    doc.text('Selected Products:', 10, 70);
-    selectedProducts.forEach((product, index) => {
-      doc.text(`- ${product}`, 10, 80 + (index * 10));
-    });
+  // Zapisanie PDF
+  doc.save('Offer_Details.pdf');
+}
 
-    // Save the PDF
-    doc.save('Offer_Details.pdf');
-	
-	// Przycisk do generowania PDF
+// Upewnij siê, ¿e przycisk do generowania PDF ma id="generate-pdf" w HTML
 document.getElementById('generate-pdf').addEventListener('click', generatePDF);
-  }
+
 	
 </script>
 
@@ -427,7 +431,7 @@ document.getElementById('generate-pdf').addEventListener('click', generatePDF);
         <div class="form-actions">
             <button type="button" class="btn-draft">Save as Draft</button>
             <button type="button" class="btn-preview">Preview</button>
-            <button type="button" class="btn-pdf" onclick="generatePDF()">Generate PDF</button>
+            <button type="button" class="btn-pdf" onclick="generate-pdf()">Generate PDF</button>
 
             <button type="button" class="btn-email">Send by Email</button>
 			<label for="blockRoomsCheckbox">
