@@ -325,36 +325,18 @@ overflow-y: auto;
         });
     }
 	
-	// Po pierwsze, upewnij siê, ¿e masz zainkludowan¹ bibliotekê jsPDF w swoim HTML
-// Mo¿esz to zrobiæ dodaj¹c nastêpuj¹cy tag script w sekcji head lub body Twojego dokumentu HTML:
-// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+	function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+    const clientName = document.getElementById('clientName').value;
+    const address = document.getElementById('address').value;
+    const clientEmail = document.getElementById('clientEmail').value;
+    const receiversName = document.getElementById('receiversName').value;
+    const messageToClient = document.getElementById('additionalComments').value;
+    const offerValidUntil = document.getElementById('datePicker').value;
 
-  // Pobierz dane z formularza
-  const clientName = document.getElementById('clientName').value;
-  const address = document.getElementById('address').value;
-  const clientEmail = document.getElementById('clientEmail').value;
-  const receiversName = document.getElementById('receiversName').value;
-  const additionalComments = document.getElementById('additionalComments').value;
-  const offerValidUntil = document.getElementById('datePicker').value;
-
-  // Pobierz wybrane produkty
-  const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-  let productsText = 'Wybrane produkty:\n';
-  selectedProducts.forEach(product => {
-    const productName = product.textContent || '';
-    productsText += productName + '\n';
-  });
-
-  // Formatowanie i dodawanie treœci do PDF
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
-  doc.text('Szczegó³y Oferty', 105, 20, null, null, 'center');
-
-  doc.setFontSize(11);
+    doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
   doc.text(`Nazwa klienta/firmy: ${clientName}`, 10, 40);
   doc.text(`Adres: ${address}`, 10, 50);
@@ -364,15 +346,24 @@ function generatePDF() {
   doc.text(`Uwagi dodatkowe: ${additionalComments}`, 10, 90);
   doc.text(productsText, 10, 100);
 
-  // Zapisanie PDF
-  doc.save('Offer_Details.pdf');
-}
+     // Pobierz wybrane produkty
+  const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+  let productsText = 'Wybrane produkty:\n';
+  selectedProducts.forEach(product => {
+    const productName = product.textContent || '';
+    productsText += productName + '\n';
+  });
+    doc.text('Selected Products:', 10, 70);
+    selectedProducts.forEach((product, index) => {
+      doc.text(`- ${product}`, 10, 80 + (index * 10));
+    });
 
-// Przycisk do generowania PDF
+    // Save the PDF
+    doc.save('Offer_Details.pdf');
+	
+	// Przycisk do generowania PDF
 document.getElementById('generate-pdf').addEventListener('click', generatePDF);
-
-}
-
+  }
 	
 </script>
 
