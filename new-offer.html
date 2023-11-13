@@ -335,6 +335,7 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
@@ -346,6 +347,7 @@ overflow-y: auto;
     };
 
     firebase.initializeApp(firebaseConfig);
+	const storage = getStorage(app);
 
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
