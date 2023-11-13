@@ -549,6 +549,12 @@ overflow-y: auto;
           });
   }
   
+  // Combined window.onload function
+window.onload = function() {
+    fetchAndPopulateProducts();
+    fetchAndDisplayTemplates();
+};
+  
   // Fetch and display template thumbnails from Firebase Storage
 function fetchAndDisplayTemplates() {
     const storage = firebase.storage();
