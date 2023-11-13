@@ -299,7 +299,6 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
@@ -329,15 +328,6 @@ overflow-y: auto;
 	function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  
-  // Je¿eli mamy obraz t³a, dodajemy go do ka¿dej strony
-  if (backgroundImage) {
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    doc.addImage(backgroundImage, 'PNG', 0, 0, pageWidth, pageHeight);
-  }
-
-  
 
   // Pobierz dane z formularza
   const clientName = document.getElementById('clientName').value;
@@ -346,10 +336,6 @@ overflow-y: auto;
   const receiversName = document.getElementById('receiversName').value;
   const additionalComments = document.getElementById('additionalComments').value;
   const offerValidUntil = document.getElementById('datePicker').value;
-  const totalSumElement = document.getElementById('totalSum');
-  const totalSum = totalSumElement.textContent;
-
-doc.text(`Ca³kowita kwota: ${totalSum}`, 10, 100);
 
   // Zainicjalizuj tekst produktów
   let productsText = 'Wybrane produkty:\n';
@@ -362,8 +348,7 @@ doc.text(`Ca³kowita kwota: ${totalSum}`, 10, 100);
   });
 
   // Formatowanie i dodawanie treœci do PDF
- doc.setFont('helvetica');
-  doc.setTextColor(0, 0, 0); // Ustaw kolor tekstu na czarny
+  doc.setFont('helvetica');
   doc.setFontSize(12);
   doc.text('Szczegó³y Oferty', 105, 20, { align: 'center' });
 
@@ -379,36 +364,9 @@ doc.text(`Ca³kowita kwota: ${totalSum}`, 10, 100);
   doc.save('Offer_Details.pdf');
 }
 
-// Funkcja do pobierania obrazu t³a z Firebase Cloud Storage
-function fetchBackgroundImageAndGeneratePDF() {
-  const storageRef = firebase.storage().ref();
-  const backgroundImgRef = storageRef.child('https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/Tymek-thumbnail.png?alt=media&token=82002c9d-e458-4ef7-9642-4c66cdd2957f'); // Zast¹p œcie¿k¹ do obrazu t³a
-
-  backgroundImgRef.getDownloadURL().then((url) => {
-        // Pobieranie obrazu jako danych base64
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function(event) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                const base64data = reader.result;
-                // Teraz mo¿emy wywo³aæ funkcjê generatePDF z obrazem t³a
-                generatePDF(base64data);
-            };
-            reader.readAsDataURL(xhr.response);
-        };
-        xhr.open('GET', url);
-        xhr.responseType = 'blob';
-        xhr.send();
-    }).catch((error) => {
-        console.error('Error fetching background image:', error);
-        // Wywo³aj generatePDF nawet jeœli nie uda³o siê pobraæ obrazu t³a
-        generatePDF(null);
-    });
-}
-
-// Nas³uchuj na klikniêcie przycisku i wygeneruj PDF z obrazem t³a
+// Nas³uchuj na klikniêcie przycisku i wygeneruj PDF
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('generate-pdf').addEventListener('click', fetchBackgroundImageAndGeneratePDF);
+  document.getElementById('generate-pdf').addEventListener('click', generatePDF);
 });
 
 	
