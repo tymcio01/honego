@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
-            <div class="products-area" ondragover="allowDrop(event)">
+            <div class="products-area" ondrop="drop(event)" ondragover="allowDrop(event)">
 
 
                 <div class="fixed-header">Available Products</div>
@@ -499,6 +499,18 @@ document.addEventListener('DOMContentLoaded', () => {
           clone.appendChild(quantityDiv);
 
           dropzone.appendChild(clone);
+		  
+		   } else if (dropzone && dropzone.classList.contains('products-area')) {
+        // Remove any quantity controls for the item being moved back
+        if (draggableElement.parentNode.classList.contains('selected-area')) {
+            // If the item was in the selected area, remove it from there
+            draggableElement.remove();
+        } else {
+            // If the item is already in the products area, just move it
+            dropzone.appendChild(draggableElement);
+        }
+    }
+		  
           calculateTotal();
       }
   }
