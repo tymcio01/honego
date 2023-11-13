@@ -549,26 +549,22 @@ overflow-y: auto;
           });
   }
   
-  function fetchAndDisplayTemplates() {
+  // Fetch and display template thumbnails from Firebase Storage
+function fetchAndDisplayTemplates() {
     const storage = firebase.storage();
-    const storageRef = storage.ref(); // Reference to your storage root
-    const templatesRef = storageRef.child('templates'); // Reference to the 'templates' directory
+    const storageRef = storage.ref();
+    const templatesRef = storageRef.child('templates');
 
-    // Assuming you have a naming convention for your templates like 'template1.jpg', 'template2.jpg', etc.
     for (let i = 1; i <= 8; i++) {
-        let templateName = 'template' + i + '.png'; // Construct the filename
-        let templateRef = templatesRef.child(templateName); // Reference to an individual template
+        let templateName = 'template' + i + '.png';
+        let templateRef = templatesRef.child(templateName);
 
-        // Get the download URL for the template
         templateRef.getDownloadURL().then((url) => {
-            // Create an image element for the template
             let img = document.createElement('img');
             img.src = url;
             img.alt = 'Template ' + i;
             img.classList.add('thumbnail');
             img.onclick = function() { selectTemplate(this); };
-
-            // Append the image to the thumbnails container
             document.querySelector('.thumbnails').appendChild(img);
         }).catch((error) => {
             console.error('Error fetching template:', error);
@@ -576,8 +572,17 @@ overflow-y: auto;
     }
 }
 
-  window.onload = function () {
+// Function to handle template selection
+function selectTemplate(element) {
+    let thumbnails = document.querySelectorAll('.thumbnail');
+    thumbnails.forEach(thumb => thumb.classList.remove('selected'));
+    element.classList.add('selected');
+}
+  
+  
+    window.onload = function () {
       fetchAndPopulateProducts();
+	  fetchAndDisplayTemplates();
   };
 </script>
 
