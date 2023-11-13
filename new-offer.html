@@ -291,6 +291,43 @@ overflow-y: auto;
 .fixed-header h3 {
     margin: 0; /* Remove default margin */
     padding: 0 10px; 
+	
+	.thumbnails-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px 0;
+}
+
+.thumbnails-container h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.thumbnail {
+    width: 100px; /* Set the width of the thumbnails */
+    height: 75px; /* Set the height of the thumbnails */
+    object-fit: cover;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail:hover {
+    transform: scale(1.1);
+    border-color: #005DCC;
+}
+
+.thumbnail.selected {
+    border-color: #FF0000;
+}
+
 
 		</style>
 </head>
@@ -376,6 +413,18 @@ overflow-y: auto;
             <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
             <div id="fileList"></div>
         </div>
+		
+		<div class="thumbnails-container">
+    <h2>Choose a Template:</h2>
+    <div class="thumbnails">
+        <img src="path-to-thumbnail1.jpg" alt="Classic" class="thumbnail" onclick="selectTemplate(this);">
+        <img src="path-to-thumbnail2.jpg" alt="Modern" class="thumbnail" onclick="selectTemplate(this);">
+        <img src="path-to-thumbnail3.jpg" alt="Simple" class="thumbnail" onclick="selectTemplate(this);">
+        <img src="path-to-thumbnail4.jpg" alt="Custom" class="thumbnail" onclick="selectTemplate(this);">
+    </div>
+</div>
+
+		
 		
 		<div class="date-picker">
     <label for="datePicker">Offer valid until:</label>
@@ -499,6 +548,20 @@ overflow-y: auto;
               console.error("Error getting documents: ", error);
           });
   }
+  
+  function selectTemplate(thumbnail) {
+    // Deselect all thumbnails
+    document.querySelectorAll('.thumbnail').forEach(function(thumb) {
+        thumb.classList.remove('selected');
+    });
+    
+    // Select the clicked thumbnail
+    thumbnail.classList.add('selected');
+    
+    // Optionally, you can store the selected template in a variable or perform other actions
+    // var selectedTemplate = thumbnail.alt;
+}
+
 
   window.onload = function () {
       fetchAndPopulateProducts();
