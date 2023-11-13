@@ -291,10 +291,6 @@ overflow-y: auto;
 .fixed-header h3 {
     margin: 0; /* Remove default margin */
     padding: 0 10px; 
-	
-	.product-item.hidden {
-    display: none; /* Ukrywa produkt */
-}
 
 		</style>
 </head>
@@ -403,71 +399,28 @@ overflow-y: auto;
 </footer>
 <script>
   function allowDrop(event) {
-    event.preventDefault();
-}
+      event.preventDefault();
+  }
 
-function drag(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-}
+  function drag(event) {
+      event.dataTransfer.setData("text/plain", event.target.id);
+  }
 
-function drop(event) {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("text/plain");
-    const draggableElement = document.getElementById(id);
-    let dropzone = event.target;
+  function drop(event) {
+      event.preventDefault();
+      const id = event.dataTransfer.getData("text/plain");
+      const draggableElement = document.getElementById(id);
+      let dropzone = event.target;
 
-    // Upewnij siê, ¿e trafiamy w kontener, a nie w jakikolwiek inny element.
-    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-        dropzone = dropzone.parentNode;
-        if (!dropzone) return; // Jeœli doszliœmy do <body> lub nie znaleŸliœmy kontenera, wyjdŸ.
-    }
+      while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+          dropzone = dropzone.parentNode;
+      }
 
-    // Jeœli element jest przeci¹gany do obszaru wybranych produktów
-    if (dropzone.classList.contains('selected-area')) {
-        if (!draggableElement.classList.contains('selected')) { // Jeœli nie jest ju¿ w wybranych
-            const clone = draggableElement.cloneNode(true);
-            clone.id = 'selected-' + Date.now(); // Nowe unikalne ID dla klona
-            clone.classList.add('selected'); // Oznacz jako wybrany
-            clone.addEventListener('dragstart', drag);
-            dropzone.appendChild(clone); // Dodaj klon do wybranych
-        }
-    } 
-    // Jeœli element jest przeci¹gany z powrotem do obszaru dostêpnych produktów
-    else if (dropzone.classList.contains('products-area')) {
-        if (draggableElement.classList.contains('selected')) { // Jeœli jest wybrany
-            dropzone.appendChild(draggableElement); // Przenieœ z powrotem do dostêpnych produktów
-            draggableElement.classList.remove('selected'); // Usuñ oznaczenie jako wybrany
-        }
-    }
-}
-
-
-function moveToAvailable(event) {
-    dropBack(event);
-}
-
-function dropBack(event) {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("text/plain");
-    const draggableElement = document.getElementById(id);
-    let dropzone = event.target;
-
-    while (!dropzone.classList.contains('products-area')) {
-        dropzone = dropzone.parentNode;
-    }
-
-    if (dropzone && dropzone.classList.contains('products-area')) {
-        const originalId = draggableElement.getAttribute('data-original-id');
-        const originalElement = document.getElementById(originalId);
-        if (originalElement) {
-            originalElement.classList.remove('hidden');
-        }
-        draggableElement.remove();
-        calculateTotal();
-    }
-}
-		 
-		  
+      if (dropzone && dropzone.classList.contains('selected-area')) {
+          const clone = draggableElement.cloneNode(true);
+          const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
+          clone.id = newId;
+          clone.addEventListener('dragstart', drag);
           
           // Add interface to manage quantity
           const quantityDiv = document.createElement('div');
@@ -498,6 +451,8 @@ function dropBack(event) {
 
           dropzone.appendChild(clone);
           calculateTotal();
+      }
+  }
 
   function adjustQuantity(productId, adjustment) {
       const productElement = document.getElementById(productId);
