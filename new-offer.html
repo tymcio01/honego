@@ -403,39 +403,34 @@ overflow-y: auto;
 </footer>
 <script>
   function allowDrop(event) {
-      event.preventDefault();
-  }
+    event.preventDefault();
+}
 
-  function drag(event) {
-      event.dataTransfer.setData("text/plain", event.target.id);
-  }
+function drag(event) {
+    event.dataTransfer.setData("text/plain", event.target.id);
+}
 
-  function drop(event) {
-      event.preventDefault();
-      const id = event.dataTransfer.getData("text/plain");
-      const draggableElement = document.getElementById(id);
-      let dropzone = event.target;
+function drop(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/plain");
+    const draggableElement = document.getElementById(id);
+    let dropzone = event.target;
 
-      while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
-          dropzone = dropzone.parentNode;
-      }
+    while (!dropzone.classList.contains('products-area') && !dropzone.classList.contains('selected-area')) {
+        dropzone = dropzone.parentNode;
+    }
 
-      if (dropzone && dropzone.classList.contains('selected-area')) {
-        const clone = draggableElement.cloneNode(true); // Utworzenie klona tutaj
+    if (dropzone && dropzone.classList.contains('selected-area')) {
+        const clone = draggableElement.cloneNode(true);
         const newId = 'selected-' + Date.now();
         clone.id = newId;
         clone.addEventListener('dragstart', drag);
         dropzone.appendChild(clone);
-        draggableElement.classList.add('hidden'); // Ukryj oryginalny element
+        draggableElement.remove(); // Usuñ oryginalny element z dostêpnych produktów
         calculateTotal();
-    }
-	// Jeœli przenosimy z powrotem do 'Available Products', przenosimy orygina³.
-    else if (dropzone && dropzone.classList.contains('products-area')) {
-        const originalElement = document.getElementById(draggableElement.getAttribute('data-original-id'));
-        if (originalElement) {
-            originalElement.classList.remove('hidden');
-        }
-        draggableElement.remove(); // Usuñ klon z 'Selected Products'
+    } else if (dropzone && dropzone.classList.contains('products-area')) {
+        draggableElement.remove(); // Usuñ element z wybranych produktów
+        dropzone.appendChild(draggableElement); // Dodaj go z powrotem do dostêpnych produktów
         calculateTotal();
     }
 }
