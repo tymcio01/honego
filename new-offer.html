@@ -380,6 +380,7 @@ overflow-y: auto;
 		
 		<!-- Nowa sekcja dla miniaturek PDF -->
 <div class="pdf-thumbnails-container">
+<div id="thumbnailContainer"></div>
   <h2>Select a PDF Template:</h2>
   <div id="pdfThumbnails" class="thumbnails"><!-- Miniaturki zostan¹ tutaj dodane przez JavaScript --></div>
 </div>
@@ -511,7 +512,7 @@ overflow-y: auto;
 function fetchAndDisplayPdfThumbnails() {
   const storage = firebase.storage();
   const storageRef = storage.ref();
-  const thumbnailsRef = storageRef.child('gs://honego-52c31.appspot.com/'); // zmieñ œcie¿kê na w³aœciw¹
+  const thumbnailsRef = storageRef.child('https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/Tymek-thumbnail.png?alt=media&token=82002c9d-e458-4ef7-9642-4c66cdd2957f;'); // zmieñ œcie¿kê na w³aœciw¹
 
   // Zak³adaj¹c, ¿e nazwy plików miniaturek s¹ zapisane w bazie danych lub jako array
   const thumbnailFilenames = ['Tymek-thumbnail.png']; // dodaj wiêcej nazw plików miniaturek
