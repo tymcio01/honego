@@ -325,37 +325,52 @@ overflow-y: auto;
         });
     }
 	
-	function generatePDF() {
+	// Po pierwsze, upewnij siê, ¿e masz zainkludowan¹ bibliotekê jsPDF w swoim HTML
+// Mo¿esz to zrobiæ dodaj¹c nastêpuj¹cy tag script w sekcji head lub body Twojego dokumentu HTML:
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+
+function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  // Ustawienie czcionki na pogrubion¹
+  // Pobierz dane z formularza
+  const clientName = document.getElementById('clientName').value;
+  const address = document.getElementById('address').value;
+  const clientEmail = document.getElementById('clientEmail').value;
+  const receiversName = document.getElementById('receiversName').value;
+  const additionalComments = document.getElementById('additionalComments').value;
+  const offerValidUntil = document.getElementById('datePicker').value;
+
+  // Pobierz wybrane produkty
+  const selectedProducts = document.querySelectorAll('.selected-area .product-item');
+  let productsText = 'Wybrane produkty:\n';
+  selectedProducts.forEach(product => {
+    const productName = product.textContent || '';
+    productsText += productName + '\n';
+  });
+
+  // Formatowanie i dodawanie treœci do PDF
   doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text('Szczegó³y Oferty', 105, 20, null, null, 'center');
 
-  // Ustawienie rozmiaru czcionki
-  doc.setFontSize(16);
-
-  // Dodanie tekstu w pozycji (x, y) na stronie PDF
-  doc.text('Tytu³ oferty', 10, 10);
-
-  // Zmiana czcionki na normaln¹ i koloru tekstu
+  doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100); // Szary kolor, RGB(100, 100, 100)
+  doc.text(`Nazwa klienta/firmy: ${clientName}`, 10, 40);
+  doc.text(`Adres: ${address}`, 10, 50);
+  doc.text(`Email klienta: ${clientEmail}`, 10, 60);
+  doc.text(`Nazwa odbiorcy: ${receiversName}`, 10, 70);
+  doc.text(`Oferta wa¿na do: ${offerValidUntil}`, 10, 80);
+  doc.text(`Uwagi dodatkowe: ${additionalComments}`, 10, 90);
+  doc.text(productsText, 10, 100);
 
-  // Dodanie kolejnego tekstu
-  doc.setFontSize(12);
-  doc.text('Szczegó³y oferty', 10, 20);
-
-  // Mo¿esz równie¿ dodaæ tekst z wyrównaniem
-  doc.text('Wycentrowany tekst', 105, 40, null, null, 'center');
-
-  // Dodanie d³ugiego tekstu z automatycznym ³amaniem linii
-  doc.setFontSize(10);
-  let longText = 'Bardzo d³ugi tekst, który zostanie automatycznie podzielony na kilka linii, jeœli bêdzie trzeba, aby zmieœci³ siê w okreœlonej szerokoœci.';
-  doc.text(longText, 10, 60, { maxWidth: 190, align: 'justify' });
-
-  // Zapisanie dokumentu PDF
+  // Zapisanie PDF
   doc.save('Offer_Details.pdf');
+}
+
+// Przycisk do generowania PDF
+document.getElementById('generate-pdf').addEventListener('click', generatePDF);
+
 }
 
 	
