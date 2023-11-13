@@ -291,43 +291,6 @@ overflow-y: auto;
 .fixed-header h3 {
     margin: 0; /* Remove default margin */
     padding: 0 10px; 
-	
-	.thumbnails-container {
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 20px 0;
-}
-
-.thumbnails-container h2 {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.thumbnails {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.thumbnail {
-    width: 100px; /* Set the width of the thumbnails */
-    height: 75px; /* Set the height of the thumbnails */
-    object-fit: cover;
-    border: 3px solid transparent;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.thumbnail:hover {
-    transform: scale(1.1);
-    border-color: #005DCC;
-}
-
-.thumbnail.selected {
-    border-color: #FF0000;
-}
-
 
 		</style>
 </head>
@@ -335,7 +298,6 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
@@ -347,7 +309,6 @@ overflow-y: auto;
     };
 
     firebase.initializeApp(firebaseConfig);
-	const storage = getStorage(app);
 
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
@@ -415,16 +376,6 @@ overflow-y: auto;
             <input type="file" id="fileAttachment" name="fileAttachment[]" multiple>
             <div id="fileList"></div>
         </div>
-		
-		<div class="thumbnails-container">
-    <h2>Choose a Template:</h2>
-    <div class="thumbnails">
-        <img src="gs://honego-52c31.appspot.com/templates/template.png" alt="Classic" class="thumbnail" onclick="selectTemplate(this);">
-
-    </div>
-</div>
-
-		
 		
 		<div class="date-picker">
     <label for="datePicker">Offer valid until:</label>
@@ -548,47 +499,9 @@ overflow-y: auto;
               console.error("Error getting documents: ", error);
           });
   }
-  
-  // Combined window.onload function
-window.onload = function() {
-    fetchAndPopulateProducts();
-    fetchAndDisplayTemplates();
-};
-  
-  // Fetch and display template thumbnails from Firebase Storage
-function fetchAndDisplayTemplates() {
-    const storage = firebase.storage();
-    const storageRef = storage.ref();
-    const templatesRef = storageRef.child('templates');
 
-    for (let i = 1; i <= 8; i++) {
-        let templateName = 'template' + i + '.png';
-        let templateRef = templatesRef.child(templateName);
-
-        templateRef.getDownloadURL().then((url) => {
-            let img = document.createElement('img');
-            img.src = url;
-            img.alt = 'Template ' + i;
-            img.classList.add('thumbnail');
-            img.onclick = function() { selectTemplate(this); };
-            document.querySelector('.thumbnails').appendChild(img);
-        }).catch((error) => {
-            console.error('Error fetching template:', error);
-        });
-    }
-}
-
-// Function to handle template selection
-function selectTemplate(element) {
-    let thumbnails = document.querySelectorAll('.thumbnail');
-    thumbnails.forEach(thumb => thumb.classList.remove('selected'));
-    element.classList.add('selected');
-}
-  
-  
-    window.onload = function () {
+  window.onload = function () {
       fetchAndPopulateProducts();
-	  fetchAndDisplayTemplates();
   };
 </script>
 
