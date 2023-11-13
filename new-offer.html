@@ -291,6 +291,10 @@ overflow-y: auto;
 .fixed-header h3 {
     margin: 0; /* Remove default margin */
     padding: 0 10px; 
+	
+	.product-item.hidden {
+    display: none; /* Ukrywa produkt */
+}
 
 		</style>
 </head>
@@ -421,6 +425,40 @@ overflow-y: auto;
           const newId = 'selected-' + Date.now(); // Use timestamp for a unique ID
           clone.id = newId;
           clone.addEventListener('dragstart', drag);
+		  
+		  clone.classList.add('movable');
+        dropzone.appendChild(clone);
+        draggableElement.classList.add('hidden');
+        calculateTotal();
+    }
+}
+
+function moveToAvailable(event) {
+    dropBack(event);
+}
+
+function dropBack(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/plain");
+    const draggableElement = document.getElementById(id);
+    let dropzone = event.target;
+
+    while (!dropzone.classList.contains('products-area')) {
+        dropzone = dropzone.parentNode;
+    }
+
+    if (dropzone && dropzone.classList.contains('products-area')) {
+        const originalId = draggableElement.getAttribute('data-original-id');
+        const originalElement = document.getElementById(originalId);
+        if (originalElement) {
+            originalElement.classList.remove('hidden');
+        }
+        draggableElement.remove();
+        calculateTotal();
+    }
+}
+		 
+		  
           
           // Add interface to manage quantity
           const quantityDiv = document.createElement('div');
