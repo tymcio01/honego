@@ -385,7 +385,8 @@ overflow-y: auto;
         <div class="form-actions">
             <button type="button" class="btn-draft">Save as Draft</button>
             <button type="button" class="btn-preview">Preview</button>
-            <button type="button" class="btn-pdf">Generate PDF</button>
+            <button type="button" class="btn-pdf" onclick="generatePDF()">Generate PDF</button>
+
             <button type="button" class="btn-email">Send by Email</button>
 			<label for="blockRoomsCheckbox">
         <input type="checkbox" id="blockRoomsCheckbox" name="blockRooms">
@@ -499,6 +500,38 @@ overflow-y: auto;
               console.error("Error getting documents: ", error);
           });
   }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script>
+  function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const clientName = document.getElementById('clientName').value;
+    const address = document.getElementById('address').value;
+    const clientEmail = document.getElementById('clientEmail').value;
+    const receiversName = document.getElementById('receiversName').value;
+    const messageToClient = document.getElementById('additionalComments').value;
+    const offerValidUntil = document.getElementById('datePicker').value;
+
+    doc.text(`Client Name/Company: ${clientName}`, 10, 10);
+    doc.text(`Address: ${address}`, 10, 20);
+    doc.text(`Client Email: ${clientEmail}`, 10, 30);
+    doc.text(`Receiver's Name: ${receiversName}`, 10, 40);
+    doc.text(`Message to Client: ${messageToClient}`, 10, 50);
+    doc.text(`Offer Valid Until: ${offerValidUntil}`, 10, 60);
+
+    // Add selected products
+    const selectedProducts = [...document.querySelectorAll('.selected-area .product-item')].map(
+      product => product.textContent
+    );
+    doc.text('Selected Products:', 10, 70);
+    selectedProducts.forEach((product, index) => {
+      doc.text(`- ${product}`, 10, 80 + (index * 10));
+    });
+
+    // Save the PDF
+    doc.save('Offer_Details.pdf');
 
   window.onload = function () {
       fetchAndPopulateProducts();
