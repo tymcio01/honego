@@ -231,22 +231,24 @@ firebase.auth().onAuthStateChanged((user) => {
         tableBody.innerHTML = ''; // Clear the table before populating it
 
         querySnapshot.forEach((doc) => {
-            const client = doc.data();
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${client.company}</td>
-                <td>${client.name}</td>
-                <td>${client.surname}</td>
-                <td>${client.address}</td>
-                <td>${client.phone}</td>
-                <td>${client.email}</td>
-                <td>${client.industry}</td>
-                <td><button class="send-offer-btn" type="button" onclick="sendOffer('${doc.id}')">Send Offer</button></td>
-				<td><button class="delete-btn" type="button" onclick="deleteClient('${doc.id}', this)">Delete</button></td>
-			
-			`;
-            tableBody.appendChild(row);
-        });
+    const client = doc.data();
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${client.company}</td>
+        <td>${client.name}</td>
+        <td>${client.surname}</td>
+        <td>${client.address}</td>
+        <td>${client.phone}</td>
+        <td>${client.email}</td>
+        <td>${client.industry}</td>
+        <td>
+            <button class="send-offer-btn" type="button" onclick="sendOffer('${doc.id}')">Send Offer</button>
+            <button class="delete-btn" type="button" onclick="deleteClient('${doc.id}', this)">Delete</button>
+        </td>
+    `;
+    tableBody.appendChild(row);
+});
+
     }).catch((error) => {
         console.error("Error getting documents: ", error);
     });
