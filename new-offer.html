@@ -384,30 +384,30 @@ function fetchBackgroundImageAndGeneratePDF() {
   const backgroundImgRef = storageRef.child('https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/Tymek-thumbnail.png?alt=media&token=82002c9d-e458-4ef7-9642-4c66cdd2957f'); // Zast¹p œcie¿k¹ do obrazu t³a
 
   backgroundImgRef.getDownloadURL().then((url) => {
-    // Pobieranie obrazu jako danych base64
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function(event) {
-      const reader = new FileReader();
-      reader.onloadend = function() {
-        const base64data = reader.result;
-        // Teraz mo¿emy wywo³aæ funkcjê generatePDF z obrazem t³a
-        generatePDF(base64data);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-  }).catch((error) => {
-    console.error('Error fetching background image:', error);
-    // Wywo³aj generatePDF nawet jeœli nie uda³o siê pobraæ obrazu t³a
-    generatePDF(null);
-  });
+        // Pobieranie obrazu jako danych base64
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function(event) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64data = reader.result;
+                // Teraz mo¿emy wywo³aæ funkcjê generatePDF z obrazem t³a
+                generatePDF(base64data);
+            };
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+    }).catch((error) => {
+        console.error('Error fetching background image:', error);
+        // Wywo³aj generatePDF nawet jeœli nie uda³o siê pobraæ obrazu t³a
+        generatePDF(null);
+    });
 }
 
-// Nas³uchuj na klikniêcie przycisku i wygeneruj PDF
+// Nas³uchuj na klikniêcie przycisku i wygeneruj PDF z obrazem t³a
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('generate-pdf').addEventListener('click', generatePDF);
+    document.getElementById('generate-pdf').addEventListener('click', fetchBackgroundImageAndGeneratePDF);
 });
 
 	
