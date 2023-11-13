@@ -298,6 +298,7 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <script>
     var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
@@ -323,6 +324,38 @@ overflow-y: auto;
             console.error('Logout Failed', error);
         });
     }
+	
+	function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const clientName = document.getElementById('clientName').value;
+    const address = document.getElementById('address').value;
+    const clientEmail = document.getElementById('clientEmail').value;
+    const receiversName = document.getElementById('receiversName').value;
+    const messageToClient = document.getElementById('additionalComments').value;
+    const offerValidUntil = document.getElementById('datePicker').value;
+
+    doc.text(`Client Name/Company: ${clientName}`, 10, 10);
+    doc.text(`Address: ${address}`, 10, 20);
+    doc.text(`Client Email: ${clientEmail}`, 10, 30);
+    doc.text(`Receiver's Name: ${receiversName}`, 10, 40);
+    doc.text(`Message to Client: ${messageToClient}`, 10, 50);
+    doc.text(`Offer Valid Until: ${offerValidUntil}`, 10, 60);
+
+    // Add selected products
+    const selectedProducts = [...document.querySelectorAll('.selected-area .product-item')].map(
+      product => product.textContent
+    );
+    doc.text('Selected Products:', 10, 70);
+    selectedProducts.forEach((product, index) => {
+      doc.text(`- ${product}`, 10, 80 + (index * 10));
+    });
+
+    // Save the PDF
+    doc.save('Offer_Details.pdf');
+  }
+	
 </script>
 
 <div class="container">
@@ -511,38 +544,8 @@ overflow-y: auto;
   };
   
   
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-<script>
-  function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const clientName = document.getElementById('clientName').value;
-    const address = document.getElementById('address').value;
-    const clientEmail = document.getElementById('clientEmail').value;
-    const receiversName = document.getElementById('receiversName').value;
-    const messageToClient = document.getElementById('additionalComments').value;
-    const offerValidUntil = document.getElementById('datePicker').value;
-
-    doc.text(`Client Name/Company: ${clientName}`, 10, 10);
-    doc.text(`Address: ${address}`, 10, 20);
-    doc.text(`Client Email: ${clientEmail}`, 10, 30);
-    doc.text(`Receiver's Name: ${receiversName}`, 10, 40);
-    doc.text(`Message to Client: ${messageToClient}`, 10, 50);
-    doc.text(`Offer Valid Until: ${offerValidUntil}`, 10, 60);
-
-    // Add selected products
-    const selectedProducts = [...document.querySelectorAll('.selected-area .product-item')].map(
-      product => product.textContent
-    );
-    doc.text('Selected Products:', 10, 70);
-    selectedProducts.forEach((product, index) => {
-      doc.text(`- ${product}`, 10, 80 + (index * 10));
-    });
-
-    // Save the PDF
-    doc.save('Offer_Details.pdf');
-  }
+  
+  
 </script>
 
 </body>
