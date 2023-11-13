@@ -326,35 +326,38 @@ overflow-y: auto;
     }
 	
 	function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
-    const clientName = document.getElementById('clientName').value;
-    const address = document.getElementById('address').value;
-    const clientEmail = document.getElementById('clientEmail').value;
-    const receiversName = document.getElementById('receiversName').value;
-    const messageToClient = document.getElementById('additionalComments').value;
-    const offerValidUntil = document.getElementById('datePicker').value;
+  // Ustawienie czcionki na pogrubion¹
+  doc.setFont('helvetica', 'bold');
 
-    doc.text(`Client Name/Company: ${clientName}`, 10, 10);
-    doc.text(`Address: ${address}`, 10, 20);
-    doc.text(`Client Email: ${clientEmail}`, 10, 30);
-    doc.text(`Receiver's Name: ${receiversName}`, 10, 40);
-    doc.text(`Message to Client: ${messageToClient}`, 10, 50);
-    doc.text(`Offer Valid Until: ${offerValidUntil}`, 10, 60);
+  // Ustawienie rozmiaru czcionki
+  doc.setFontSize(16);
 
-    // Add selected products
-    const selectedProducts = [...document.querySelectorAll('.selected-area .product-item')].map(
-      product => product.textContent
-    );
-    doc.text('Selected Products:', 10, 70);
-    selectedProducts.forEach((product, index) => {
-      doc.text(`- ${product}`, 10, 80 + (index * 10));
-    });
+  // Dodanie tekstu w pozycji (x, y) na stronie PDF
+  doc.text('Tytu³ oferty', 10, 10);
 
-    // Save the PDF
-    doc.save('Offer_Details.pdf');
-  }
+  // Zmiana czcionki na normaln¹ i koloru tekstu
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(100); // Szary kolor, RGB(100, 100, 100)
+
+  // Dodanie kolejnego tekstu
+  doc.setFontSize(12);
+  doc.text('Szczegó³y oferty', 10, 20);
+
+  // Mo¿esz równie¿ dodaæ tekst z wyrównaniem
+  doc.text('Wycentrowany tekst', 105, 40, null, null, 'center');
+
+  // Dodanie d³ugiego tekstu z automatycznym ³amaniem linii
+  doc.setFontSize(10);
+  let longText = 'Bardzo d³ugi tekst, który zostanie automatycznie podzielony na kilka linii, jeœli bêdzie trzeba, aby zmieœci³ siê w okreœlonej szerokoœci.';
+  doc.text(longText, 10, 60, { maxWidth: 190, align: 'justify' });
+
+  // Zapisanie dokumentu PDF
+  doc.save('Offer_Details.pdf');
+}
+
 	
 </script>
 
