@@ -291,10 +291,52 @@ overflow-y: auto;
 .fixed-header h3 {
     margin: 0; /* Remove default margin */
     padding: 0 10px; 
+	
+	/* Ukryj zawartoœæ strony podczas ³adowania */
+body {
+    overflow: hidden;
+}
+
+/* Ustawienie t³a i centrowanie loadera */
+#loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styl dla loadera (krêc¹ce siê ko³o) */
+#loader {
+    border: 5px solid #f3f3f3; /* Svetlejší èást spinnera */
+    border-top: 5px solid #3498db; /* Barva spinnera */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+/* Animacja obrotu */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 
 		</style>
 </head>
 <body>
+
+<div id="loader-wrapper">
+    <div id="loader"></div>
+</div>
+
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -585,7 +627,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	  
   };
   
-  
+  document.addEventListener("DOMContentLoaded", function() {
+    // Usuñ loader po za³adowaniu strony
+    var loaderWrapper = document.getElementById('loader-wrapper');
+    loaderWrapper.style.display = 'none';
+});
+
   
   
 </script>
