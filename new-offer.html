@@ -300,7 +300,22 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <script>
-    var firebaseConfig = {
+    
+	document.addEventListener('DOMContentLoaded', () => {
+    // Check if URL has query parameters
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('company')) {
+        document.getElementById('clientName').value = queryParams.get('company');
+        document.getElementById('address').value = queryParams.get('address');
+        document.getElementById('clientEmail').value = queryParams.get('email');
+        document.getElementById('receiversName').value = queryParams.get('clientName');
+    }
+
+    // Rest of your initialization code...
+});
+
+	
+	var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
