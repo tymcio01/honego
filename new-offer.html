@@ -428,6 +428,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 			
         </div>
+		<!-- Pole do wprowadzania zni¿ki -->
+<label for="discount">Discount (%):</label>
+<input type="number" id="discount" name="discount" value="0" min="0" max="100" onchange="calculateTotal()">
+
 		<div id="totalSum" style="text-align: right; font-weight: bold;">Total Sum: 0 PLN</div>
         <div class="comments-box">
             <label for="additionalComments">Message to client:</label>
@@ -543,14 +547,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function calculateTotal() {
-      let sum = 0;
-      document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
-          const price = Number(product.dataset.value);
-          const quantity = Number(product.querySelector('.product-quantity').value);
-          sum += price * quantity;
-      });
-      document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN`; // Round to two decimal places
-  }
+    let sum = 0;
+    document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
+        const price = Number(product.dataset.value);
+        const quantity = Number(product.querySelector('.product-quantity').value);
+        sum += price * quantity;
+    });
+
+    // Pobierz procent zni¿ki i zastosuj go
+    const discountPercent = Number(document.getElementById('discount').value);
+    const discountAmount = sum * (discountPercent / 100);
+    sum -= discountAmount; // Odjêcie zni¿ki od sumy
+
+    // Aktualizacja wyœwietlanej sumy
+    document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN (Discount: ${discountAmount.toFixed(2)} PLN)`;
+}
+
 
   function fetchAndPopulateProducts() {
       const db = firebase.firestore();
