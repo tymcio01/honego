@@ -211,7 +211,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     });
   }
   
-  document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content'); // Zak³adamy, ¿e druga karta to "Drafts"
   
   // Mockup danych dla przyk³adu
@@ -225,7 +225,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   draftsContainer.innerHTML = '';
   
   // Tworzenie i dodawanie elementów draftu do kontenera
-  drafts.forEach(draft => {
+  drafts.forEach((draft, index) => {
     const draftElement = document.createElement('div');
     draftElement.className = 'draft';
     draftElement.innerHTML = `
@@ -240,8 +240,15 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     };
     
     draftsContainer.appendChild(draftElement);
+    
+    // Dodawanie separatora, jeœli to nie jest ostatni element
+    if (index < drafts.length - 1) {
+      const separator = document.createElement('hr'); // Separator
+      draftsContainer.appendChild(separator);
+    }
   });
 });
+
 
   
 </script>
