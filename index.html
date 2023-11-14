@@ -38,8 +38,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
         a:hover {
-            background: ##0e7ebf
-;
+            background: #005DCC;
             color: #fff;
         }
 		
@@ -48,13 +47,15 @@
             max-width: 20%; /* Maksymalna szerokoœæ wideo */
                         border-radius: 0px; /* Zaokr¹glenie rogu wideo */
             margin-bottom: 50px; /* Odstêp poni¿ej wideo */
+			pointer-events: none; /* Blokowanie interakcji z myszk¹ */
+            user-select: none; /* Blokowanie zaznaczania tekstu wideo */
         }
 		
     </style>
 </head>
 <body>
-<video controls autoplay loop muted>
-        <source src="https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/video.mp4?alt=media&token=c294f462-3b67-4df9-b6bf-d7c9e86ef4ff" type="video/mp4">
+<video autoplay loop muted controls controlsList="nodownload">
+        <source src="https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/video.mp4?alt=media&token=0c032320-07ad-4cb8-8718-1b1ed8931d3c" type="video/mp4">
         Twoja przegl¹darka nie obs³uguje elementu wideo.
     </video>
     <h1>Welcome to Honego</h1>
