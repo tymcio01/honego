@@ -9,6 +9,7 @@
     <style>
         html {
             height: 100%;
+			margin: 0;
         }
 
         body {
@@ -25,6 +26,7 @@
         .container {
             flex: 1;
             display: flex;
+			flex-direction: column;
         }
 
         aside {
@@ -59,7 +61,7 @@
         }
 
         .main-content {
-            flex-grow: 1;
+            flex: 1;
             padding: 20px;
             background-color: #fff;
             box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
@@ -70,6 +72,7 @@
             color: #f6f6f6;
             padding: 10px 20px;
             text-align: center;
+			margin-top: auto;
         }
 
         .profile-form {
