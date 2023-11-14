@@ -41,9 +41,22 @@
             background: #005DCC;
             color: #fff;
         }
+		
+		/* Dodatkowe style dla wideo */
+        video {
+            max-width: 80%; /* Maksymalna szerokoœæ wideo */
+            border: 1px solid #000; /* Obramowanie wideo */
+            border-radius: 4px; /* Zaokr¹glenie rogu wideo */
+            margin-bottom: 20px; /* Odstêp poni¿ej wideo */
+        }
+		
     </style>
 </head>
 <body>
+<video controls autoplay loop muted>
+        <source src="https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/video.mp4?alt=media&token=c294f462-3b67-4df9-b6bf-d7c9e86ef4ff" type="video/mp4">
+        Twoja przegl¹darka nie obs³uguje elementu wideo.
+    </video>
     <h1>Welcome to Honego</h1>
     <p>Optimize the hotel active sales processes</p>
     <a href="auth.html">Access Dashboard</a> <!-- Zaktualizowana œcie¿ka do strony logowania -->
