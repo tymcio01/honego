@@ -126,12 +126,58 @@
         .horizontal-table th {
             background-color: #f0f0f0;
         }    
+		
+		.offer-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .offer-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .offer-header {
+            font-size: 1.2em;
+            color: #005DCC;
+            margin-bottom: 15px;
+        }
+
+        .offer-content {
+            flex: 1;
+        }
+
+        .offer-actions {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .offer-actions button {
+            margin-left: 10px;
+        }
+
+        /* Responsywnoœæ */
+        @media (max-width: 768px) {
+            .offer-section {
+                grid-template-columns: 1fr;
+            }
+        }
+		
 </style>
 </head>
 <body>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+
 
 <script>
 
@@ -186,24 +232,52 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         </aside>
 
         <div class="main-content">
-    <!-- First Horizontal Table -->
-            <table class="horizontal-table">
-                <thead>
-                    <tr>
-                        <th>Recently sent</th>
-                        <th>Drafts</th>
-                        <th>Templates</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Data 1</td>
-                        <td>Data 2</td>
-                        <td>Data 3</td>
-                    </tr>
-                </tbody>
-            </table>
-                    </div>
+        <div class="offer-section">
+            <!-- Karta dla wys³anych ofert -->
+            <div class="offer-card">
+                <div class="offer-header">
+                    <i class="fas fa-paper-plane"></i> Recently Sent
+                </div>
+                <div class="offer-content">
+                    <!-- Tutaj zawartoœæ dla wys³anych ofert -->
+                </div>
+                <div class="offer-actions">
+                    <button>Edit</button>
+                    <button>Send</button>
+                    <button>Delete</button>
+                </div>
+            </div>
+
+            <!-- Karta dla draftów -->
+            <div class="offer-card">
+                <div class="offer-header">
+                    <i class="fas fa-file-alt"></i> Drafts
+                </div>
+                <div class="offer-content">
+                    <!-- Tutaj zawartoœæ dla draftów -->
+                </div>
+                <div class="offer-actions">
+                    <button>Edit</button>
+                    <button>Send</button>
+                    <button>Delete</button>
+                </div>
+            </div>
+
+            <!-- Karta dla szablonów -->
+            <div class="offer-card">
+                <div class="offer-header">
+                    <i class="fas fa-clone"></i> Templates
+                </div>
+                <div class="offer-content">
+                    <!-- Tutaj zawartoœæ dla szablonów -->
+                </div>
+                <div class="offer-actions">
+                    <button>Edit</button>
+                    <button>Send</button>
+                    <button>Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
 
      <footer>
