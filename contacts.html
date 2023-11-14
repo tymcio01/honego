@@ -242,7 +242,7 @@ firebase.auth().onAuthStateChanged((user) => {
         <td>${client.email}</td>
         <td>${client.industry}</td>
         <td>
-            <button class="send-offer-btn" type="button" onclick="sendOffer('${doc.id}')">Send Offer</button>
+            <button class="send-offer-btn" type="button" onclick="sendOffer('${doc.id}', '${client.company}', '${client.address}', '${client.email}', '${client.name}')">Send Offer</button>
             <button class="delete-btn" type="button" onclick="deleteClient('${doc.id}', this)">Delete</button>
         </td>
     `;
@@ -376,11 +376,17 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 // Funkcja wysy³ania oferty dla klienta
-function sendOffer(clientId) {
-    // Tutaj mo¿esz dodaæ kod obs³uguj¹cy wysy³anie oferty dla klienta
-    // Mo¿esz u¿yæ clientId do zidentyfikowania klienta, któremu wysy³asz ofertê
-    console.log('Sending offer to client with ID:', clientId);
+function sendOffer(clientId, company, address, email, name) {
+    const queryParams = new URLSearchParams({
+        clientId,
+        company,
+        address,
+        email,
+        clientName: name,
+    });
+    window.location.href = `new-offer.html?${queryParams.toString()}`;
 }
+
 
 
     var firebaseConfig = {
