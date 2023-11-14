@@ -7,146 +7,192 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
-        /* Existing styles */
-html {
-    height: 100%;
-}
+        html {
+            height: 100%;
+        }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #005DCC;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #005DCC;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-.container {
-    flex: 1;
-    display: flex;
-}
+        .container {
+            flex: 1;
+            display: flex;
+        }
 
-aside {
-    width: 250px;
-    background-color: #005DCC;
-    padding: 20px;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-    color: #f6f6f6;
-}
+        aside {
+            width: 250px;
+            background-color: #005DCC;
+            padding: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            color: #f6f6f6;
+        }
 
-aside ul {
-    list-style-type: none;
-    padding: 0;
-}
+        aside ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-aside ul li {
-    margin-bottom: 15px;
-}
+        aside ul li {
+            margin-bottom: 15px;
+        }
 
-aside ul li a {
-    text-decoration: none;
-    color: #f6f6f6;
-    padding: 10px 20px;
-    display: block;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+        aside ul li a {
+            text-decoration: none;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-aside ul li a:hover {
-    background-color: #f8f9fa;
-    color: #333;
-}
+        aside ul li a:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
 
-.main-content {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
-}
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
 
-footer {
-    background-color: #005DCC;
-    color: #f6f6f6;
-    padding: 10px 20px;
-    text-align: center;
-}
+        footer {
+            background-color: #005DCC;
+            color: #f6f6f6;
+            padding: 10px 20px;
+            text-align: center;
+        }
 
-.profile-form {
-    max-width: 500px;
-    margin: 20px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .profile-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			box-sizing: border-box;
+        }
 
-.profile-form label {
-    display: block;
-    margin-bottom: 5px;
-}
+        .profile-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-.profile-form input[type="text"],
-.profile-form input[type="email"],
-.profile-form input[type="password"] {
+        .profile-form input[type="text"],
+        .profile-form input[type="email"],
+        .profile-form input[type="password"] {
+            width: calc(100% - 20px); /* Adjust width to account for padding */
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+			box-sizing: border-box; /* Ensures padding is included in width */
+        }
+
+        .profile-form button {
+            background: #fff;
+            color: #000;
+            padding: 10px 15px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .profile-form button:hover {
+            background: #005DCC;
+            color: #fff;
+        }
+
+        /* Table Styles */
+.customer-table {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-top: 20px;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    font-size: 0.9em;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
-.profile-form button {
-    background: #fff;
-    color: #000;
-    padding: 10px 15px;
-    border: 2px solid #000;
-    border-radius: 4px;
+.customer-table thead tr {
+    background-color: #005DCC;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.customer-table th,
+.customer-table td {
+    padding: 12px 15px;
+}
+
+.customer-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.customer-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.customer-table tbody tr:last-of-type {
+    border-bottom: 2px solid #005DCC;
+}
+
+.customer-table tbody tr.active-row {
+    font-weight: bold;
+    color: #005DCC;
+}
+
+/* Button styles within the table */
+.send-offer-btn {
+    background-color: #005DCC;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background 0.3s ease;
 }
 
-.profile-form button:hover {
+.send-offer-btn:hover {
+    background-color: #005DCC;
+}
+
+/* Add some spacing for the search and export buttons */
+#searchBtn, #exportBtn {
+    margin: 0 10px;
+    padding: 5px 10px;
     background: #005DCC;
-    color: #fff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-/* Additional styles for responsiveness on larger screens */
-@media (min-width: 1024px) {
-    .container {
-        display: flex;
-        flex-wrap: nowrap;
-    }
-
-    aside,
-    .main-content {
-        flex: 1;
-    }
-
-    aside {
-        width: auto;
-        min-width: 250px;
-    }
-
-    .main-content {
-        padding: 20px;
-    }
-
-    .profile-form,
-    .customer-table {
-        margin: 20px auto;
-        max-width: 90%;
-    }
+.delete-btn {
+    background-color: #808080; /* Gray background */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-@media (min-width: 1440px) {
-    .profile-form,
-    .customer-table {
-        max-width: 80%;
-    }
+.delete-btn:hover {
+    background-color: #FF0000; /* Red background on hover */
+    color: white;
 }
-
 
 
     </style>
