@@ -210,6 +210,40 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
       console.error('Logout Failed', error);
     });
   }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+  const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content'); // Zak³adamy, ¿e druga karta to "Drafts"
+  
+  // Mockup danych dla przyk³adu
+  const drafts = [
+    { id: 1, date: '2023-07-01', companyName: 'Company A', totalSum: '1000' },
+    { id: 2, date: '2023-07-02', companyName: 'Company B', totalSum: '2000' },
+    { id: 3, date: '2023-07-03', companyName: 'Company C', totalSum: '3000' }
+  ];
+  
+  // Czyszczenie kontenera z draftami
+  draftsContainer.innerHTML = '';
+  
+  // Tworzenie i dodawanie elementów draftu do kontenera
+  drafts.forEach(draft => {
+    const draftElement = document.createElement('div');
+    draftElement.className = 'draft';
+    draftElement.innerHTML = `
+      <div>Date: ${draft.date}</div>
+      <div>Company: ${draft.companyName}</div>
+      <div>Total Sum: ${draft.totalSum}</div>
+    `;
+    // Dodawanie logiki dla klikniêcia - tutaj przyk³adowo wypisywanie danych w konsoli
+    draftElement.onclick = function() {
+      console.log(`Editing draft: ${draft.id}`);
+      // Tu powinna byæ logika do edycji draftu, np. przekierowanie do strony edycji z id draftu
+    };
+    
+    draftsContainer.appendChild(draftElement);
+  });
+});
+
+  
 </script>
 
 </script>
