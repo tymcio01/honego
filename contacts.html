@@ -79,6 +79,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			box-sizing: border-box;
         }
 
         .profile-form label {
@@ -89,11 +90,12 @@
         .profile-form input[type="text"],
         .profile-form input[type="email"],
         .profile-form input[type="password"] {
-            width: 100%;
+            width: calc(100% - 20px); /* Adjust width to account for padding */
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
+			box-sizing: border-box; /* Ensures padding is included in width */
         }
 
         .profile-form button {
