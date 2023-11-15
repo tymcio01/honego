@@ -343,19 +343,9 @@ overflow-y: auto;
 	function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  const backgroundImage = 'https://firebasestorage.googleapis.com/v0/b/honego-52c31.appspot.com/o/Untitled.jpg?alt=media&token=c1f3d9f3-4877-431b-9bf3-c3b0467b724c'; // Replace with the actual data URL of the background image
 
-  // Load the background image
-  const img = new Image();
-  img.src = backgroundImage;
-  img.onload = function() {
-    // Once the image is loaded, draw it on the PDF
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    doc.addImage(img, 'JPEG', 0, 0, pageWidth, pageHeight);
-
-    // Now add the text over the background image
-    const clientName = document.getElementById('clientName').value;
+  // Pobierz dane z formularza
+  const clientName = document.getElementById('clientName').value;
   const address = document.getElementById('address').value;
   const clientEmail = document.getElementById('clientEmail').value;
   const receiversName = document.getElementById('receiversName').value;
