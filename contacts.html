@@ -267,37 +267,31 @@ firebase.auth().onAuthStateChanged((user) => {
        
         // Dodanie s³uchacza zdarzeñ do formularza
         document.getElementById('addClientForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+    event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
 
-const user = firebase.auth().currentUser;
+// Get the current user from Firebase Authentication
+    const user = firebase.auth().currentUser;
     if (user) {
+        // Prepare the client data object
         var clientData = {
             owner: user.uid,
-            // Pobranie danych z formularza
-            var company = document.getElementById('company').value;
-            var name = document.getElementById('name').value;
-            var surname = document.getElementById('surname').value;
-            var address = document.getElementById('address').value;
-            var phone = document.getElementById('phone').value;
-            var email = document.getElementById('email').value;
-            var industry = document.getElementById('industry').value;
-
-            // Tworzenie obiektu zawieraj¹cego dane klienta
-            var clientData = {
-                company: company,
-                name: name,
-                surname: surname,
-                address: address,
-                phone: phone,
-                email: email,
-                industry: industry
-            };
+            company: document.getElementById('company').value,
+            name: document.getElementById('name').value,
+            surname: document.getElementById('surname').value,
+            address: document.getElementById('address').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            industry: document.getElementById('industry').value
+        };
 
             // Dodanie klienta do Firestore
             addClientToFirestore(clientData);
 
             // Czyszczenie formularza
             document.getElementById('addClientForm').reset();
+			
+			console.log("No user is signed in.");
+    }
         });
     </script>
 
