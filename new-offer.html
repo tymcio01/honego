@@ -567,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 
-  function fetchAndPopulateProducts() {
+  function fetchAndPopulateProducts(userId) {
     const user = firebase.auth().currentUser;
     if (!user) {
         console.error('No user logged in');
