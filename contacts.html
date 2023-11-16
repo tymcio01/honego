@@ -224,7 +224,8 @@ firebase.auth().onAuthStateChanged((user) => {
 		
 		function populateClientsTable() {
     const db = firebase.firestore();
-    const clientsCollection = db.collection('clients');
+    const userId = firebase.auth().currentUser.uid;
+  const clientsCollection = db.collection('clients').where('owner', '==', userId);
 
     clientsCollection.get().then((querySnapshot) => {
         const tableBody = document.getElementById('tableBody');
@@ -485,6 +486,7 @@ function sendOffer(clientId, company, address, email, name) {
 
         // Tworzenie obiektu zawieraj¹cego dane klienta
         var clientData = {
+			owner: userId,
             company: company,
             name: name,
             surname: surname,
