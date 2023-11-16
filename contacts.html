@@ -265,6 +265,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
        
         // Dodanie s³uchacza zdarzeñ do formularza
+		document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('addClientForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
 
@@ -294,6 +295,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
             // Czyszczenie formularza
             document.getElementById('addClientForm').reset();
+			
         });
     </script>
 
