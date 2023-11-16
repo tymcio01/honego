@@ -590,10 +590,12 @@ function downloadCSV(csv, filename) {
     downloadLink.click();
 }
 
+document.addEventListener('DOMContentLoaded', function() {
 document.getElementById('exportBtn').addEventListener('click', function () {
     var now = new Date();
     var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
     exportTableToCSV(filename);
+	}
 });
 
 function deleteClient(clientId, element) {
