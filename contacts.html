@@ -253,15 +253,16 @@ function populateClientsTable(userId) {
     });
 }
 
-// Event listener for form submission
+// Add event listener for DOMContentLoaded to ensure the form is available
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('addClientForm');
-    if (form) {
-        form.addEventListener('submit', function(event) {
+    const addClientForm = document.getElementById('addClientForm');
+    if (addClientForm) {
+        addClientForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
 
             const user = firebase.auth().currentUser;
             if (user) {
+                // Create the client data object
                 const clientData = {
                     owner: user.uid,
                     company: document.getElementById('company').value,
@@ -273,7 +274,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     industry: document.getElementById('industry').value
                 };
 
+                // Call the function to add the client to Firestore
                 addClientToFirestore(clientData);
+
+                // Clear the form fields
+                addClientForm.reset();
             } else {
                 console.log('User is not logged in.');
             }
@@ -281,15 +286,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Function to add client data to Firestore
+// Define the function to add client data to Firestore
 function addClientToFirestore(clientData) {
     const db = firebase.firestore();
     const clientsCollection = db.collection('clients');
 
+    // Add the client data to Firestore
     clientsCollection.add(clientData)
         .then((docRef) => {
             console.log('Document written with ID: ', docRef.id);
-            populateClientsTable(clientData.owner); // Refresh the table
+            // Optionally refresh the clients table
+            populateClientsTable(clientData.owner);
         })
         .catch((error) => {
             console.error('Error adding document: ', error);
