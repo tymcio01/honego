@@ -201,8 +201,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
-        // Konfiguracja Firebase
-        var firebaseConfig = {
+        // Initialize Firebase
+var firebaseConfig = {
     apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
     authDomain: "honego-52c31.firebaseapp.com",
     projectId: "honego-52c31",
@@ -212,91 +212,90 @@
 };
 firebase.initializeApp(firebaseConfig);
 
+// Check for authentication state change
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-         populateClientsTable(user.uid);
+        populateClientsTable(user.uid);
     } else {
-        window.location.href = 'index.html'; // Redirect to login if no user
+        window.location.href = 'index.html'; // Redirect if no user is signed in
     }
 });
 
-
-		
-		function populateClientsTable(userId) {
+// Populate clients table only for the logged-in user
+function populateClientsTable(userId) {
     const db = firebase.firestore();
     const clientsCollection = db.collection('clients').where('owner', '==', userId);
-    if (user) {
-        const clientsCollection = db.collection('clients').where('owner', '==', user.uid);
 
-        clientsCollection.get().then((querySnapshot) => {
+    clientsCollection.get().then((querySnapshot) => {
         const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = ''; // Clear the table before populating it
 
-             querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc) => {
             const client = doc.data();
-            // Now we are sure that client.owner should equal userId
             const row = document.createElement('tr');
             row.innerHTML = `
-                    <td>${client.company}</td>
-                    <td>${client.name}</td>
-                    <td>${client.surname}</td>
-                    <td>${client.address}</td>
-                    <td>${client.phone}</td>
-                    <td>${client.email}</td>
-                    <td>${client.industry}</td>
-                    <td>
-                        <button class="send-offer-btn" type="button" onclick="sendOffer('${doc.id}', '${client.company}', '${client.address}', '${client.email}', '${client.name}')">Send Offer</button>
-                        <button class="delete-btn" type="button" onclick="deleteClient('${doc.id}', this)">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }).catch((error) => {
-            console.error("Error getting documents: ", error);
+                <td>${client.company}</td>
+                <td>${client.name}</td>
+                <td>${client.surname}</td>
+                <td>${client.address}</td>
+                <td>${client.phone}</td>
+                <td>${client.email}</td>
+                <td>${client.industry}</td>
+                <td>
+                    <button class="send-offer-btn" type="button">Send Offer</button>
+                    <button class="delete-btn" type="button">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
         });
-		
-
-    } else {
-        console.log('User is not logged in.');
-        window.location.href = 'index.html';
-    }
+    }).catch((error) => {
+        console.error("Error getting documents: ", error);
+    });
 }
 
+// Event listener for form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('addClientForm');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-       
-        // Dodanie s³uchacza zdarzeñ do formularza
-		document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('addClientForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+            const user = firebase.auth().currentUser;
+            if (user) {
+                const clientData = {
+                    owner: user.uid,
+                    company: document.getElementById('company').value,
+                    name: document.getElementById('name').value,
+                    surname: document.getElementById('surname').value,
+                    address: document.getElementById('address').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    industry: document.getElementById('industry').value
+                };
 
-            // Pobranie danych z formularza
-            var company = document.getElementById('company').value;
-            var name = document.getElementById('name').value;
-            var surname = document.getElementById('surname').value;
-            var address = document.getElementById('address').value;
-            var phone = document.getElementById('phone').value;
-            var email = document.getElementById('email').value;
-            var industry = document.getElementById('industry').value;
-
-            // Tworzenie obiektu zawieraj¹cego dane klienta
-            var clientData = {
-				owner: user.uid,
-                company: company,
-                name: name,
-                surname: surname,
-                address: address,
-                phone: phone,
-                email: email,
-                industry: industry
-            };
-
-            // Dodanie klienta do Firestore
-            addClientToFirestore(clientData);
-
-            // Czyszczenie formularza
-            document.getElementById('addClientForm').reset();
-			
+                addClientToFirestore(clientData);
+            } else {
+                console.log('User is not logged in.');
+            }
         });
+    }
+});
+
+// Function to add client data to Firestore
+function addClientToFirestore(clientData) {
+    const db = firebase.firestore();
+    const clientsCollection = db.collection('clients');
+
+    clientsCollection.add(clientData)
+        .then((docRef) => {
+            console.log('Document written with ID: ', docRef.id);
+            populateClientsTable(clientData.owner); // Refresh the table
+        })
+        .catch((error) => {
+            console.error('Error adding document: ', error);
+        });
+}
+
     </script>
 
     <div class="container">
