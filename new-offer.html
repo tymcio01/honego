@@ -18,7 +18,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: #005DCC;
+            background: #f8f9fa;
             color: #333;
             display: flex;
             flex-direction: column;
@@ -32,7 +32,7 @@
 
         aside {
             width: 250px;
-            background-color: #005DCC;
+            background-color: #1c2121;
             padding: 20px;
             box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
             color: #f6f6f6;
@@ -69,7 +69,7 @@
         }
 
         footer {
-            background-color: #005DCC;
+            background-color: #1c2121;
             color: #f6f6f6;
             padding: 10px 20px;
             text-align: center;
@@ -100,18 +100,16 @@
         }
 
         .profile-form button {
-            background: #fff;
-            color: #000;
+            background: #5cb85c;
+            color: white;
             padding: 10px 15px;
-            border: 2px solid #000;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         .profile-form button:hover {
-            background: #005DCC;
-            color: #fff;
+            background: #4cae4c;
         }
 
         /* Updated styles for the drag and drop functionality */
@@ -298,24 +296,8 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <script>
-    
-	document.addEventListener('DOMContentLoaded', () => {
-    // Check if URL has query parameters
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('company')) {
-        document.getElementById('clientName').value = queryParams.get('company');
-        document.getElementById('address').value = queryParams.get('address');
-        document.getElementById('clientEmail').value = queryParams.get('email');
-        document.getElementById('receiversName').value = queryParams.get('clientName');
-    }
-
-    // Rest of your initialization code...
-});
-
-	
-	var firebaseConfig = {
+    var firebaseConfig = {
         apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
         authDomain: "honego-52c31.firebaseapp.com",
         projectId: "honego-52c31",
@@ -327,13 +309,10 @@ overflow-y: auto;
     firebase.initializeApp(firebaseConfig);
 
     firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        fetchAndPopulateProducts(); // Call this function here
-    } else {
-        window.location.href = 'index.html'; // Redirect to login
-    }
-});
-
+        if (!user) {
+            window.location.href = 'index.html';
+        }
+    });
 
     function logout() {
         firebase.auth().signOut().then(() => {
@@ -342,52 +321,6 @@ overflow-y: auto;
             console.error('Logout Failed', error);
         });
     }
-	
-	function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  // Pobierz dane z formularza
-  const clientName = document.getElementById('clientName').value;
-  const address = document.getElementById('address').value;
-  const clientEmail = document.getElementById('clientEmail').value;
-  const receiversName = document.getElementById('receiversName').value;
-  const additionalComments = document.getElementById('additionalComments').value;
-  const offerValidUntil = document.getElementById('datePicker').value;
-
-  // Zainicjalizuj tekst produktów
-  let productsText = 'Wybrane produkty:\n';
-
-  // Pobierz wybrane produkty
-  const selectedProducts = document.querySelectorAll('.selected-area .product-item');
-  selectedProducts.forEach(product => {
-    const productName = product.textContent || '';
-    productsText += productName + '\n';
-  });
-
-  // Formatowanie i dodawanie treœci do PDF
-  doc.setFont('helvetica');
-  doc.setFontSize(12);
-  doc.text('Szczegó³y Oferty', 105, 20, { align: 'center' });
-
-  doc.text(`Nazwa klienta/firmy: ${clientName}`, 10, 30);
-  doc.text(`Adres: ${address}`, 10, 40);
-  doc.text(`Email klienta: ${clientEmail}`, 10, 50);
-  doc.text(`Nazwa odbiorcy: ${receiversName}`, 10, 60);
-  doc.text(`Oferta wa¿na do: ${offerValidUntil}`, 10, 70);
-  doc.text(`Uwagi dodatkowe: ${additionalComments}`, 10, 80);
-  doc.text(productsText, 10, 90);
-
-  // Zapisanie PDF
-  doc.save('Offer_Details.pdf');
-}
-
-// Nas³uchuj na klikniêcie przycisku i wygeneruj PDF
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('generate-pdf').addEventListener('click', generatePDF);
-});
-
-	
 </script>
 
 <div class="container">
@@ -419,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button type="submit">Create Offer</button>
         </div>
         <div class="drag-area">
-            <div class="products-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div class="products-area" ondragover="allowDrop(event)">
 
 
                 <div class="fixed-header">Available Products</div>
@@ -431,10 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 			
         </div>
-		<div style="text-align: right; margin-right: 20px;">
-    <label for="discount">Discount (%):</label>
-    <input type="number" id="discount" name="discount" value="0" min="0" max="100" onchange="calculateTotal()">
-</div>
 		<div id="totalSum" style="text-align: right; font-weight: bold;">Total Sum: 0 PLN</div>
         <div class="comments-box">
             <label for="additionalComments">Message to client:</label>
@@ -454,9 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="form-actions">
             <button type="button" class="btn-draft">Save as Draft</button>
             <button type="button" class="btn-preview">Preview</button>
-            <button id="generate-pdf" type="button">Generate PDF</button>
-
-
+            <button type="button" class="btn-pdf">Generate PDF</button>
             <button type="button" class="btn-email">Send by Email</button>
 			<label for="blockRoomsCheckbox">
         <input type="checkbox" id="blockRoomsCheckbox" name="blockRooms">
@@ -521,21 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
           clone.appendChild(quantityDiv);
 
           dropzone.appendChild(clone);
-		  
-		   } else if (dropzone && dropzone.classList.contains('products-area')) {
-        // Remove any quantity controls for the item being moved back
-        if (draggableElement.parentNode.classList.contains('selected-area')) {
-            // If the item was in the selected area, remove it from there
-            draggableElement.remove();
-        } else {
-            // If the item is already in the products area, just move it
-            dropzone.appendChild(draggableElement);
-        }
-    }
-		  
           calculateTotal();
       }
-  
+  }
 
   function adjustQuantity(productId, adjustment) {
       const productElement = document.getElementById(productId);
@@ -550,74 +465,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function calculateTotal() {
-    let sum = 0;
-    document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
-        const price = Number(product.dataset.value);
-        const quantity = Number(product.querySelector('.product-quantity').value);
-        sum += price * quantity;
-    });
+      let sum = 0;
+      document.querySelectorAll('.selected-area .product-item').forEach(function(product) {
+          const price = Number(product.dataset.value);
+          const quantity = Number(product.querySelector('.product-quantity').value);
+          sum += price * quantity;
+      });
+      document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN`; // Round to two decimal places
+  }
 
-    // Pobierz procent zni¿ki i zastosuj go
-    const discountPercent = Number(document.getElementById('discount').value);
-    const discountAmount = sum * (discountPercent / 100);
-    sum -= discountAmount; // Odjêcie zni¿ki od sumy
+  function fetchAndPopulateProducts() {
+      const db = firebase.firestore();
+      const productsCollection = db.collection('products');
+      const productsArea = document.querySelector('.products-area');
 
-    // Aktualizacja wyœwietlanej sumy
-    document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN (Discount: ${discountAmount.toFixed(2)} PLN)`;
-}
-
-
-  function fetchAndPopulateProducts(userId) {
-    const user = firebase.auth().currentUser;
-    if (!user) {
-        console.error('No user logged in');
-        return; // Exit if there's no user logged in
-    }
-
-    const db = firebase.firestore();
-    const productsCollection = db.collection('products').where('userId', '==', user.uid);
-    const productsArea = document.querySelector('.products-area');
-
-    productsCollection.get()
-    .then((querySnapshot) => {
-        productsArea.innerHTML = ''; // Clear existing products
-        if(querySnapshot.empty) {
-            console.log('No products found for user:', user.uid);
-            return;
-        }
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            // Only show products belonging to the logged-in user
-            if(data.userId === user.uid) {
-                const productItem = document.createElement('div');
-                productItem.id = 'product-' + doc.id; // Use Firebase doc.id for element ID
-                productItem.classList.add('product-item');
-                productItem.draggable = true;
-                productItem.dataset.value = data.unitPrice;
-                productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
-                productItem.addEventListener('dragstart', drag);
-                productsArea.appendChild(productItem);
-            }
-        });
-    })
-    .catch((error) => {
-        console.error("Error getting documents: ", error);
-    });
-}
-
-
-
+      productsCollection.get()
+          .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                  const data = doc.data();
+                  const productItem = document.createElement('div');
+                  productItem.id = 'product-' + doc.id; // Use Firebase doc.id for element ID
+                  productItem.classList.add('product-item');
+                  productItem.draggable = true;
+                  productItem.dataset.value = data.unitPrice;
+                  productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
+                  productItem.addEventListener('dragstart', drag);
+                  productsArea.appendChild(productItem);
+              });
+          })
+          .catch((error) => {
+              console.error("Error getting documents: ", error);
+          });
+  }
 
   window.onload = function () {
       fetchAndPopulateProducts();
-	  
-	  
-	  
   };
-  
-  
-  
-  
 </script>
 
 </body>
