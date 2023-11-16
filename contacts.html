@@ -254,13 +254,9 @@ firebase.auth().onAuthStateChanged((user) => {
         }).catch((error) => {
             console.error("Error getting documents: ", error);
         });
-    } else {
-        console.log('User is not logged in.');
-        window.location.href = 'index.html';
-    }
-}
-
-
+		}
+		
+  
        
         // Dodanie s³uchacza zdarzeñ do formularza
         document.getElementById('addClientForm').addEventListener('submit', function(event) {
