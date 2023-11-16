@@ -214,7 +214,7 @@ firebase.initializeApp(firebaseConfig);
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        populateClientsTable();
+         populateClientsTable(user.uid);
     } else {
         window.location.href = 'index.html'; // Redirect to login if no user
     }
@@ -222,20 +222,21 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 		
-		function populateClientsTable() {
+		function populateClientsTable(userId) {
     const db = firebase.firestore();
-    const user = firebase.auth().currentUser;
+    const clientsCollection = db.collection('clients').where('owner', '==', userId);
     if (user) {
         const clientsCollection = db.collection('clients').where('owner', '==', user.uid);
 
         clientsCollection.get().then((querySnapshot) => {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = ''; // Clear the table before populating it
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = ''; // Clear the table before populating it
 
-            querySnapshot.forEach((doc) => {
-                const client = doc.data();
-                const row = document.createElement('tr');
-                row.innerHTML = `
+             querySnapshot.forEach((doc) => {
+            const client = doc.data();
+            // Now we are sure that client.owner should equal userId
+            const row = document.createElement('tr');
+            row.innerHTML = `
                     <td>${client.company}</td>
                     <td>${client.name}</td>
                     <td>${client.surname}</td>
