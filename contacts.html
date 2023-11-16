@@ -214,7 +214,7 @@ firebase.initializeApp(firebaseConfig);
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        populateClientsTable(user.uid);
+        populateClientsTable();
     } else {
         window.location.href = 'index.html'; // Redirect to login if no user
     }
@@ -222,13 +222,13 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 		
-		function populateClientsTable(userId) {
+		function populateClientsTable() {
     const db = firebase.firestore();
-    const clientsCollection = db.collection('clients').where('owner', '==', userId);
+    const clientsCollection = db.collection('clients');
 
-     clientsCollection.get().then((querySnapshot) => {
+    clientsCollection.get().then((querySnapshot) => {
         const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = ''; // Clear the table
+        tableBody.innerHTML = ''; // Clear the table before populating it
 
         querySnapshot.forEach((doc) => {
     const client = doc.data();
@@ -267,31 +267,33 @@ firebase.auth().onAuthStateChanged((user) => {
        
         // Dodanie s³uchacza zdarzeñ do formularza
         document.getElementById('addClientForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
+            event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
 
-// Get the current user from Firebase Authentication
-    const user = firebase.auth().currentUser;
-    if (user) {
-        // Prepare the client data object
-			var clientData = {
-			owner: user.uid,
-			company: document.getElementById('company').value,
-            name: document.getElementById('name').value,
-            surname: document.getElementById('surname').value,
-            address: document.getElementById('address').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            industry: document.getElementById('industry').value
-        };
+            // Pobranie danych z formularza
+            var company = document.getElementById('company').value;
+            var name = document.getElementById('name').value;
+            var surname = document.getElementById('surname').value;
+            var address = document.getElementById('address').value;
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var industry = document.getElementById('industry').value;
+
+            // Tworzenie obiektu zawieraj¹cego dane klienta
+            var clientData = {
+                company: company,
+                name: name,
+                surname: surname,
+                address: address,
+                phone: phone,
+                email: email,
+                industry: industry
+            };
 
             // Dodanie klienta do Firestore
             addClientToFirestore(clientData);
 
             // Czyszczenie formularza
             document.getElementById('addClientForm').reset();
-			
-			console.log("No user is signed in.");
-    }
         });
     </script>
 
@@ -590,12 +592,10 @@ function downloadCSV(csv, filename) {
     downloadLink.click();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
 document.getElementById('exportBtn').addEventListener('click', function () {
     var now = new Date();
     var filename = "clients_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + ".csv";
     exportTableToCSV(filename);
-	}
 });
 
 function deleteClient(clientId, element) {
