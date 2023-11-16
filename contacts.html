@@ -214,7 +214,7 @@ firebase.initializeApp(firebaseConfig);
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        populateClientsTable();
+        populateClientsTable(user.uid);
     } else {
         window.location.href = 'index.html'; // Redirect to login if no user
     }
@@ -273,9 +273,9 @@ firebase.auth().onAuthStateChanged((user) => {
     const user = firebase.auth().currentUser;
     if (user) {
         // Prepare the client data object
-        var clientData = {
-            owner: user.uid,
-            company: document.getElementById('company').value,
+			var clientData = {
+			owner: user.uid,
+			company: document.getElementById('company').value,
             name: document.getElementById('name').value,
             surname: document.getElementById('surname').value,
             address: document.getElementById('address').value,
