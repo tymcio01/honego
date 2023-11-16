@@ -224,8 +224,7 @@ firebase.auth().onAuthStateChanged((user) => {
 		
 		function populateClientsTable() {
     const db = firebase.firestore();
-    const userId = firebase.auth().currentUser.uid;
-  const clientsCollection = db.collection('clients').where('owner', '==', userId);
+    const clientsCollection = db.collection('clients');
 
     clientsCollection.get().then((querySnapshot) => {
         const tableBody = document.getElementById('tableBody');
@@ -295,11 +294,6 @@ firebase.auth().onAuthStateChanged((user) => {
 
             // Czyszczenie formularza
             document.getElementById('addClientForm').reset();
-			} else {
-    // No user is signed in
-    console.log("No user is signed in.");
-    // Handle the case where there is no user logged in
-  }
         });
     </script>
 
@@ -481,11 +475,6 @@ function sendOffer(clientId, company, address, email, name) {
         event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
 
         // Pobranie danych z formularza
-		// Get the currently logged-in user's UID from Firebase Authentication
-  var user = firebase.auth().currentUser;
-  if (user) {
-    // User is signed in, now you can use the UID
-    var userId = user.uid;
         var company = document.getElementById('company').value;
         var name = document.getElementById('name').value;
         var surname = document.getElementById('surname').value;
@@ -496,7 +485,6 @@ function sendOffer(clientId, company, address, email, name) {
 
         // Tworzenie obiektu zawieraj¹cego dane klienta
         var clientData = {
-			owner: userId,
             company: company,
             name: name,
             surname: surname,
@@ -508,7 +496,7 @@ function sendOffer(clientId, company, address, email, name) {
 
         // Dodanie klienta do Firestore
         addClientToFirestore(clientData);
-    };    
+    });    
 
         function downloadCSV(csv, filename) {
             var csvFile;
