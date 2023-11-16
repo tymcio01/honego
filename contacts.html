@@ -222,13 +222,13 @@ firebase.auth().onAuthStateChanged((user) => {
 
 
 		
-		function populateClientsTable() {
+		function populateClientsTable(userId) {
     const db = firebase.firestore();
-    const clientsCollection = db.collection('clients');
+    const clientsCollection = db.collection('clients').where('owner', '==', userId);
 
-    clientsCollection.get().then((querySnapshot) => {
+     clientsCollection.get().then((querySnapshot) => {
         const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = ''; // Clear the table before populating it
+        tableBody.innerHTML = ''; // Clear the table
 
         querySnapshot.forEach((doc) => {
     const client = doc.data();
@@ -269,6 +269,10 @@ firebase.auth().onAuthStateChanged((user) => {
         document.getElementById('addClientForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Zapobieganie standardowemu zachowaniu przegl¹darki
 
+const user = firebase.auth().currentUser;
+    if (user) {
+        var clientData = {
+            owner: user.uid,
             // Pobranie danych z formularza
             var company = document.getElementById('company').value;
             var name = document.getElementById('name').value;
