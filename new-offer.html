@@ -565,20 +565,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   function fetchAndPopulateProducts() {
-  const user = firebase.auth().currentUser;
-    if (!user) return; // Exit if there's no user logged in
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        console.error('No user logged in');
+        return; // Exit if there's no user logged in
+    }
 
-  
-  
-      const db = firebase.firestore();
-      const productsCollection = db.collection('products');
-      const productsArea = document.querySelector('.products-area');
+    const db = firebase.firestore();
+    const productsCollection = db.collection('products').where('userId', '==', user.uid);
+    const productsArea = document.querySelector('.products-area');
 
-      productsCollection.get()
-        .then((querySnapshot) => {
-            productsArea.innerHTML = ''; // Clear existing products
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
+    productsCollection.get()
+    .then((querySnapshot) => {
+        productsArea.innerHTML = ''; // Clear existing products
+        if(querySnapshot.empty) {
+            console.log('No products found for user:', user.uid);
+            return;
+        }
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            // Only show products belonging to the logged-in user
+            if(data.userId === user.uid) {
                 const productItem = document.createElement('div');
                 productItem.id = 'product-' + doc.id; // Use Firebase doc.id for element ID
                 productItem.classList.add('product-item');
@@ -587,12 +594,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 productItem.textContent = `${data.productName} - ${data.unitPrice} PLN`;
                 productItem.addEventListener('dragstart', drag);
                 productsArea.appendChild(productItem);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting documents: ", error);
+            }
         });
+    })
+    .catch((error) => {
+        console.error("Error getting documents: ", error);
+    });
 }
+
 
 
 
