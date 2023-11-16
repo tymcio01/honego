@@ -422,9 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="products-area" ondrop="drop(event)" ondragover="allowDrop(event)">
 
 
-                <div class="products-area">
-    <div class="fixed-header">Available Products</div>
-    <div class="list">
+                <div class="fixed-header">Available Products</div>
                 <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
             </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -570,17 +568,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   function fetchAndPopulateProducts() {
-  const user = firebase.auth().currentUser;
-  if (!user) return; // Exit if there's no user logged in
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        console.error('No user logged in');
+        return; // Exit if there's no user logged in
+    }
 
-  const db = firebase.firestore();
-  const productsCollection = db.collection('products').where('owner', '==', user.uid);
-  const productsList = document.querySelector('.products-area .list'); // Make sure you have a container with the class "list" for the products
+    const db = firebase.firestore();
+    const productsCollection = db.collection('products').where('userId', '==', user.uid);
+    const productsArea = document.querySelector('.products-area');
 
-  productsCollection.get()
+    productsCollection.get()
     .then((querySnapshot) => {
-        productsList.innerHTML = ''; // Clear existing products inside the "list" container, not the whole ".products-area"
-        querySnapshot.forEach((doc) => {
+        productsArea.innerHTML = ''; // Clear existing products
         if(querySnapshot.empty) {
             console.log('No products found for user:', user.uid);
             return;
