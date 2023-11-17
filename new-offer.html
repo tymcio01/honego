@@ -419,7 +419,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <button type="submit">Create Offer</button>
         </div>
 		
-		<div class="fixed-header">Available Products</div>
+		  <div class="headers">
+        <div class="fixed-header">Available Products</div>
+        <div class="fixed-header">Selected Products</div>
+    </div>
         <div class="drag-area">
 		
 		
@@ -430,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
             </div>
             <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <div class="fixed-header">Selected Products</div>
+                
                 
             </div>
 			
