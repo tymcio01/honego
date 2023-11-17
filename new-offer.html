@@ -117,7 +117,7 @@
         /* Updated styles for the drag and drop functionality */
         .drag-area {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             gap: 30px; /* Adds more space between the columns */
             margin-top: 20px;
         }
@@ -267,6 +267,9 @@ overflow-y: auto;
 .quantity-btn:hover {
     color: #5cb85c;
 }
+
+.products-column, .selected-column {
+    flex: 1;
 
 .fixed-header {
     position: sticky;
@@ -424,20 +427,20 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="fixed-header">Selected Products</div>
     </div>
         <div class="drag-area">
-		
-		
+        <div class="products-column">
+            <div class="fixed-header">Available Products</div>
             <div class="products-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-
-
-                
-                <!-- Tu zostaw pust¹ listê na dostêpne produkty -->
+                <!-- Products will be dynamically populated here -->
             </div>
-            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
-                
-                
-            </div>
-			
         </div>
+
+        <div class="selected-column">
+            <div class="fixed-header">Selected Products</div>
+            <div class="selected-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <!-- Selected products will be populated here -->
+            </div>
+        </div>
+    </div>
 		<div style="text-align: right; margin-right: 20px;">
     <label for="discount">Discount (%):</label>
     <input type="number" id="discount" name="discount" value="0" min="0" max="100" onchange="calculateTotal()">
