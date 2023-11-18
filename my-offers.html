@@ -244,6 +244,14 @@ function fetchDrafts(userId) {
         draftContainer.style.borderRadius = '5px';
         draftContainer.style.marginBottom = '10px';
         draftContainer.style.position = 'relative'; // To position the delete button
+		
+		  // Style for hover effect
+    draftContainer.onmouseover = function() {
+      this.style.backgroundColor = '#f0f0f0'; // Light grey background on hover
+    };
+    draftContainer.onmouseout = function() {
+      this.style.backgroundColor = 'transparent'; // Back to no background when not hovering
+    };
 
         const deleteBtn = createDeleteButton(doc.id, userId);
     draftContainer.appendChild(deleteBtn);
