@@ -209,10 +209,12 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
-
+  
   db.collection('users').doc(userId).collection('drafts').get()
     .then(querySnapshot => {
-      draftsContainer.innerHTML = ''; // Clear the container before adding new drafts
+      // Clear the container before adding new drafts
+      draftsContainer.innerHTML = '';
+
       querySnapshot.forEach(doc => {
         const draft = doc.data();
         const draftContainer = document.createElement('div');
@@ -222,13 +224,10 @@ function fetchDrafts(userId) {
         draftContainer.style.marginBottom = '10px';
         draftContainer.style.border = '1px solid #ccc';
         draftContainer.style.borderRadius = '5px';
-        draftContainer.style.background = '#fff'; // Default background
         draftContainer.style.transition = 'background-color 0.3s';
-        draftContainer.setAttribute('data-id', doc.id); // Set the draft ID as a data attribute
-
-        // Add hover effect
-        draftContainer.onmouseover = () => draftContainer.style.backgroundColor = '#f2f2f2';
-        draftContainer.onmouseout = () => draftContainer.style.backgroundColor = '#fff';
+        draftContainer.addEventListener('click', () => handleDraftClick(doc.id));
+        draftContainer.onmouseover = () => draftContainer.style.backgroundColor = '#f0f0f0';
+        draftContainer.onmouseout = () => draftContainer.style.backgroundColor = 'white';
 
         const draftElement = document.createElement('div');
         draftElement.className = 'draft';
@@ -237,13 +236,9 @@ function fetchDrafts(userId) {
           <div>Company: ${draft.clientName}</div>
           <div>Total Sum: ${draft.totalSum}</div>
         `;
+        
         draftContainer.appendChild(draftElement);
-
-        // Append the draft container to the main container
         draftsContainer.appendChild(draftContainer);
-
-        // Click event to edit/view details
-        draftContainer.addEventListener('click', () => handleDraftClick(doc.id));
       });
     })
     .catch(error => {
@@ -253,22 +248,6 @@ function fetchDrafts(userId) {
 
 function handleDraftClick(draftId) {
   window.location.href = `new-offer.html?draftId=${draftId}`; // Redirect to the New Offer page with the draftId parameter
-}
-
-// Add this to your CSS <style> section
-.draft-container:hover {
-  background-color: #f2f2f2; /* Light grey background on hover */
-}
-
-// Existing CSS for .draft-container
-.draft-container {
-  cursor: pointer;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #fff;
-  transition: background-color 0.3s;
 }
 
 // Authentication check
