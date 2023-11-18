@@ -218,41 +218,44 @@ function handleDraftClick(draftId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content'); // Zak³adamy, ¿e druga karta to "Drafts"
+    const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content'); // Assuming second card is for "Drafts"
+    const db = firebase.firestore();
+    const user = firebase.auth().currentUser;
 
-    // Mockup danych dla przyk³adu
-    const drafts = [
-        { id: 1, date: '2023-07-01', companyName: 'Company A', totalSum: '1000' },
-        { id: 2, date: '2023-07-02', companyName: 'Company B', totalSum: '2000' },
-        { id: 3, date: '2023-07-03', companyName: 'Company C', totalSum: '3000' }
-    ];
+    if (user) {
+        // Get the drafts from the 'drafts' sub-collection of the current user
+        db.collection('users').doc(user.uid).collection('drafts').get()
+        .then(querySnapshot => {
+            // Clear the container before adding new drafts
+            draftsContainer.innerHTML = '';
 
-    // Czyszczenie kontenera z draftami
-    draftsContainer.innerHTML = '';
-
-    // Tworzenie i dodawanie elementów draftu do kontenera
-    drafts.forEach(draft => {
-        const draftElement = document.createElement('div');
-        draftElement.className = 'draft';
-        draftElement.innerHTML = `
-            <div>Date: ${draft.date}</div>
-            <div>Company: ${draft.companyName}</div>
-            <div>Total Sum: ${draft.totalSum}</div>
-        `;
-        draftElement.addEventListener('click', () => handleDraftClick(draft.id));
-
-        draftsContainer.appendChild(draftElement);
-        draftsContainer.appendChild(document.createElement('hr')); // Separator
-    });
-
-    // Dodanie stylów dla klikalnoœci
-    const styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
-    styleSheet.innerText = `.draft { cursor: pointer; padding: 10px; } .draft:hover { background-color: #f0f0f0; }`;
-    document.head.appendChild(styleSheet);
+            querySnapshot.forEach(doc => {
+                const draft = doc.data();
+                const draftElement = document.createElement('div');
+                draftElement.className = 'draft';
+                draftElement.innerHTML = `
+                    <div>Date: ${draft.offerValidUntil}</div>
+                    <div>Company: ${draft.clientName}</div>
+                    <div>Total Sum: ${draft.totalSum}</div>
+                `;
+                // Handle draft click to possibly edit or view more details
+                draftElement.addEventListener('click', () => handleDraftClick(doc.id));
+                draftsContainer.appendChild(draftElement);
+            });
+        })
+        .catch(error => {
+            console.error("Error getting drafts: ", error);
+        });
+    } else {
+        console.log('User is not authenticated');
+    }
 });
 
-
+// Function to handle draft click (edit/view)
+function handleDraftClick(draftId) {
+    // Implement logic to handle draft click, such as redirecting to an edit page or displaying more info
+    console.log('Draft clicked:', draftId);
+}
 
   
 </script>
