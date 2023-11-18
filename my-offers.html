@@ -196,11 +196,14 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   firebase.initializeApp(firebaseConfig);
 
   firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      window.location.href = 'index.html'; // Przekierowanie na stronê logowania
-    }
-    // U¿ytkownik jest zalogowany
-  });
+  if (user) {
+    // User is signed in, now you can fetch the drafts
+    fetchDrafts(user.uid);
+  } else {
+    // No user is signed in.
+    console.log('User is not authenticated');
+  }
+});
 
 // Funkcja wylogowywania
   function logout() {
