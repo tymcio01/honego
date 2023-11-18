@@ -211,33 +211,32 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
-
+  
   db.collection('users').doc(userId).collection('drafts').get()
     .then(querySnapshot => {
-      draftsContainer.innerHTML = ''; // Clear the container
+      draftsContainer.innerHTML = '';
 
       querySnapshot.forEach(doc => {
         const draft = doc.data();
         const draftContainer = document.createElement('div');
         draftContainer.className = 'draft-container';
-        draftContainer.style.position = 'relative'; // Added for absolute positioning of the delete button
+        draftContainer.style.position = 'relative';
 
-        // Delete button
-        const deleteButton = document.createElement('div');
-        deleteButton.innerText = '×';
+        const deleteButton = document.createElement('span');
+        deleteButton.textContent = '×';
         deleteButton.style.position = 'absolute';
-        deleteButton.style.top = '5px';
+        deleteButton.style.top = '0';
         deleteButton.style.right = '10px';
         deleteButton.style.cursor = 'pointer';
-        deleteButton.title = 'Delete Draft';
-        deleteButton.addEventListener('click', (event) => {
-          event.stopPropagation(); // Prevent the click from triggering the draft click event
+        deleteButton.onclick = function(event) {
+          event.stopPropagation(); // Prevent the draft click event
           if (confirm('Are you sure you want to delete this draft?')) {
-            deleteDraft(userId, doc.id); // Call a function to delete the draft
+            db.collection('users').doc(userId).collection('drafts').doc(doc.id).delete().then(() => {
+              fetchDrafts(userId); // Refresh the drafts
+            });
           }
-        });
+        };
 
-        // Draft content
         const draftElement = document.createElement('div');
         draftElement.innerHTML = `
           <div>Date: ${draft.offerValidUntil}</div>
@@ -254,19 +253,6 @@ function fetchDrafts(userId) {
       console.error("Error getting drafts: ", error);
     });
 }
-
-function deleteDraft(userId, draftId) {
-  const db = firebase.firestore();
-  db.collection('users').doc(userId).collection('drafts').doc(draftId).delete()
-    .then(() => {
-      console.log("Draft successfully deleted!");
-      fetchDrafts(userId); // Refresh the list of drafts
-    })
-    .catch((error) => {
-      console.error("Error removing draft: ", error);
-    });
-}
-
 
 function handleDraftClick(draftId) {
   window.location.href = `new-offer.html?draftId=${draftId}`; // Redirect to the New Offer page with the draftId parameter
