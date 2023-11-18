@@ -202,71 +202,36 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   } else {
     // No user is signed in.
     console.log('User is not authenticated');
+    window.location.href = 'index.html'; // Redirect to login page if not logged in
   }
 });
 
-// Funkcja wylogowywania
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      // Wylogowanie udane, przekierowanie na index.html
-      window.location.href = 'index.html';
-    }).catch((error) => {
-      // Obs³uga b³êdów
-      console.error('Logout Failed', error);
-    });
-  }
-  
- // Zak³adamy, ¿e masz ju¿ zdefiniowan¹ funkcjê do obs³ugi klikniêcia
-function handleDraftClick(draftId) {
-    console.log(`Editing draft: ${draftId}`);
-    // Tutaj mo¿esz dodaæ logikê do edycji draftu
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
-    const user = firebase.auth().currentUser;
-    const db = firebase.firestore();
-
-   function fetchDrafts(userId) {
+function fetchDrafts(userId) {
   const db = firebase.firestore();
+  const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
   db.collection('users').doc(userId).collection('drafts').get()
   .then(querySnapshot => {
-                    const draft = doc.data();
-                    const draftElement = document.createElement('div');
-                    draftElement.className = 'draft';
-                    draftElement.innerHTML = `
-                        <div>Date: ${draft.offerValidUntil}</div>
-                        <div>Company: ${draft.clientName}</div>
-                        <div>Total Sum: ${draft.totalSum}</div>
-                    `;
-                    // Handle draft click to possibly edit or view more details
-                    draftElement.addEventListener('click', () => handleDraftClick(doc.id));
-                    draftsContainer.appendChild(draftElement);
-                });
-            }
-            catch(error => {
-                console.error("Error getting drafts: ", error);
-            });
-        } else {
-            console.log('User is not authenticated');
-        }
-    }
+    // Clear the container before adding new drafts
+    draftsContainer.innerHTML = '';
 
-    // Check for authentication before fetching drafts
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            fetchDrafts(); // Call this function after the user is confirmed to be logged in
-        } else {
-            window.location.href = 'index.html'; // Redirect to login page if not logged in
-        }
+    querySnapshot.forEach(doc => {
+      const draft = doc.data();
+      const draftElement = document.createElement('div');
+      draftElement.className = 'draft';
+      draftElement.innerHTML = `
+          <div>Date: ${draft.offerValidUntil}</div>
+          <div>Company: ${draft.clientName}</div>
+          <div>Total Sum: ${draft.totalSum}</div>
+      `;
+      // Handle draft click to possibly edit or view more details
+      draftElement.addEventListener('click', () => handleDraftClick(doc.id));
+      draftsContainer.appendChild(draftElement);
     });
-
-    // Function to handle draft click (edit/view)
-    function handleDraftClick(draftId) {
-        // Implement logic to handle draft click, such as redirecting to an edit page or displaying more info
-        console.log('Draft clicked:', draftId);
-    }
-});
+  })
+  .catch(error => {
+    console.error("Error getting drafts: ", error);
+  });
+}
 
   
 </script>
