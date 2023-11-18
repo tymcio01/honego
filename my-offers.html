@@ -208,6 +208,25 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 
 // Existing Firebase and authentication setup code...
 
+function createDeleteButton(draftId, userId) {
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'X';
+  deleteBtn.style.position = 'absolute';
+  deleteBtn.style.top = '5px';
+  deleteBtn.style.right = '5px';
+  deleteBtn.style.background = 'none'; // No background
+  deleteBtn.style.border = 'none'; // No border
+  deleteBtn.style.cursor = 'pointer';
+  deleteBtn.style.fontSize = '12px'; // Smaller text
+  deleteBtn.onclick = function(event) {
+    event.stopPropagation(); // Stop the container click event
+    if (confirm('Are you sure you want to delete this draft?')) {
+      deleteDraft(userId, draftId);
+    }
+  };
+  return deleteBtn;
+}
+
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
@@ -226,7 +245,8 @@ function fetchDrafts(userId) {
         draftContainer.style.marginBottom = '10px';
         draftContainer.style.position = 'relative'; // To position the delete button
 
-        const deleteBtn = document.createElement('button');
+        const deleteBtn = createDeleteButton(doc.id, userId);
+    draftContainer.appendChild(deleteBtn);
         deleteBtn.textContent = 'X';
         deleteBtn.style.position = 'absolute';
         deleteBtn.style.top = '5px';
