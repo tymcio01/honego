@@ -227,15 +227,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const user = firebase.auth().currentUser;
     const db = firebase.firestore();
 
-    // This function should be called after the user is confirmed to be logged in
-    function fetchDrafts() {
-        if (user) {
-            // Get the drafts from the 'drafts' sub-collection of the current user
-            db.collection('users').doc(user.uid).collection('drafts').get()
-            .then(querySnapshot => {
-                // Clear the container before adding new drafts
-                draftsContainer.innerHTML = '';
-                querySnapshot.forEach(doc => {
+   function fetchDrafts(userId) {
+  const db = firebase.firestore();
+  db.collection('users').doc(userId).collection('drafts').get()
+  .then(querySnapshot => {
                     const draft = doc.data();
                     const draftElement = document.createElement('div');
                     draftElement.className = 'draft';
