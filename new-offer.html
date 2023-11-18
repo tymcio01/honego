@@ -391,6 +391,47 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('generate-pdf').addEventListener('click', generatePDF);
 });
 
+	document.addEventListener('DOMContentLoaded', function() {
+  const saveDraftButton = document.querySelector('.btn-draft');
+  saveDraftButton.addEventListener('click', saveDraft);
+});
+
+function saveDraft() {
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    console.log('No user logged in');
+    return;
+  }
+  
+  // Zbieranie danych z formularza
+  const offerData = {
+    clientName: document.getElementById('clientName').value,
+    address: document.getElementById('address').value,
+    clientEmail: document.getElementById('clientEmail').value,
+    receiversName: document.getElementById('receiversName').value,
+    additionalComments: document.getElementById('additionalComments').value,
+    offerValidUntil: document.getElementById('datePicker').value,
+    discount: document.getElementById('discount').value,
+    totalSum: document.getElementById('totalSum').textContent,
+    selectedProducts: Array.from(document.querySelectorAll('.selected-area .product-item')).map(product => ({
+      name: product.textContent.split(' - ')[0],
+      price: product.dataset.value,
+      quantity: product.querySelector('.product-quantity') ? product.querySelector('.product-quantity').value : 1
+    }))
+  };
+
+  // Zapisywanie draftu oferty do bazy danych
+  db.collection('users').doc(user.uid).collection('drafts').add(offerData)
+    .then((docRef) => {
+      console.log('Draft saved with ID:', docRef.id);
+      alert('Draft saved successfully!');
+    })
+    .catch((error) => {
+      console.error('Error saving draft:', error);
+    });
+}
+
 	
 </script>
 
