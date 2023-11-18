@@ -211,34 +211,41 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
-  
+
   db.collection('users').doc(userId).collection('drafts').get()
     .then(querySnapshot => {
-      // Clear the container before adding new drafts
-      draftsContainer.innerHTML = '';
+      draftsContainer.innerHTML = ''; // Clear the container
 
       querySnapshot.forEach(doc => {
         const draft = doc.data();
         const draftContainer = document.createElement('div');
         draftContainer.className = 'draft-container';
-        draftContainer.style.cursor = 'pointer';
-        draftContainer.style.padding = '10px';
-        draftContainer.style.marginBottom = '10px';
-        draftContainer.style.border = '1px solid #ccc';
-        draftContainer.style.borderRadius = '5px';
-        draftContainer.style.transition = 'background-color 0.3s';
-        draftContainer.addEventListener('click', () => handleDraftClick(doc.id));
-        draftContainer.onmouseover = () => draftContainer.style.backgroundColor = '#f0f0f0';
-        draftContainer.onmouseout = () => draftContainer.style.backgroundColor = 'white';
+        draftContainer.style.position = 'relative'; // Added for absolute positioning of the delete button
 
+        // Delete button
+        const deleteButton = document.createElement('div');
+        deleteButton.innerText = '×';
+        deleteButton.style.position = 'absolute';
+        deleteButton.style.top = '5px';
+        deleteButton.style.right = '10px';
+        deleteButton.style.cursor = 'pointer';
+        deleteButton.title = 'Delete Draft';
+        deleteButton.addEventListener('click', (event) => {
+          event.stopPropagation(); // Prevent the click from triggering the draft click event
+          if (confirm('Are you sure you want to delete this draft?')) {
+            deleteDraft(userId, doc.id); // Call a function to delete the draft
+          }
+        });
+
+        // Draft content
         const draftElement = document.createElement('div');
-        draftElement.className = 'draft';
         draftElement.innerHTML = `
           <div>Date: ${draft.offerValidUntil}</div>
           <div>Company: ${draft.clientName}</div>
           <div>Total Sum: ${draft.totalSum}</div>
         `;
-        
+
+        draftContainer.appendChild(deleteButton);
         draftContainer.appendChild(draftElement);
         draftsContainer.appendChild(draftContainer);
       });
@@ -247,6 +254,19 @@ function fetchDrafts(userId) {
       console.error("Error getting drafts: ", error);
     });
 }
+
+function deleteDraft(userId, draftId) {
+  const db = firebase.firestore();
+  db.collection('users').doc(userId).collection('drafts').doc(draftId).delete()
+    .then(() => {
+      console.log("Draft successfully deleted!");
+      fetchDrafts(userId); // Refresh the list of drafts
+    })
+    .catch((error) => {
+      console.error("Error removing draft: ", error);
+    });
+}
+
 
 function handleDraftClick(draftId) {
   window.location.href = `new-offer.html?draftId=${draftId}`; // Redirect to the New Offer page with the draftId parameter
