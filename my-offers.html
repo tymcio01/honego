@@ -211,6 +211,7 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
+  
   db.collection('users').doc(userId).collection('drafts').get()
     .then(querySnapshot => {
       // Clear the container before adding new drafts
@@ -225,7 +226,10 @@ function fetchDrafts(userId) {
         draftContainer.style.marginBottom = '10px';
         draftContainer.style.border = '1px solid #ccc';
         draftContainer.style.borderRadius = '5px';
+        draftContainer.style.transition = 'background-color 0.3s';
         draftContainer.addEventListener('click', () => handleDraftClick(doc.id));
+        draftContainer.onmouseover = () => draftContainer.style.backgroundColor = '#f0f0f0';
+        draftContainer.onmouseout = () => draftContainer.style.backgroundColor = 'white';
 
         const draftElement = document.createElement('div');
         draftElement.className = 'draft';
@@ -237,12 +241,6 @@ function fetchDrafts(userId) {
         
         draftContainer.appendChild(draftElement);
         draftsContainer.appendChild(draftContainer);
-
-        // Add a separator after each draft except the last one
-        if (!doc.isLast) {
-          const separator = document.createElement('hr');
-          draftsContainer.appendChild(separator);
-        }
       });
     })
     .catch(error => {
@@ -253,6 +251,7 @@ function fetchDrafts(userId) {
 function handleDraftClick(draftId) {
   window.location.href = `new-offer.html?draftId=${draftId}`; // Redirect to the New Offer page with the draftId parameter
 }
+
 
 // Listen for the authentication state to change.
 firebase.auth().onAuthStateChanged((user) => {
