@@ -168,17 +168,6 @@
             .offer-section {
                 grid-template-columns: 1fr;
             }
-			// Existing CSS for .draft-container
-.draft-container {
-  cursor: pointer;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #fff;
-  transition: background-color 0.3s;
-}
-			
         }
 		
 </style>
@@ -271,7 +260,16 @@ function handleDraftClick(draftId) {
   background-color: #f2f2f2; /* Light grey background on hover */
 }
 
-
+// Existing CSS for .draft-container
+.draft-container {
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  transition: background-color 0.3s;
+}
 
 // Authentication check
 firebase.auth().onAuthStateChanged((user) => {
