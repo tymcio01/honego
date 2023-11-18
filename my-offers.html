@@ -206,8 +206,6 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   }
 });
 
-// Existing Firebase and authentication setup code...
-
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
@@ -219,17 +217,18 @@ function fetchDrafts(userId) {
         const draft = doc.data();
         const draftContainer = document.createElement('div');
         draftContainer.className = 'draft-container';
-        draftContainer.style.position = 'relative'; // Needed to position the delete button
+        draftContainer.style.cursor = 'pointer';
+        draftContainer.style.padding = '10px';
+        draftContainer.style.marginBottom = '10px';
+        draftContainer.style.border = '1px solid #ccc';
+        draftContainer.style.borderRadius = '5px';
+        draftContainer.style.background = '#fff'; // Default background
+        draftContainer.style.transition = 'background-color 0.3s';
         draftContainer.setAttribute('data-id', doc.id); // Set the draft ID as a data attribute
 
-        const deleteButton = document.createElement('div');
-        deleteButton.innerHTML = '&times;'; // Correct encoding for the 'x' symbol
-        deleteButton.className = 'delete-draft';
-        deleteButton.style.position = 'absolute';
-        deleteButton.style.top = '10px';
-        deleteButton.style.right = '10px';
-        deleteButton.style.cursor = 'pointer';
-        deleteButton.onclick = function() { deleteDraft(doc.id); }; // Add click event to delete draft
+        // Add hover effect
+        draftContainer.onmouseover = () => draftContainer.style.backgroundColor = '#f2f2f2';
+        draftContainer.onmouseout = () => draftContainer.style.backgroundColor = '#fff';
 
         const draftElement = document.createElement('div');
         draftElement.className = 'draft';
@@ -238,14 +237,13 @@ function fetchDrafts(userId) {
           <div>Company: ${draft.clientName}</div>
           <div>Total Sum: ${draft.totalSum}</div>
         `;
-        draftElement.onclick = () => handleDraftClick(doc.id); // Click event to edit/view details
-
-        // Append the delete button and the draft details to the draft container
-        draftContainer.appendChild(deleteButton);
         draftContainer.appendChild(draftElement);
 
         // Append the draft container to the main container
         draftsContainer.appendChild(draftContainer);
+
+        // Click event to edit/view details
+        draftContainer.addEventListener('click', () => handleDraftClick(doc.id));
       });
     })
     .catch(error => {
@@ -257,20 +255,20 @@ function handleDraftClick(draftId) {
   window.location.href = `new-offer.html?draftId=${draftId}`; // Redirect to the New Offer page with the draftId parameter
 }
 
-function deleteDraft(draftId) {
-  const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
+// Add this to your CSS <style> section
+.draft-container:hover {
+  background-color: #f2f2f2; /* Light grey background on hover */
+}
 
-  if (user) {
-    db.collection('users').doc(user.uid).collection('drafts').doc(draftId).delete()
-      .then(() => {
-        console.log('Draft deleted');
-        fetchDrafts(user.uid); // Refresh the drafts list after deletion
-      })
-      .catch(error => {
-        console.error("Error deleting draft: ", error);
-      });
-  }
+// Existing CSS for .draft-container
+.draft-container {
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  transition: background-color 0.3s;
 }
 
 // Authentication check
@@ -282,6 +280,7 @@ firebase.auth().onAuthStateChanged((user) => {
     window.location.href = 'index.html';
   }
 });
+
 
   
 </script>
