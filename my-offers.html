@@ -211,41 +211,40 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
 function fetchDrafts(userId) {
   const db = firebase.firestore();
   const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
-  
+
   db.collection('users').doc(userId).collection('drafts').get()
     .then(querySnapshot => {
-      draftsContainer.innerHTML = '';
-
+      draftsContainer.innerHTML = ''; // Clear the container before adding new drafts
       querySnapshot.forEach(doc => {
         const draft = doc.data();
         const draftContainer = document.createElement('div');
         draftContainer.className = 'draft-container';
-        draftContainer.style.position = 'relative';
+        draftContainer.style.position = 'relative'; // Needed to position the delete button
+        draftContainer.setAttribute('data-id', doc.id); // Set the draft ID as a data attribute
 
-        const deleteButton = document.createElement('span');
-        deleteButton.textContent = '×';
+        const deleteButton = document.createElement('div');
+        deleteButton.innerHTML = '&times;'; // Correct encoding for the 'x' symbol
+        deleteButton.className = 'delete-draft';
         deleteButton.style.position = 'absolute';
-        deleteButton.style.top = '0';
+        deleteButton.style.top = '10px';
         deleteButton.style.right = '10px';
         deleteButton.style.cursor = 'pointer';
-        deleteButton.onclick = function(event) {
-          event.stopPropagation(); // Prevent the draft click event
-          if (confirm('Are you sure you want to delete this draft?')) {
-            db.collection('users').doc(userId).collection('drafts').doc(doc.id).delete().then(() => {
-              fetchDrafts(userId); // Refresh the drafts
-            });
-          }
-        };
+        deleteButton.onclick = function() { deleteDraft(doc.id); }; // Add click event to delete draft
 
         const draftElement = document.createElement('div');
+        draftElement.className = 'draft';
         draftElement.innerHTML = `
           <div>Date: ${draft.offerValidUntil}</div>
           <div>Company: ${draft.clientName}</div>
           <div>Total Sum: ${draft.totalSum}</div>
         `;
+        draftElement.onclick = () => handleDraftClick(doc.id); // Click event to edit/view details
 
+        // Append the delete button and the draft details to the draft container
         draftContainer.appendChild(deleteButton);
         draftContainer.appendChild(draftElement);
+
+        // Append the draft container to the main container
         draftsContainer.appendChild(draftContainer);
       });
     })
@@ -258,17 +257,31 @@ function handleDraftClick(draftId) {
   window.location.href = `new-offer.html?draftId=${draftId}`; // Redirect to the New Offer page with the draftId parameter
 }
 
+function deleteDraft(draftId) {
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
 
-// Listen for the authentication state to change.
+  if (user) {
+    db.collection('users').doc(user.uid).collection('drafts').doc(draftId).delete()
+      .then(() => {
+        console.log('Draft deleted');
+        fetchDrafts(user.uid); // Refresh the drafts list after deletion
+      })
+      .catch(error => {
+        console.error("Error deleting draft: ", error);
+      });
+  }
+}
+
+// Authentication check
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    fetchDrafts(user.uid); // Fetch drafts when the user is logged in
+    fetchDrafts(user.uid);
   } else {
     console.log('User is not authenticated');
-    window.location.href = 'index.html'; // Redirect to login if not authenticated
+    window.location.href = 'index.html';
   }
 });
-
 
   
 </script>
