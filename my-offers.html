@@ -243,14 +243,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     draftElement.addEventListener('click', () => handleDraftClick(doc.id));
                     draftsContainer.appendChild(draftElement);
                 });
-            })
+            }
             .catch(error => {
                 console.error("Error getting drafts: ", error);
             });
         } else {
             console.log('User is not authenticated');
         }
-    
+    }
 
     // Check for authentication before fetching drafts
     firebase.auth().onAuthStateChanged((user) => {
