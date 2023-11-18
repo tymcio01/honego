@@ -306,6 +306,10 @@ overflow-y: auto;
 <script>
     
 	document.addEventListener('DOMContentLoaded', () => {
+	
+	const saveDraftButton = document.querySelector('.btn-draft');
+  saveDraftButton.addEventListener('click', saveDraft);
+});
     // Check if URL has query parameters
     const queryParams = new URLSearchParams(window.location.search);
     if (queryParams.has('company')) {
@@ -391,10 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('generate-pdf').addEventListener('click', generatePDF);
 });
 
-	document.addEventListener('DOMContentLoaded', function() {
-  const saveDraftButton = document.querySelector('.btn-draft');
-  saveDraftButton.addEventListener('click', saveDraft);
-});
+	 
 
 function saveDraft() {
   const db = firebase.firestore();
