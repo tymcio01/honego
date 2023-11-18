@@ -206,36 +206,32 @@ apiKey: "AIzaSyDd_qtDIeM4Uy4HQdUPr_vIrmwc-Tve_RU",
   }
 });
 
-// Inside the document.addEventListener('DOMContentLoaded', function() { ... });
 function fetchDrafts(userId) {
+  const db = firebase.firestore();
+  const draftsContainer = document.querySelector('.offer-card:nth-child(2) .offer-content');
   db.collection('users').doc(userId).collection('drafts').get()
-    .then(querySnapshot => {
-      querySnapshot.forEach((doc, index) => {
-        const draft = doc.data();
-        const draftElement = document.createElement('div');
-        draftElement.className = 'draft';
-        draftElement.innerHTML = `
+  .then(querySnapshot => {
+    // Clear the container before adding new drafts
+    draftsContainer.innerHTML = '';
+
+    querySnapshot.forEach(doc => {
+      const draft = doc.data();
+      const draftElement = document.createElement('div');
+      draftElement.className = 'draft';
+      draftElement.innerHTML = `
           <div>Date: ${draft.offerValidUntil}</div>
           <div>Company: ${draft.clientName}</div>
           <div>Total Sum: ${draft.totalSum}</div>
-        `;
-        draftElement.addEventListener('click', () => handleDraftClick(doc.id));
-
-        draftsContainer.appendChild(draftElement);
-        if (index < querySnapshot.size - 1) {
-          draftsContainer.appendChild(document.createElement('hr')); // Separator
-        }
-      });
-    })
-    .catch(error => {
-      console.error("Error getting drafts: ", error);
+      `;
+      // Handle draft click to possibly edit or view more details
+      draftElement.addEventListener('click', () => handleDraftClick(doc.id));
+      draftsContainer.appendChild(draftElement);
     });
+  })
+  .catch(error => {
+    console.error("Error getting drafts: ", error);
+  });
 }
-
-function handleDraftClick(draftId) {
-  window.location.href = `new-offer.html?draftId=${draftId}`;
-}
-
 
   
 </script>

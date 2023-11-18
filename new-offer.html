@@ -432,34 +432,7 @@ function saveDraft() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const queryParams = new URLSearchParams(window.location.search);
-  const draftId = queryParams.get('draftId');
-  if (draftId) {
-    loadDraft(draftId);
-  }
-});
 
-function loadDraft(draftId) {
-  const user = firebase.auth().currentUser;
-  const db = firebase.firestore();
-  if (user) {
-    db.collection('users').doc(user.uid).collection('drafts').doc(draftId).get()
-      .then(doc => {
-        if (doc.exists) {
-          const draft = doc.data();
-          document.getElementById('clientName').value = draft.clientName;
-          document.getElementById('address').value = draft.address;
-          // ... Set other fields as needed ...
-        } else {
-          console.log("No such draft!");
-        }
-      })
-      .catch(error => {
-        console.error("Error loading draft: ", error);
-      });
-  }
-}
 	
 </script>
 
