@@ -284,11 +284,13 @@ function fetchDrafts(userId) {
         draftContainer.appendChild(deleteBtn);
 
         draftContainer.addEventListener('click', () => {
+		 const serializedProducts = encodeURIComponent(JSON.stringify(draft.selectedProducts));
   const queryParams = new URLSearchParams({
     clientName: draft.clientName,
     address: draft.address,
     clientEmail: draft.clientEmail,
     receiversName: draft.receiversName,
+	selectedProducts: serializedProducts
     additionalComments: draft.additionalComments,
     offerValidUntil: draft.offerValidUntil,
     discount: draft.discount,
