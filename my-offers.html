@@ -351,19 +351,23 @@ firebase.auth().onAuthStateChanged((user) => {
         </aside>
 
         <div class="main-content" >
-        <div class="offer-section">
-            <!-- Karta dla wys³anych ofert -->
-            <div class="offer-card">
-                <div class="offer-header">
-                    <i class="fas fa-paper-plane"></i> Recently Sent
-                </div>
-                <div class="offer-content">
-                    <!-- Tutaj zawartoœæ dla wys³anych ofert -->
-                </div>
-                <div class="offer-actions">
-                    
-                </div>
-            </div>
+        <div class="offer-card">
+    <div class="offer-header">
+        <i class="fas fa-paper-plane"></i> Recently Sent
+    </div>
+    <div class="offer-content">
+        <!-- Example content for Recently Sent -->
+        <div class="sent-offer-item">
+            <div>Date: 2023-07-01</div>
+            <div>Company: Company A</div>
+            <div>Total Sum: 1500</div>
+        </div>
+        <!-- More sent-offer-item divs can be added here -->
+    </div>
+    <div class="offer-actions">
+        <!-- Actions if any -->
+    </div>
+</div>
 
             <!-- Karta dla draftów -->
             <div class="offer-card">
@@ -380,16 +384,21 @@ firebase.auth().onAuthStateChanged((user) => {
 
             <!-- Karta dla szablonów -->
             <div class="offer-card">
-                <div class="offer-header">
-                    <i class="fas fa-clone"></i> Templates
-                </div>
-                <div class="offer-content">
-                    <!-- Tutaj zawartoœæ dla szablonów -->
-                </div>
-                <div class="offer-actions">
-                    
-                </div>
-            </div>
+    <div class="offer-header">
+        <i class="fas fa-clone"></i> Templates
+    </div>
+    <div class="offer-content">
+        <!-- Example content for Templates -->
+        <div class="template-item">
+            <div>Template: Basic Offer</div>
+            <div>Last Modified: 2023-06-15</div>
+        </div>
+        <!-- More template-item divs can be added here -->
+    </div>
+    <div class="offer-actions">
+        <!-- Actions if any -->
+    </div>
+</div>
         </div>
     </div>
 </div>
