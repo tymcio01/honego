@@ -356,6 +356,15 @@ overflow-y: auto;
     }
 });
 
+const selectedProducts = [{ name: "Testowy!!", price: 999, quantity: 1 }];
+const queryParams = new URLSearchParams({
+  clientName: draft.clientName,
+  // ... other fields
+  selectedProducts: JSON.stringify(selectedProducts) // Do not double-encode here
+});
+window.location.href = `new-offer.html?${queryParams.toString()}`;
+
+
 
     function logout() {
         firebase.auth().signOut().then(() => {
@@ -640,23 +649,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const queryParams = new URLSearchParams(window.location.search);
 
     if (queryParams.has('selectedProducts')) {
-    try {
-      const selectedProducts = JSON.parse(decodeURIComponent(queryParams.get('selectedProducts')));
-      const selectedArea = document.querySelector('.selected-area');
-      selectedArea.innerHTML = ''; // Clear the area first
-
-      selectedProducts.forEach(product => {
-        const productElement = document.createElement('div');
-        productElement.classList.add('product-item');
-        productElement.textContent = `${product.name} - ${product.quantity} x ${product.price} PLN`;
-        productElement.draggable = true;
-        // Add any additional event listeners or properties that your application requires
-        selectedArea.appendChild(productElement);
-      });
-    } catch (error) {
-      console.error('Error parsing selected products:', error);
-    }
+  const serializedProducts = queryParams.get('selectedProducts');
+  try {
+    const selectedProducts = JSON.parse(serializedProducts);
+    // ... use selectedProducts as needed
+  } catch (error) {
+    console.error('Error parsing selectedProducts:', error);
   }
+}
+
 });
 
 
