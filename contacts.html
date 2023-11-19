@@ -191,14 +191,6 @@
     background-color: #FF0000; /* Red background on hover */
     color: white;
 }
-.client-link {
-    color: #005DCC;
-    text-decoration: none;
-}
-
-.client-link:hover {
-    text-decoration: underline;
-}
 
 
     </style>
@@ -235,30 +227,33 @@ function populateClientsTable(userId) {
     const clientsCollection = db.collection('clients').where('owner', '==', userId);
 
     clientsCollection.get().then((querySnapshot) => {
-    const tableBody = document.getElementById('tableBody');
-    tableBody.innerHTML = ''; // Clear the table before populating it
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = ''; // Clear the table before populating it
 
-    querySnapshot.forEach((doc) => {
-        const client = doc.data();
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${client.company}</td>
-            <td><a href="profile.html?clientId=${doc.id}" class="client-link">${client.name}</a></td>
-            <td><a href="profile.html?clientId=${doc.id}" class="client-link">${client.surname}</a></td>
-            <td>${client.address}</td>
-            <td>${client.phone}</td>
-            <td>${client.email}</td>
-            <td>${client.industry}</td>
-            <td>
-                <button class="send-offer-btn" onclick="sendOffer('${doc.id}', '${client.company}', '${client.address}', '${client.email}', '${client.name}')">Send Offer</button>
-                <button class="delete-btn" onclick="deleteClient('${doc.id}', this)">Delete</button>
-            </td>
-        `;
-        tableBody.appendChild(row);
+        querySnapshot.forEach((doc) => {
+            const client = doc.data();
+            const row = document.createElement('tr');
+            row.innerHTML = `
+			<td><a href="profile.html?clientId=${doc.id}" style="color: #005DCC; text-decoration: none;">${client.company}</a></td>
+ `;
+                <td>${client.company}</td>
+                <td>${client.name}</td>
+                <td>${client.surname}</td>
+                <td>${client.address}</td>
+                <td>${client.phone}</td>
+                <td>${client.email}</td>
+                <td>${client.industry}</td>
+                <td>
+                    <button class="send-offer-btn" type="button" onclick="sendOffer('${doc.id}', '${client.company}', '${client.address}', '${client.email}', '${client.name}')">Send Offer</button>
+                    <button class="delete-btn" type="button" onclick="deleteClient('${doc.id}', this)">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }).catch((error) => {
+        console.error("Error getting documents: ", error);
     });
-}).catch((error) => {
-    console.error("Error getting documents: ", error);
-});
+}
 
 // Add event listener for DOMContentLoaded to ensure the form is available
 document.addEventListener('DOMContentLoaded', function() {
