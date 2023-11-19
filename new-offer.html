@@ -307,6 +307,12 @@ overflow-y: auto;
     
 	document.addEventListener('DOMContentLoaded', () => {
   const queryParams = new URLSearchParams(window.location.search);
+  const selectedProductsString = queryParams.get('selectedProducts');
+  try {
+  const selectedProducts = JSON.parse(decodeURIComponent(selectedProductsString));
+  } catch (e) {
+  console.error('Error parsing selectedProducts:', e);
+}
   document.getElementById('clientName').value = queryParams.get('clientName') || '';
   document.getElementById('address').value = queryParams.get('address') || '';
   document.getElementById('clientEmail').value = queryParams.get('clientEmail') || '';
