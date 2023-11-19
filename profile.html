@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile - Honego CRM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            background: #e5e5e5;
+        }
+        aside {
+            width: 250px;
+            background: #005DCC;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        aside h1 {
+            color: #fff;
+        }
+        aside ul {
+            list-style: none;
+            padding: 0;
+        }
+        aside ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 0;
+            display: block;
+        }
+        aside ul li a:hover {
+            background: #f8f9fa;
+            color: #333;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background: #fff;
+        }
+        footer {
+            background: #005DCC;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .profile-card h2 {
+            margin-top: 0;
+        }
+        /* Additional styles can be added here */
+    </style>
+</head>
+<body>
+    <aside>
+        <h1>Honego CRM</h1>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="my-offers.html"><i class="fas fa-folder"></i> My Offers</a></li>
+            <li><a href="new-offer.html"><i class="fas fa-plus"></i> New Offer</a></li>
+            <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+            <li><a href="product-library.html"><i class="fas fa-cube"></i> Product Library</a></li>
+            <li><a href="account-settings.html"><i class="fas fa-cogs"></i> Account Settings</a></li>
+            <li><a href="#" onclick="logout();"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+        </ul>
+    </aside>
+    <div class="main-content">
+        <div class="profile-card">
+            <h2>Client Profile</h2>
+            <!-- Client information goes here -->
+            <p>Name: John Doe</p>
+            <p>Company: Doe Enterprises</p>
+            <p>Email: johndoe@example.com</p>
+            <p>Phone: +1234567890</p>
+            <!-- More client details -->
+        </div>
+        <!-- More content can be added here -->
+    </div>
+    <footer>
+        &copy; 2023 Honego CRM - All rights reserved.
+    </footer>
+    <script>
+        // JavaScript for logout and other interactions can be added here
+        function logout() {
+            // Handle logout functionality
+        }
+    </script>
+</body>
+</html>
