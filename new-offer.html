@@ -305,6 +305,16 @@ overflow-y: auto;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <script>
     
+	firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        fetchAndPopulateProducts(); // Call this function here
+    } else {
+        window.location.href = 'index.html'; // Redirect to login
+    }
+});
+	
 	document.addEventListener('DOMContentLoaded', () => {
     // Check if URL has query parameters
     const queryParams = new URLSearchParams(window.location.search);
@@ -328,15 +338,7 @@ overflow-y: auto;
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
     };
 
-    firebase.initializeApp(firebaseConfig);
-
-    firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        fetchAndPopulateProducts(); // Call this function here
-    } else {
-        window.location.href = 'index.html'; // Redirect to login
-    }
-});
+    
 
 
     function logout() {
