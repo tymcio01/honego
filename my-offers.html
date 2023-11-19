@@ -283,10 +283,21 @@ function fetchDrafts(userId) {
         draftContainer.appendChild(draftElement);
         draftContainer.appendChild(deleteBtn);
 
-        // Click event to edit/view draft details
         draftContainer.addEventListener('click', () => {
-          window.location.href = `new-offer.html?draftId=${doc.id}`;
-        });
+  const queryParams = new URLSearchParams({
+    clientName: draft.clientName,
+    address: draft.address,
+    clientEmail: draft.clientEmail,
+    receiversName: draft.receiversName,
+    additionalComments: draft.additionalComments,
+    offerValidUntil: draft.offerValidUntil,
+    discount: draft.discount,
+    totalSum: draft.totalSum,
+    // Add other necessary fields
+  });
+  window.location.href = `new-offer.html?${queryParams}`;
+});
+
 
         draftsContainer.appendChild(draftContainer);
       });

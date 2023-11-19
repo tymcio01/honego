@@ -306,17 +306,18 @@ overflow-y: auto;
 <script>
     
 	document.addEventListener('DOMContentLoaded', () => {
-    // Check if URL has query parameters
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('company')) {
-        document.getElementById('clientName').value = queryParams.get('company');
-        document.getElementById('address').value = queryParams.get('address');
-        document.getElementById('clientEmail').value = queryParams.get('email');
-        document.getElementById('receiversName').value = queryParams.get('clientName');
-    }
-
-    // Rest of your initialization code...
+  const queryParams = new URLSearchParams(window.location.search);
+  document.getElementById('clientName').value = queryParams.get('clientName') || '';
+  document.getElementById('address').value = queryParams.get('address') || '';
+  document.getElementById('clientEmail').value = queryParams.get('clientEmail') || '';
+  document.getElementById('receiversName').value = queryParams.get('receiversName') || '';
+  document.getElementById('additionalComments').value = queryParams.get('additionalComments') || '';
+  document.getElementById('datePicker').value = queryParams.get('offerValidUntil') || '';
+  document.getElementById('discount').value = queryParams.get('discount') || '0';
+  document.getElementById('totalSum').textContent = `Total Sum: ${queryParams.get('totalSum') || '0'} PLN`;
+  // Populate products and other fields as needed
 });
+
 
 	
 	var firebaseConfig = {
