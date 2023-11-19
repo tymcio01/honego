@@ -307,9 +307,12 @@ overflow-y: auto;
     
 	document.addEventListener('DOMContentLoaded', () => {
   const queryParams = new URLSearchParams(window.location.search);
-  const selectedProductsString = queryParams.get('selectedProducts');
+   const selectedProductsEncoded = queryParams.get('selectedProducts');
   try {
-  const selectedProducts = JSON.parse(decodeURIComponent(selectedProductsString));
+   // Decode URI component and remove additional quotes if necessary
+    const selectedProductsJson = decodeURIComponent(selectedProductsEncoded.replace(/%22/g, '"'));
+    const selectedProducts = JSON.parse(selectedProductsJson);
+    // Now you can use 'selectedProducts' as a JavaScript array or object
   } catch (e) {
   console.error('Error parsing selectedProducts:', e);
 }
