@@ -302,6 +302,7 @@ overflow-y: auto;
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
 <script>
     
 	document.addEventListener('DOMContentLoaded', () => {
@@ -326,62 +327,16 @@ overflow-y: auto;
         messagingSenderId: "897927654843",
         appId: "1:897927654843:web:54bf5b398542dfd076a89e"
     };
-    firebase.initializeApp(firebaseConfig);
-	
-	 // Listener for auth state change
-  firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            // User is signed in, you can fetch the drafts here
-            fetchAndPopulateDraft(user.uid);
-        } else {
-            // No user is signed in, redirect to login
-            window.location.href = 'index.html';
-        }
-    });
 
-  function fetchAndPopulateDraft(userId) {
-        const queryParams = new URLSearchParams(window.location.search);
-        const draftId = queryParams.get('draftId');
-        if (draftId) {
-            const db = firebase.firestore();
-            db.collection('users').doc(userId).collection('drafts').doc(draftId).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const draft = doc.data();
-                        document.getElementById('clientName').value = draft.clientName;
-                        document.getElementById('address').value = draft.address;
-                        document.getElementById('clientEmail').value = draft.clientEmail;
-                        document.getElementById('receiversName').value = draft.receiversName;
-                        // ...set other fields from the draft data
-                        // Update the UI to reflect the fetched draft
-                    } else {
-                        console.log('No such draft!');
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching draft: ", error);
-                });
-        }
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        fetchAndPopulateProducts(); // Call this function here
+    } else {
+        window.location.href = 'index.html'; // Redirect to login
     }
 });
-
-function fetchDraftData(userId, draftId) {
-  const db = firebase.firestore();
-  db.collection('users').doc(userId).collection('drafts').doc(draftId).get()
-    .then(doc => {
-      if (doc.exists) {
-        const draftData = doc.data();
-        // Populate form fields with draft data
-        document.getElementById('clientName').value = draftData.clientName;
-        // ... Populate other fields similarly
-      } else {
-        console.log('No such draft!');
-      }
-    })
-    .catch(error => {
-      console.error("Error fetching draft: ", error);
-    });
-}
 
 
     function logout() {
@@ -477,43 +432,6 @@ function saveDraft() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const queryParams = new URLSearchParams(window.location.search);
-  const draftId = queryParams.get('draftId');
-
-  if (draftId) {
-    const user = firebase.auth().currentUser;
-    const db = firebase.firestore();
-
-    db.collection('users').doc(user.uid).collection('drafts').doc(draftId).get()
-      .then(doc => {
-        if (doc.exists) {
-          const draftData = doc.data();
-          document.getElementById('clientName').value = draftData.clientName;
-          document.getElementById('address').value = draftData.address;
-          document.getElementById('clientEmail').value = draftData.clientEmail;
-          document.getElementById('receiversName').value = draftData.receiversName;
-          document.getElementById('additionalComments').value = draftData.additionalComments;
-          document.getElementById('datePicker').value = draftData.offerValidUntil;
-          document.getElementById('discount').value = draftData.discount;
-          document.getElementById('totalSum').textContent = draftData.totalSum;
-
-          // Populate the products area with the selected products from the draft
-          const selectedArea = document.querySelector('.selected-area');
-          selectedArea.innerHTML = ''; // Clear the area first
-          draftData.selectedProducts.forEach(product => {
-            // Create product elements and append to the selected area
-            // You'll need to write the logic to create these elements based on your application's structure
-          });
-
-          calculateTotal(); // Update the total sum displayed
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching draft data: ", error);
-      });
-  }
-});
 
 	
 </script>
