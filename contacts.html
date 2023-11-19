@@ -234,8 +234,6 @@ function populateClientsTable(userId) {
             const client = doc.data();
             const row = document.createElement('tr');
             row.innerHTML = `
-			<td><a href="profile.html?clientId=${doc.id}" style="color: #005DCC; text-decoration: none;">${client.company}</a></td>
- `;
                 <td>${client.company}</td>
                 <td>${client.name}</td>
                 <td>${client.surname}</td>
@@ -373,17 +371,6 @@ function addClientToFirestore(clientData) {
                 </thead>
                 <tbody id="tableBody">
                     <!-- Wiersze z klientami zostan¹ tutaj dodane -->
-					
-					<tr>
-        <td><a href="profile.html" style="color: #005DCC; text-decoration: none;">Client Company Name</a></td>
-        <td>John Doe</td>
-        <!-- More data cells -->
-        <td>
-            <button class="send-offer-btn">Send Offer</button>
-            <button class="delete-btn">Delete</button>
-        </td>
-    </tr>
-    <!-- More rows -->
                 </tbody>
             </table>
         </div>
