@@ -306,35 +306,17 @@ overflow-y: auto;
 <script>
     
 	document.addEventListener('DOMContentLoaded', () => {
-  const queryParams = new URLSearchParams(window.location.search);
-  const selectedProductsString = queryParams.get('selectedProducts');
-  document.getElementById('clientName').value = queryParams.get('clientName') || '';
-  document.getElementById('address').value = queryParams.get('address') || '';
-  document.getElementById('clientEmail').value = queryParams.get('clientEmail') || '';
-  document.getElementById('receiversName').value = queryParams.get('receiversName') || '';
-  document.getElementById('additionalComments').value = queryParams.get('additionalComments') || '';
-  document.getElementById('datePicker').value = queryParams.get('offerValidUntil') || '';
-  document.getElementById('discount').value = queryParams.get('discount') || '0';
-  document.getElementById('totalSum').textContent = `Total Sum: ${queryParams.get('totalSum') || '0'} PLN`;
-  
-   if (queryParams.has('selectedProducts')) {
-    const serializedProducts = queryParams.get('selectedProducts');
-    const selectedProducts = JSON.parse(decodeURIComponent(serializedProducts));
-    const selectedArea = document.querySelector('.selected-area');
-    selectedArea.innerHTML = ''; // Clear the area first
-    selectedProducts.forEach(product => {
-      // Create product elements and append to the selected area
-      // You'll need to write the logic to create these elements based on your application's structure
-      // Example:
-      const productElement = document.createElement('div');
-      productElement.textContent = `${product.name} - ${product.price} PLN`;
-      // Add classes and set attributes as needed to match your existing DOM structure
-      selectedArea.appendChild(productElement);
-    });
-  }
+    // Check if URL has query parameters
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('company')) {
+        document.getElementById('clientName').value = queryParams.get('company');
+        document.getElementById('address').value = queryParams.get('address');
+        document.getElementById('clientEmail').value = queryParams.get('email');
+        document.getElementById('receiversName').value = queryParams.get('clientName');
+    }
+
+    // Rest of your initialization code...
 });
-
-
 
 	
 	var firebaseConfig = {
@@ -355,15 +337,6 @@ overflow-y: auto;
         window.location.href = 'index.html'; // Redirect to login
     }
 });
-
-const selectedProducts = [{ name: "Testowy!!", price: 999, quantity: 1 }];
-const queryParams = new URLSearchParams({
-  clientName: draft.clientName,
-  // ... other fields
-  selectedProducts: JSON.stringify(selectedProducts) // Do not double-encode here
-});
-window.location.href = `new-offer.html?${queryParams.toString()}`;
-
 
 
     function logout() {
@@ -645,21 +618,6 @@ function saveDraft() {
     document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN (Discount: ${discountAmount.toFixed(2)} PLN)`;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const queryParams = new URLSearchParams(window.location.search);
-
-    if (queryParams.has('selectedProducts')) {
-  const serializedProducts = queryParams.get('selectedProducts');
-  try {
-    const selectedProducts = JSON.parse(serializedProducts);
-    // ... use selectedProducts as needed
-  } catch (error) {
-    console.error('Error parsing selectedProducts:', error);
-  }
-}
-
-});
-
 
   function fetchAndPopulateProducts(userId) {
     const user = firebase.auth().currentUser;
@@ -702,6 +660,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  window.onload = function () {
+      fetchAndPopulateProducts();
+	  
+	  
+	  
+  };
   
   
   
