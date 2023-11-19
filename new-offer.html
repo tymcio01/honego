@@ -618,6 +618,22 @@ function saveDraft() {
     document.getElementById('totalSum').textContent = `Total Sum: ${sum.toFixed(2)} PLN (Discount: ${discountAmount.toFixed(2)} PLN)`;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const queryParams = new URLSearchParams(window.location.search);
+
+    // Populate the fields if queryParams are present
+    if (queryParams.has('clientName')) {
+        document.getElementById('clientName').value = queryParams.get('clientName');
+    }
+    if (queryParams.has('address')) {
+        document.getElementById('address').value = queryParams.get('address');
+    }
+    if (queryParams.has('clientEmail')) {
+        document.getElementById('clientEmail').value = queryParams.get('clientEmail');
+    }
+    // ... Add other fields as needed
+});
+
 
   function fetchAndPopulateProducts(userId) {
     const user = firebase.auth().currentUser;
