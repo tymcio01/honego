@@ -295,8 +295,10 @@ function fetchDrafts(userId) {
     offerValidUntil: draft.offerValidUntil,
     discount: draft.discount,
     totalSum: draft.totalSum,
-    // Add other necessary fields
-  });
+    selectedProducts: JSON.stringify(serializedProducts),
+  // Add other necessary fields
+}).toString();
+  
   window.location.href = `new-offer.html?${queryParams}`;
 });
 
