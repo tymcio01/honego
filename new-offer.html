@@ -432,6 +432,43 @@ function saveDraft() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const draftId = queryParams.get('draftId');
+
+  if (draftId) {
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+
+    db.collection('users').doc(user.uid).collection('drafts').doc(draftId).get()
+      .then(doc => {
+        if (doc.exists) {
+          const draftData = doc.data();
+          document.getElementById('clientName').value = draftData.clientName;
+          document.getElementById('address').value = draftData.address;
+          document.getElementById('clientEmail').value = draftData.clientEmail;
+          document.getElementById('receiversName').value = draftData.receiversName;
+          document.getElementById('additionalComments').value = draftData.additionalComments;
+          document.getElementById('datePicker').value = draftData.offerValidUntil;
+          document.getElementById('discount').value = draftData.discount;
+          document.getElementById('totalSum').textContent = draftData.totalSum;
+
+          // Populate the products area with the selected products from the draft
+          const selectedArea = document.querySelector('.selected-area');
+          selectedArea.innerHTML = ''; // Clear the area first
+          draftData.selectedProducts.forEach(product => {
+            // Create product elements and append to the selected area
+            // You'll need to write the logic to create these elements based on your application's structure
+          });
+
+          calculateTotal(); // Update the total sum displayed
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching draft data: ", error);
+      });
+  }
+});
 
 	
 </script>
