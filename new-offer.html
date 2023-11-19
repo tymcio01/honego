@@ -639,17 +639,24 @@ function saveDraft() {
 document.addEventListener('DOMContentLoaded', () => {
     const queryParams = new URLSearchParams(window.location.search);
 
-    // Populate the fields if queryParams are present
-    if (queryParams.has('clientName')) {
-        document.getElementById('clientName').value = queryParams.get('clientName');
+    if (queryParams.has('selectedProducts')) {
+    try {
+      const selectedProducts = JSON.parse(decodeURIComponent(queryParams.get('selectedProducts')));
+      const selectedArea = document.querySelector('.selected-area');
+      selectedArea.innerHTML = ''; // Clear the area first
+
+      selectedProducts.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.classList.add('product-item');
+        productElement.textContent = `${product.name} - ${product.quantity} x ${product.price} PLN`;
+        productElement.draggable = true;
+        // Add any additional event listeners or properties that your application requires
+        selectedArea.appendChild(productElement);
+      });
+    } catch (error) {
+      console.error('Error parsing selected products:', error);
     }
-    if (queryParams.has('address')) {
-        document.getElementById('address').value = queryParams.get('address');
-    }
-    if (queryParams.has('clientEmail')) {
-        document.getElementById('clientEmail').value = queryParams.get('clientEmail');
-    }
-    // ... Add other fields as needed
+  }
 });
 
 
