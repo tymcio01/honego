@@ -329,6 +329,20 @@ overflow-y: auto;
     };
 
     firebase.initializeApp(firebaseConfig);
+	
+	 // Listener for auth state change
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      fetchDrafts(user.uid);
+    } else {
+      console.log('User is not authenticated');
+      // Redirect to login or show an appropriate message
+    }
+  });
+
+  function fetchDrafts(userId) {
+    // Your logic to fetch drafts goes here
+  }
 
     firebase.auth().onAuthStateChanged((user) => {
     if (user) {
