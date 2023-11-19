@@ -340,17 +340,38 @@ overflow-y: auto;
     }
   });
 
-  function fetchDrafts(userId) {
-    // Your logic to fetch drafts goes here
-  }
-
-    firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        fetchAndPopulateProducts(); // Call this function here
-    } else {
-        window.location.href = 'index.html'; // Redirect to login
+  firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // Once authenticated, check for 'draftId' in the URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const draftId = queryParams.get('draftId');
+    if (draftId) {
+      // Fetch draft data from Firestore
+      fetchDraftData(user.uid, draftId);
     }
+  } else {
+    console.log('User is not authenticated');
+    // Redirect to login or show an appropriate message
+  }
 });
+
+function fetchDraftData(userId, draftId) {
+  const db = firebase.firestore();
+  db.collection('users').doc(userId).collection('drafts').doc(draftId).get()
+    .then(doc => {
+      if (doc.exists) {
+        const draftData = doc.data();
+        // Populate form fields with draft data
+        document.getElementById('clientName').value = draftData.clientName;
+        // ... Populate other fields similarly
+      } else {
+        console.log('No such draft!');
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching draft: ", error);
+    });
+}
 
 
     function logout() {
